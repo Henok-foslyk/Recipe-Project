@@ -1,13 +1,30 @@
 .my-recipes-container {
     padding: 2rem;
     max-width: 1000px;
-    margin: auto;
+    margin: 0 auto; /* only center horizontally */
     font-family: Arial, sans-serif;
-  }
+}
   
   h1 {
     font-size: 2rem;
     font-weight: bold;
+  }
+
+  .title {
+    font: 3rem sans-serif;
+    font-weight: 600;
+    color: black;
+  }
+
+  .subtitle {
+    font: 2rem sans-serif;
+    font-weight: bold;
+    color: black;
+    text-align: left;
+  }
+
+  .subsubtitle {
+    text-align: left;
   }
   
   p {
@@ -26,7 +43,7 @@
   }
   
   .toggle-buttons {
-    margin-bottom: 1rem;
+    margin-bottom: 7%;
   }
   
   .toggle-buttons button {
