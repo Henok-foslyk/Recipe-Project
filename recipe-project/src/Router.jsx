@@ -2,7 +2,8 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import Home from "./routes/Home";
 import Recipes from "./routes/Recipes";
-import { CreateRecipe } from "./routes/CreateRecipe";
+import CreateRecipe from "./routes/CreateRecipe";
+import MyRecipes from "./routes/MyRecipes";
 
 export const router = createBrowserRouter([
 
