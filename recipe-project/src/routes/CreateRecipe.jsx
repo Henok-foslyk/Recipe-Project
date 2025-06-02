@@ -1,7 +1,14 @@
 import React from 'react'
+import Header from '../components/Navbar'
+import CreateRecipeForm from '../components/CreateRecipeForm'
 
-export const CreateRecipe = () => {
+const CreateRecipe = () => {
   return (
-    <div>CreateRecipe</div>
+    <>
+      <Header />     
+      <CreateRecipeForm />
+    </>
   )
 }
+
+export default CreateRecipe
