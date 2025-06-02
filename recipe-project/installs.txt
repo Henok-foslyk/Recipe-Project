@@ -1,0 +1,1 @@
+npm install react-loading-skeleton #for skeleton loader
