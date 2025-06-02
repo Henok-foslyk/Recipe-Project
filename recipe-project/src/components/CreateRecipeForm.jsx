@@ -23,7 +23,7 @@ const CreateRecipeForm = () => {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', padding: '2rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '2rem' }}>
       <div style={{ display: 'flex', flexDirection: 'column', width: '600px', gap: '1.5rem' }}>
         
         {/* Recipe Name */}
@@ -55,33 +55,9 @@ const CreateRecipeForm = () => {
           />
         </div>
 
-        {/* Allergens */}
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <label style={{ width: '150px', fontWeight: 'bold' }}>Food Allergens</label>
-            <div style={{ flex: 1, display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-              {ALLERGENS.map(({ name, color }) => (
-                <button
-                  key={name}
-                  onClick={() => toggleAllergen(name)}
-                  style={{
-                    backgroundColor: color,
-                    padding: '6px 12px',
-                    border: selectedAllergens.includes(name)
-                      ? '2px solid black'
-                      : '1px solid #ccc',
-                    borderRadius: '999px',
-                    cursor: 'pointer',
-                  }}
-                >
-                  {name}
-                </button>
-              ))}
-            </div>
-          </div>
 
-          {/* Selected Allergens Display */}
-          {selectedAllergens.length > 0 && (
+        {/* Selected Allergens Display */}
+        {selectedAllergens.length > 0 && (
             <div style={{ marginTop: '0.5rem', marginLeft: '150px', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
               {selectedAllergens.map((a) => (
                 <div
@@ -100,6 +76,31 @@ const CreateRecipeForm = () => {
               ))}
             </div>
           )}
+        </div>
+
+        {/* Allergens */}
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <label style={{ width: '150px', fontWeight: 'bold' }}>Food Allergens</label>
+            <div style={{ flex: 1, display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                {ALLERGENS.map(({ name, color }) => (
+                <button
+                  key={name}
+                  onClick={() => toggleAllergen(name)}
+                  style={{
+                    backgroundColor: color,
+                    padding: '6px 12px',
+                    border: selectedAllergens.includes(name)
+                      ? '2px solid black'
+                      : '1px solid #ccc',
+                    borderRadius: '999px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  {name}
+                </button>
+                ))}
+            </div>
         </div>
 
         {/* Recipe Description */}
