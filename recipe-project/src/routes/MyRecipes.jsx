@@ -35,7 +35,7 @@ export default function MyRecipes() {
             <div className="my-recipes-container">
             <h1>My Recipes</h1>
             <p>Manage your created and saved recipes efficiently.</p>
-            <button className="create-recipe-btn" onClick={() => navigate('/create.recipe')}>
+            <button className="create-recipe-btn" onClick={() => navigate('/create-recipe')}>
                 Create Recipe
             </button>
             <div className="toggle-buttons">
