@@ -1,0 +1,33 @@
+/* src/components/CommentsContainer.css */
+
+
+.comments-container {    
+    display: flex;        /* ← grow to fill leftover width next to DisplayRecipe */
+    height: 1200px;          /* ← match whatever height DisplayRecipe uses */
+    width: 900px;
+    background-color: #f0f0f0;  
+    border-radius: 16px;
+    border: 4px solid transparent;
+    /* border-image: linear-gradient(to bottom, #fbd000, #e52d27) 1; */
+    overflow: hidden;       /* clip the inner scroll */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box; /* include border in that height/width */
+  }
+
+  .comments-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;  
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    padding: 0;             /* remove horizontal padding so children go edge-to-edge */
+    box-sizing: border-box;
+  }
+  
+  .no-comments {
+    margin: 0 auto;
+    color: #777;
+    font-style: italic;
+  }
+  

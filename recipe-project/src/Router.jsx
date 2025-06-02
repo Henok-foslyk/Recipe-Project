@@ -4,6 +4,8 @@ import Home from "./routes/Home";
 import Recipes from "./routes/Recipes";
 import CreateRecipe from "./routes/CreateRecipe";
 import MyRecipes from "./routes/MyRecipes";
+import RecipeDetails from "./routes/RecipeDetails";
+
 
 export const router = createBrowserRouter([
 
@@ -11,8 +13,8 @@ export const router = createBrowserRouter([
   { path: "/recipes", element: <Recipes /> },
   { path: "/home", element: <Home /> },
   { path: "/create-recipe", element: <CreateRecipe />},
-  { path: "/my-recipes", element: <MyRecipes />}
-
+  { path: "/my-recipes", element: <MyRecipes />},
+  { path: "/displayrecipe", element: <RecipeDetails />}
 
 
 ]);

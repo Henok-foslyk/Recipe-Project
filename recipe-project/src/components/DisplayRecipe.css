@@ -1,0 +1,94 @@
+/* src/components/DisplayRecipe.css */
+
+/* ──────────────────────────────────────────────────────────────────────────
+   OUTER BOX: fixed width/height, gradient border, rounded corners.
+   It never grows larger, and any overflow is clipped.
+────────────────────────────────────────────────────────────────────────── */
+.display-recipe-card {
+  width: 900px;               /* ← Adjust as needed so two fit side by side */
+  height: 1200px;              /* ← Adjust as needed for your design */
+  background-color: #fff;
+  border: 4px solid transparent;
+  /* border-image: linear-gradient(to bottom, #fbd000, #e52d27) 1; */
+  border-radius: 16px;
+  overflow: hidden;           /* clip the inner content to the rounded box */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;             /* Prevent the card from shrinking in a flex row */
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   INNER SCROLLABLE: takes full height of outer, scrolls if content overflows.
+────────────────────────────────────────────────────────────────────────── */
+.display-recipe-inner {
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   IMAGE (optional): If you pass imageUrl, it sits at the top.
+   It will shrink or expand to 100% of card’s width, but never force the card
+   to grow beyond its fixed dimensions.
+────────────────────────────────────────────────────────────────────────── */
+.recipe-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-bottom: 1px solid #eee;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   BODY: holds title, caution, lists, etc.  
+────────────────────────────────────────────────────────────────────────── */
+.recipe-body {
+  padding: 1rem 1.25rem;
+  font-family: Arial, sans-serif;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Title is centered & italic */
+.recipe-title {
+  text-align: center;
+  font-style: italic;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Caution line: bold label, centered */
+.recipe-caution {
+  text-align: center;
+  font-size: 0.95rem;
+  margin: 0.5rem 0 1rem 0;
+}
+.recipe-caution span {
+  font-weight: bold;
+  font-style: italic;
+}
+
+/* Section headings (Ingredients / Instructions) */
+.section-heading {
+  font-weight: bold;
+  margin-bottom: 0.4rem;
+  font-size: 1rem;
+}
+
+/* Lists are indented and have a comfortable line height */
+.section-list {
+  margin: 0;
+  padding-left: 1.2rem;
+  line-height: 1.5;
+}
+
+/* Hide the scrollbar track in WebKit but still allow scroll */
+.display-recipe-inner::-webkit-scrollbar {
+  width: 6px;
+}
+.display-recipe-inner::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
