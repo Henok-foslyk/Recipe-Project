@@ -1,16 +1,19 @@
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
-import bodyParser from "body-parser";
-import recipeRoutes from './routes/recipe.js';
-import userRoutes from './routes/user.js';
-import chatRoutes from './routes/chatbot.js';
+const express = require("express");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const bodyParser = require("body-parser");
+const axios = require("axios");
+
+
+// import recipeRoutes from './routes/recipe.js';
+// import userRoutes from './routes/user.js';
+// import chatRoutes from './routes/chatbot.js';
 dotenv.config();
 
 const app = express();
-const cors = require("cors");
+// const cors = require("cors");
 const port = 5050;
-const axios = require("axios");
+
 require("dotenv").config();
 
 app.use(cors());
@@ -36,7 +39,9 @@ app.use(
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
-  });
+
+});
+
 
 // const port = process.env.PORT || 5001;
 
@@ -60,5 +65,5 @@ app.listen(port, () => {
 
 // app.listen(port, () => {
 //   console.log(`App listening on port ${port}...`);
-// >>>>>>> main
-// });
+
+// 

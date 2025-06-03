@@ -1,10 +1,16 @@
 .recipe-container {
     max-width: 1500px;
     width: 100%;
-    margin: 100px auto;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
     margin-bottom: 200px;
     padding-bottom: 50px;
     text-align: center;
+}
+
+.recipe-container h2 {
+    font-size: 30px;
+    font-weight: bold;
 }
 
 .all-search {
@@ -128,7 +134,6 @@
     display: flex;
     justify-content: flex-start;
     gap: 1rem;
-    margin-bottom: 1rem;
 }
 
 .toggle-buttons button {
@@ -143,6 +148,11 @@
 
 .toggle-buttons button.active {
     background-color: #4caf50;
+    color: white;
+}
+
+.toggle-buttons button:hover {
+    background-color: rgb(177, 129, 17);
     color: white;
 }
 
