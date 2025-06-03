@@ -68,6 +68,7 @@ const CreateRecipe = () => {
         imgUrl: '', // Placeholder, update this if uploading image
         comments: [],
         createdAt: Timestamp.now(),
+        type: ''
       });
   
       console.log('Recipe saved with ID:', docRef.id);
