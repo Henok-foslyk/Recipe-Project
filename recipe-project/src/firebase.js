@@ -1,17 +1,20 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getFirestore } from "firebase/firestore";
 
-// Your web app's Firebase configuration
+console.log(import.meta.env.VITE_FIREBASE_PROJECT_ID);
+
 const firebaseConfig = {
-    apiKey: "AIzaSyCSFw4qul9HrTZzVzzibI01C-nI18Pzv_g",
-    authDomain: "recipeproject-a0cdc.firebaseapp.com",
-    projectId: "recipeproject-a0cdc",
-    storageBucket: "recipeproject-a0cdc.firebasestorage.app",
-    messagingSenderId: "629507268133",
-    appId: "1:629507268133:web:307071cabe4c8038a429cc"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  //measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+
+export { db };
