@@ -6,7 +6,6 @@ import AdminPage from "./routes/adminPage";
 import MyRecipes from "./routes/MyRecipes";
 import RecipeDetails from "./routes/RecipeDetails";
 
-
 export const router = createBrowserRouter([
   { path: "/", element: <App /> }, 
   { path: "/recipes", element: <Recipes /> },
@@ -14,4 +13,5 @@ export const router = createBrowserRouter([
   { path: "/admin", element: <AdminPage/>},
   { path: "/create-recipe", element: <CreateRecipe />},
   { path: "/my-recipes", element: <MyRecipes />}
+
 ]);
