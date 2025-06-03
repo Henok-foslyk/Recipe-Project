@@ -1,1 +1,2 @@
 npm install react-loading-skeleton #for skeleton loader
+npm install cors

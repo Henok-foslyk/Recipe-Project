@@ -26,7 +26,9 @@ body {
   margin: 5%;
   min-width: 320px;
   min-height: 100vh;
-  
+  display: flex;
+  place-items: center;
+  justify-content: center;
 }
 
 h1 {

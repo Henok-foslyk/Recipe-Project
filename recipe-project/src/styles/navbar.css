@@ -15,6 +15,7 @@
 }
 
 .header-container a {
+    font-family:Arial, Helvetica, sans-serif;
     text-decoration: none;
     color: #000000;
     font-weight: bold;
