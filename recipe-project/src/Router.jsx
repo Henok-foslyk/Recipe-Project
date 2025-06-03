@@ -11,7 +11,7 @@ export const router = createBrowserRouter([
   { path: "/", element: <App /> }, 
   { path: "/recipes", element: <Recipes /> },
   { path: "/home", element: <Home /> },
-  { path: "/admin", element: <AdminPage/>}
+  { path: "/admin", element: <AdminPage/>},
   { path: "/create-recipe", element: <CreateRecipe />},
   { path: "/my-recipes", element: <MyRecipes />}
 
