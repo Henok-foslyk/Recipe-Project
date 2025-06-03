@@ -22,7 +22,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
 const recipesRouter = require("./routes/recipe.js");  //my recipe router
+const usersRouter = require("./routes/user.js");
+
 app.use("/recipes", recipesRouter);
+app.use("/users", usersRouter);
 
 app.use(
   express.json({
