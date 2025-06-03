@@ -1,19 +1,15 @@
-// backend/firebase.js
-import dotenv from "dotenv";
-dotenv.config();
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
-// Use process.env.<YOUR_VAR> instead of import.meta.env
-const firebaseConfig = {
-  apiKey: process.env.VITE_FIREBASE_API_KEY,
-  authDomain: process.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.VITE_FIREBASE_APP_ID,
-};
+import fs from 'fs';
+import admin from 'firebase-admin';
+import dotenv from 'dotenv';
 
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
-export const auth = getAuth(app);
+dotenv.config();
+
+const serviceAccount = JSON.parse(fs.readFileSync('./permissions.json', 'utf-8'));
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
+const db = admin.firestore();
+export { db };
+

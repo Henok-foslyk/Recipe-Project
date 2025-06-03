@@ -8,15 +8,17 @@ export default function RecipeCard({ recipe, type, onDelete, onRemove, onEdit, o
       <h3>{recipe.title}</h3>
       <p>{recipe.description || 'Quick and healthy'}</p>
       <div className="recipe-actions">
-        {type === 'created' ? (
+        {type === 'created' ? ( // For MyRecipes
           <>
             <button onClick={(e) => { e.stopPropagation(); onEdit(recipe.id); }}>Edit</button>
             <button onClick={(e) => { e.stopPropagation(); onDelete(recipe.id); }}>Delete</button>
           </>
-        ) : (
+        ) : type === 'saved' ? ( // For MyRecipes
           <button onClick={(e) => { e.stopPropagation(); onRemove(recipe.id); }}>
             Remove from Saved
           </button>
+        ) : ( // For all other recipes (not user-created or saved)
+          ""
         )}
       </div>
     </div>
