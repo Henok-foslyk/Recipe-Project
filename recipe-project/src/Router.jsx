@@ -10,8 +10,6 @@ import RecipeDetails from "./routes/RecipeDetails";
 export const router = createBrowserRouter([
   { path: "/", element: <App /> }, 
   { path: "/recipes", element: <Recipes /> },
-
-  { path: "/home", element: <Home /> },
   { path: "/displayrecipe", element: <RecipeDetails />},
   { path: "/admin", element: <AdminPage/>},
   { path: "/create-recipe", element: <CreateRecipe />},
