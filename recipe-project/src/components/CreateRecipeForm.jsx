@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { db } from '../firebase';
+import { collection, addDoc, Timestamp } from 'firebase/firestore';
 import {
   Box,
   Button,
@@ -9,6 +11,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+
 
 const ALLERGENS = [
   { name: 'Dairy', color: '#FDE68A' },
@@ -51,6 +54,35 @@ const CreateRecipe = () => {
       setImageFile(file);
     }
   };
+
+  const handleSubmit = async () => {
+    try {
+      const docRef = await addDoc(collection(db, 'recipes'), {
+        name: recipeName,
+        description,
+        ingredients,
+        allergens: selectedAllergens,
+        instructions,
+        isApproved: false,
+        isEdemam: false,
+        imgUrl: '', // Placeholder, update this if uploading image
+        comments: [],
+        createdAt: Timestamp.now(),
+      });
+  
+      console.log('Recipe saved with ID:', docRef.id);
+  
+      setRecipeName('');
+      setIngredients('');
+      setDescription('');
+      setInstructions('');
+      setSelectedAllergens([]);
+      setImageFile(null);
+    } catch (error) {
+      console.error('Error adding recipe:', error);
+    }
+  };
+  
 
   return (
     <>
@@ -213,6 +245,7 @@ const CreateRecipe = () => {
           {/* Submit Button */}
           <Button
             variant="contained"
+            onClick={handleSubmit}
             sx={{
               backgroundColor: '#9ecc1a',
               color: '#ffffff',
