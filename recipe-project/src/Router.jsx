@@ -8,13 +8,9 @@ import RecipeDetails from "./routes/RecipeDetails";
 
 
 export const router = createBrowserRouter([
-
   { path: "/", element: <App /> }, 
   { path: "/recipes", element: <Recipes /> },
   { path: "/home", element: <Home /> },
-  { path: "/create-recipe", element: <CreateRecipe />},
-  { path: "/my-recipes", element: <MyRecipes />},
-  { path: "/displayrecipe", element: <RecipeDetails />}
-
-
+  { path: "/displayrecipe", element: <RecipeDetails />},
+  { path: "/create.recipe", element: <CreateRecipe />}
 ]);
