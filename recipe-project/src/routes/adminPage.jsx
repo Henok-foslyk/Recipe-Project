@@ -7,25 +7,30 @@ import {
   Stack,
   Spinner,
 } from '@chakra-ui/react';
-
+import Navbar from '../components/Navbar';
+import axios from 'axios';
 
 export default function AdminPage({ isAdmin }) {
-  const [recipes, setRecipes] = useState([]);
+  const [recipes, setRecipes] = useState([{ id: 1, name: "Grandma's Apple Pie", description: "Delicious classic apple pie." },
+  { id: 2, name: "Spicy Tofu Stir-fry", description: "Quick and easy vegan recipe." }]);
   const [loading, setLoading] = useState(true);
   const [verifyingId, setVerifyingId] = useState(null);
 
 
-  useEffect(() => {
-    if (isAdmin) {
-      fetchPendingRecipes();
-    }
-  }, [isAdmin]);
+  useEffect(() =>{
+    fetchPendingRecipes();
+  }, []);
+
+  // useEffect(() => {
+  //   if (isAdmin) {
+  //     fetchPendingRecipes();
+  //   }
+  // }, [isAdmin]);
 
   const fetchPendingRecipes = async () => {
     try {
-      const res = await fetch('/api/recipes/pending');
-      const data = await res.json();
-      setRecipes(data);
+      const response = await axios.get('http://localhost:5050/users/recipes/unapproved');
+      setRecipes(response.data);
     } catch (err) {
     } finally {
       setLoading(false);
@@ -35,13 +40,10 @@ export default function AdminPage({ isAdmin }) {
   const handleVerify = async (id) => {
     setVerifyingId(id);
     try {
-      await fetch(`/api/recipes/verify/${id}`, {
-        method: 'POST',
-      });
+      await axios.patch(`http://localhost:5050/users/recipes/approveRequest/${id}`);
       setRecipes(prev => prev.filter(recipe => recipe.id !== id));
-
     } catch (err) {
-
+      console.log("There was an error: ", err);
     } finally {
       setVerifyingId(null);
     }
@@ -58,11 +60,13 @@ export default function AdminPage({ isAdmin }) {
 //   }
 
   return (
-    <Box p={6}>
+    <>
+      <Navbar/>
+      <Box p={6}>
       <Heading mb={4}>Pending Recipes for Review</Heading>
 
-      {loading ? (
-        <Spinner />
+      { loading ? (
+        <Spinner color="black"/>
       ) : recipes.length === 0 ? (
         <Text>No recipes to review.</Text>
       ) : (
@@ -75,7 +79,7 @@ export default function AdminPage({ isAdmin }) {
               p={4}
               boxShadow="md"
             >
-              <Heading size="md">{recipe.title}</Heading>
+              <Heading size="md" color="black">{recipe.name}</Heading>
               <Text mt={2}>{recipe.description}</Text>
               <Button
                 mt={4}
@@ -90,5 +94,7 @@ export default function AdminPage({ isAdmin }) {
         </Stack>
       )}
     </Box>
+    </>
+    
   );
 }
