@@ -89,6 +89,7 @@ export default function Recipes() {
       <div className="recipe-container">
         <h2>Search Recipes</h2>
 
+        {/* Toggle buttons to switch between Edamame recipes and user-created recipes */}
         <div className="toggle-buttons">
           <button
             className={showUserRecipes ? "" : "active"}
@@ -105,9 +106,6 @@ export default function Recipes() {
         </div>
 
         <div className="all-search">
-          {/* Toggle buttons to switch between Edamame recipes and user-created recipes */}
-
-
           {/* Search input for recipes */}
           <input
             className="search-input"
