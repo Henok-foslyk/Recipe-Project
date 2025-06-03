@@ -57,5 +57,19 @@ router.get('/recipes/unapproved', async (req, res) => {
   }
 });
 
+router.patch('/recipes/approveRequest/:rid', async (req, res) => {
+  try {
+    const recipeId = req.params.rid;
+
+    await db.collection('recipes').doc(recipeId).update({
+      isApproved: true
+    });
+    res.status(200).json({success: 'Successfully approved recipe'})
+  } catch (err) {
+    console.error('Error approving chosen recipe:', err);
+    res.status(500).json({ error: 'Failed to approve recipe' });
+  }
+});
+
 
 module.exports = router;

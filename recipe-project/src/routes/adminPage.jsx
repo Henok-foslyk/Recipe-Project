@@ -40,13 +40,10 @@ export default function AdminPage({ isAdmin }) {
   const handleVerify = async (id) => {
     setVerifyingId(id);
     try {
-      await fetch(`/api/recipes/verify/${id}`, {
-        method: 'POST',
-      });
+      await axios.patch(`http://localhost:5050/users/recipes/approveRequest/${id}`);
       setRecipes(prev => prev.filter(recipe => recipe.id !== id));
-
     } catch (err) {
-
+      console.log("There was an error: ", err);
     } finally {
       setVerifyingId(null);
     }
@@ -69,7 +66,7 @@ export default function AdminPage({ isAdmin }) {
       <Heading mb={4}>Pending Recipes for Review</Heading>
 
       { loading ? (
-        <Spinner />
+        <Spinner color="black"/>
       ) : recipes.length === 0 ? (
         <Text>No recipes to review.</Text>
       ) : (
