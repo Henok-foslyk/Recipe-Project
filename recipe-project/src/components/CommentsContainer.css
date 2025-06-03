@@ -1,10 +1,16 @@
 /* src/components/CommentsContainer.css */
-
+body,
+html,
+#root {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
 
 .comments-container {    
     display: flex;        /* ← grow to fill leftover width next to DisplayRecipe */
-    height: 1200px;          /* ← match whatever height DisplayRecipe uses */
-    width: 900px;
+    height: 900px;          /* ← match whatever height DisplayRecipe uses */
+    width: 600px;
     background-color: #f0f0f0;  
     border-radius: 16px;
     border: 4px solid transparent;
