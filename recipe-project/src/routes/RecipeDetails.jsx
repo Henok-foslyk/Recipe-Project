@@ -9,7 +9,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { Typography, Box } from "@mui/material";
 
-export default function RecipeDetails() {
+export default function RecipeDetails({id}) {
   const [review, setReview] = useState(true);
   const mockRecipe = {
     name: "Fat Sandwich",
@@ -34,6 +34,9 @@ export default function RecipeDetails() {
       "https://images.pexels.com/photos/4692163/pexels-photo-4692163.jpeg",
     type: "saved",
   };
+
+  // Example: hard‐coded recipeId; replace with actual ID from your data fetching
+  const recipeId = "M4TXP57PiIuLcm0Oqlzg";
   return (
     <div className="cards-wrapper">
       <div>

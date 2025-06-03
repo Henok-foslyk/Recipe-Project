@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import recipeRoutes from './routes/recipe.js';
 import userRoutes from './routes/user.js';
 import chatRoutes from './routes/chatbot.js';
+import commentRoutes from './routes/comment.js';
 dotenv.config();
 
 const app = express();
@@ -24,7 +25,7 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use('/api/recipes', recipeRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/chatbot', chatRoutes);
-
+app.use('/api/comment', commentRoutes)
 //access point: https://api.edamam.com/api/recipes/v2
 const url = `https://api.edimam.com/api.recipes/v2?type=public&app_id=${app_id}&app_key=${app_key}`;
 
