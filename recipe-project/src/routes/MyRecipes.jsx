@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-// import axios from 'axios';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import RecipeList from '../components/RecipeList';
 import Navbar from '../components/Navbar'
 import { useNavigate } from 'react-router-dom';
