@@ -15,7 +15,7 @@
 }
 
 .header-container a {
-    font-family:Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     text-decoration: none;
     color: #000000;
     font-weight: bold;
@@ -59,4 +59,26 @@
 .nav-links a.active {
     border-bottom: 2px solid #0077cc;
     color: #0077cc;
+}
+
+
+/* responsive layput for mobile */
+@media (max-width: 600px) {
+    .header-container {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    .nav-links a {
+        font-size: 16px;
+        width: 100%;
+        display: block;
+    }
 }

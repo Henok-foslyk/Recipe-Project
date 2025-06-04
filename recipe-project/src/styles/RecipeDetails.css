@@ -1,0 +1,30 @@
+
+
+.cards-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;  /* center both cards as a group */
+  align-items: center;      /* center them vertically in viewport */
+  gap: 2rem;                /* space between the two 350px cards */
+  width: 100%;
+  height: 100vh;            /* fill full viewport vertically */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.back-button {
+  /* Make it a block so it always appears on its own line */
+  display: block;
+  /* If you want it left-aligned, use margin-bottom for spacing: */
+  margin: 1rem 0;
+  /* If you’d rather center it, use auto left/right: */
+  /* margin: 1rem auto; */
+
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  background: #eee;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}

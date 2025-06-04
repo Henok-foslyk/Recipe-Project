@@ -22,11 +22,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
 const recipesRouter = require("./routes/recipe.js");  //my recipe router
+const chatRouter = require("./routes/chatbot.js"); //my chatbot router
 const usersRouter = require("./routes/user.js");
-
+const firebaseRecipeRouter = require("./routes/firebase_recipe.js"); //firebase recipe router
+const commentsRouter = require("./routes/comment.js");  
+app.use("/comment", commentsRouter);   // mount at /comments
 app.use("/recipes", recipesRouter);
 app.use("/users", usersRouter);
-
+app.use("/chatbot", chatRouter);
+app.use("/firebase-recipes", firebaseRecipeRouter); 
 app.use(
   express.json({
     limit: "20mb",

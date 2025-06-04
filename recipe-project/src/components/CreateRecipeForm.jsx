@@ -91,12 +91,13 @@ const CreateRecipe = () => {
         sx={{
           backgroundColor: '#ffffff',
           padding: 4,
-          maxWidth: '800px',
+          width: '100%',
+          maxWidth: '1600px',
           margin: 'auto',
           color: 'black',
         }}
       >
-        <Typography variant="h3" sx={{ fontWeight: 'bold', color: "black", paddingY: 3 }}>
+        <Typography variant="h3" sx={{ fontWeight: 'bold', color: "black", paddingY: 3, paddingX: 25 }}>
           Create Your Recipe
         </Typography>
         <Stack spacing={4}>
@@ -219,29 +220,35 @@ const CreateRecipe = () => {
           </Stack>
 
           {/* Image Upload */}
-          <Stack spacing={1} alignItems="center">
-            <DragDropBox>
-              <Typography>Drag and drop to insert recipe image</Typography>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                style={{ display: 'none' }}
-                id="recipe-image"
-              />
-              <label htmlFor="recipe-image" style={{ cursor: 'pointer' }}>
-                <Typography
-                  variant="body2"
-                  sx={{ mt: 1, color: '#9ecc1a', fontWeight: 500 }}
-                >
-                  Click to upload
-                </Typography>
-              </label>
-              {imageFile && (
-                <Typography sx={{ mt: 1 }}>📸 {imageFile.name}</Typography>
-              )}
-            </DragDropBox>
+          <Stack direction="row" spacing={2} alignItems="flex-start">
+            <Typography sx={{ minWidth: 150, fontWeight: 'bold' }}>
+              Dish Picture
+            </Typography>
+            <Box sx={{ width: '100%' }}>
+              <DragDropBox>
+                <Typography>Drag and drop to insert image</Typography>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  style={{ display: 'none' }}
+                  id="recipe-image"
+                />
+                <label htmlFor="recipe-image" style={{ cursor: 'pointer' }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ mt: 1, color: '#9ecc1a', fontWeight: 500 }}
+                  >
+                    Click to upload
+                  </Typography>
+                </label>
+                {imageFile && (
+                  <Typography sx={{ mt: 1 }}>📸 {imageFile.name}</Typography>
+                )}
+              </DragDropBox>
+            </Box>
           </Stack>
+
 
           {/* Submit Button */}
           <Button
