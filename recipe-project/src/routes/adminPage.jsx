@@ -83,7 +83,12 @@ export default function AdminPage({ isAdmin }) {
               <Text mt={2}>{recipe.description}</Text>
               <Button
                 mt={4}
-                colorScheme="green"
+                colorPalette="green"
+                bg="green"
+                color="white"
+                _hover={
+                  {bg: '#eee', color: 'green', fontWeight: 'bold'}
+                }
                 isLoading={verifyingId === recipe.id}
                 onClick={() => handleVerify(recipe.id)}
               >
