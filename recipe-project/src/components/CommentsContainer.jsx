@@ -4,9 +4,9 @@ import Comment from "./Comment";
 import "./CommentsContainer.css";
 import axios from "axios";
 
-export default function CommentsContainer({ recipeId, initialComments = [] }) {
+export default function CommentsContainer({ recipeId, initialComments}) {
   // 1) Stateful list of comments
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState(initialComments);
 
   // 2) Control whether the “Add Comment” modal is visible
   const [showModal, setShowModal] = useState(false);
@@ -42,7 +42,7 @@ export default function CommentsContainer({ recipeId, initialComments = [] }) {
     try {
       // 5) Call backend: POST to /api/comments/:recipeId
       await axios.post(
-        `http://localhost:5001/api/comments/${recipeId}`,
+        `http://localhost:5050/comment?id=${recipeId}`,
         newComment
       );
     } catch (error) {
