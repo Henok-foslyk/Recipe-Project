@@ -1,14 +1,19 @@
 import React from 'react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState} from 'react';
 import Slider from 'react-slick';
 import { Box, Card, CardContent, Typography, Button } from '@mui/material';
 import banner1 from '../assets/banner1.jpg';
 import banner2 from '../assets/banner2.jpg';
 import banner3 from '../assets/banner3.jpg';
+import SignUpModal from './SignupModal';
+import SignInModal from './SignInModal';
 
 const images = [banner1, banner2, banner3];
 
 const BannerSlider = () => {
+
+  const [openSignUp, setOpenSignUp] = useState(false);
+  const [openSignIn, setOpenSignIn] = useState(false);
 
   const sliderRef = useRef();
   useEffect(() => {
@@ -30,7 +35,10 @@ const BannerSlider = () => {
   };
 
   return (
-    <Box sx={{ height: '50vh', width: '100vw', position: 'relative', overflow: 'hidden', m: 0, p: 0 }}>
+    <>
+    <SignUpModal open={openSignUp} onClose={() => setOpenSignUp(false)} />
+    <SignInModal open={openSignIn} onClose={() => setOpenSignIn(false)} />
+      <Box sx={{ height: '50vh', width: '100vw', position: 'relative', overflow: 'hidden', m: 0, p: 0 }}>
       <Slider {...settings}>
         {images.map((img, index) => (
           <Box
@@ -74,6 +82,7 @@ const BannerSlider = () => {
           <Box sx={{ display: 'flex', gap: 2, mt: 2, justifyContent: 'center' }}>
             <Button
               variant="contained"
+              onClick={() => setOpenSignUp(true)}
               sx={{
                 backgroundColor: 'rgba(220,220,220,0.5)',
                 color: 'black',
@@ -84,6 +93,7 @@ const BannerSlider = () => {
             </Button>
             <Button
               variant="contained"
+              onClick={() => setOpenSignIn(true)}
               sx={{
                 backgroundColor: '#9ecc1a',
                 color: 'white',
@@ -96,6 +106,8 @@ const BannerSlider = () => {
         </CardContent>
       </Card>
     </Box>
+    </>
+    
   );
 };
 
