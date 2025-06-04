@@ -1,52 +1,57 @@
 // src/pages/RecipeDetails.jsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DisplayRecipe from "../components/DisplayRecipe";
 import "../styles/RecipeDetails.css"; // ← import the wrapper’s CSS
 import CommentsContainer from "../components/CommentsContainer";
 import ChatContainer from "../components/ChatContainer";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
+import { useParams } from "react-router-dom"; // ← import useParams
+import Navbar from "../components/Navbar";
 import Switch from "@mui/material/Switch";
 import { Typography, Box } from "@mui/material";
 
-export default function RecipeDetails({ id }) {
+export default function RecipeDetails() {
+  const { id } = useParams();
   const [review, setReview] = useState(true);
-  const mockRecipe = {
-    name: "Fat Sandwich",
-    description: "A delicious and hearty sandwich loaded with toppings.",
-    isApproved: true,
-    ingredients: ["Lettuce", "Ground Beef", "Tomatoes"],
-    instructions: ["bleh blah blah", "cook it"],
-    allergens: ["XYZ", "ABC", "ETC."],
-    comments: [
-      {
-        user: "John Doe",
-        text: "This sandwich is amazing!",
-        date: "2023-10-01",
-      },
-      {
-        user: "Jane Smith",
-        text: "I love the combination of flavors.",
-        date: "2023-10-02",
-      },
-    ],
-    imageUrl:
-      "https://images.pexels.com/photos/4692163/pexels-photo-4692163.jpeg",
-    type: "saved",
-  };
+  const [recipeData, setRecipeData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchOne = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`http://localhost:5050/firebase-recipes?id=${id}`);
+        if (!response.ok) {
+          throw new Error(`Server responded with ${response.status}`);
+        }
+        const data = await response.json();
+        console.log(data);
+        setRecipeData(data); // your backend already returns { id: "...", ...fields }
+      } catch (e) {
+        console.error("Error fetching recipe:", e);
+        setRecipeData(null);
+      }
 
-  // Example: hard‐coded recipeId; replace with actual ID from your data fetching
-  const recipeId = "M4TXP57PiIuLcm0Oqlzg";
+      setLoading(false);
+    };
+
+    if (id) {
+      fetchOne();
+    }
+  }, [id]);
+
+  if (loading) return <p>Loading recipe…</p>;
+  if (!recipeData) return <p>Recipe not found.</p>;
   return (
+    <>
+    <Navbar />
     <div className="cards-wrapper">
       <div>
-        <h1>Recipe Details</h1>
+      <h1 style={{ color: "black", textAlign: "left"}}>Recipe Details</h1>
         <DisplayRecipe
-          imageUrl="https://images.pexels.com/photos/4692163/pexels-photo-4692163.jpeg"
-          title="Fat Sandwich"
-          caution="XYZ, ABC, ETC."
-          ingredients={["Lettuce", "Ground Beef", "Tomatoes"]}
-          instructions={["bleh blah blah", "cook it"]}
+          imageUrl={recipeData.imgUrl || "/fallback-image.jpg"}
+          title={recipeData.name}
+          caution={recipeData.allergens?.join(", ")}
+          ingredients={recipeData.ingredients || []}
+          instructions={recipeData.instructions || []}
         />
       </div>
       <div>
@@ -67,7 +72,7 @@ export default function RecipeDetails({ id }) {
             {/* Left‐side label */}
             <Typography
               variant="body1"
-              color={!review ? "textPrimary" : "textDisabled"}
+              sx={{ color: !review ? "black" : "text.disabled" }}
             >
               Reviews
             </Typography>
@@ -82,15 +87,15 @@ export default function RecipeDetails({ id }) {
             {/* Right‐side label */}
             <Typography
               variant="body1"
-              color={review ? "textPrimary" : "textDisabled"}
+              sx={{ color: !review ? "black" : "text.disabled" }}
             >
               AI-Assistance
             </Typography>
           </Box>
         </div>
-        {review ? <CommentsContainer /> : <ChatContainer recipe={mockRecipe} />}
+        {review ? <CommentsContainer recipeId={id} initialComments={recipeData.comments}/> : <ChatContainer recipe={recipeData} />}
       </div>
-      {/* <CommentsContainer /> */}
     </div>
+    </>
   );
 }

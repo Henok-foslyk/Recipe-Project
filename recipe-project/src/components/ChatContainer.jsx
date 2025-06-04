@@ -68,7 +68,7 @@ function ChatContainer({ recipe }) {
   const fetchGPTResponse = async (conversation) => {
     try {
       const res = await axios.post(
-        "http://localhost:5001/api/chatbot/send-message",
+        "http://localhost:5050/chatbot/send-message",
         { conversation }
       );
       return res.data.reply;

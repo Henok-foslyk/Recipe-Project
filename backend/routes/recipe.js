@@ -11,7 +11,6 @@ const router = express.Router();
 const APP_ID = process.env.RECIPE_APP_ID;
 const APP_KEY = process.env.RECIPE_API_KEY;
 
-
 //get from API
 router.get('/', async (req, res) => {
     const pull = req.query.pull || 'edamam';
