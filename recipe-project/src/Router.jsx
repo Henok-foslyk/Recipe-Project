@@ -7,11 +7,11 @@ import MyRecipes from "./routes/MyRecipes";
 import RecipeDetails from "./routes/RecipeDetails";
 
 export const router = createBrowserRouter([
-  { path: "/", element: <App /> }, 
+  { path: "/", element: <App /> },
   { path: "/recipes", element: <Recipes /> },
-  { path: "/displayrecipe", element: <RecipeDetails />},
-  { path: "/admin", element: <AdminPage/>},
-  { path: "/create-recipe", element: <CreateRecipe />},
-  { path: "/my-recipes", element: <MyRecipes />}
-
+  { path: "/displayrecipe", element: <RecipeDetails /> },
+  { path: "/admin", element: <AdminPage /> },
+  { path: "/create-recipe", element: <CreateRecipe /> },
+  { path: "/my-recipes", element: <MyRecipes /> },
+  { path: "/recipes/:id", element: <RecipeDetails /> },
 ]);
