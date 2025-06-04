@@ -1,14 +1,16 @@
 import { Link } from 'react-router-dom';
 import "../styles/navbar.css";
+import icon from '../assets/icon.png';
 
 const Header = () => {
     return (
         <div className="header-container">
             <div className="logo-container">
                 <Link to="/">
-                    {/* <p>Icon here</p> */}
-                    <p>ReciMe</p>
-
+                    <img
+                        src={icon}
+                        alt="ReciMe Logo"
+                    />
                 </Link>
             </div>
 

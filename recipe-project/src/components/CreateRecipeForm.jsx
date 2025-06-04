@@ -70,9 +70,9 @@ const CreateRecipe = () => {
         createdAt: Timestamp.now(),
         type: ''
       });
-  
+
       console.log('Recipe saved with ID:', docRef.id);
-  
+
       setRecipeName('');
       setIngredients('');
       setDescription('');
@@ -83,7 +83,7 @@ const CreateRecipe = () => {
       console.error('Error adding recipe:', error);
     }
   };
-  
+
 
   return (
     <>
@@ -97,7 +97,9 @@ const CreateRecipe = () => {
           color: 'black',
         }}
       >
-        <Typography variant="h3" sx={{ fontWeight: 'bold', color: "black", paddingY: 3, paddingX: 25 }}>
+        <Typography variant="h3" sx={{
+          fontWeight: 'bold', color: "black", paddingY: 3, mt: 10, fontFamily: 'cursive', paddingX: 25, fontSize: '4.5rem', color: '#154517'
+        }}>
           Create Your Recipe
         </Typography>
         <Stack spacing={4}>
@@ -270,7 +272,7 @@ const CreateRecipe = () => {
             Create Recipe
           </Button>
         </Stack>
-      </Box>
+      </Box >
     </>
   );
 };
