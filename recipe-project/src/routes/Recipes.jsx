@@ -45,7 +45,7 @@ export default function Recipes() {
       const params = new URLSearchParams();
 
       // Randomized default food list for initial display so its not just 1 food
-      const loadFood = ["chicken", "pasta", "rice", "salad", "tofu", "beef", "soup"];
+      const loadFood = ["chicken", "pasta", "rice", "salad", "tofu", "beef", "soup", "fruits", "yam", "kenkey", "porridge"];
 
       // Use query if the user provides it, else we randomize default food
       const loadQuery = query || loadFood[Math.floor(Math.random() * loadFood.length)];
@@ -88,53 +88,59 @@ export default function Recipes() {
       <Navbar />
       <div className="recipe-container">
         <h2>Search Recipes</h2>
+        <div className="allButtons" >
+          {/* Toggle buttons to switch between Edamame recipes and user-created recipes */}
+          <div className="toggle-buttons">
+            <button
+              className={showUserRecipes ? "" : "active"}
+              onClick={() => setShowUserRecipes(false)}
+            >
+              Edamam Recipes
+            </button>
+            <button
+              className={showUserRecipes ? "active" : ""}
+              onClick={() => setShowUserRecipes(true)}
+            >
+              Community Recipes
+            </button>
+          </div>
 
-        {/* Toggle buttons to switch between Edamame recipes and user-created recipes */}
-        <div className="toggle-buttons">
-          <button
-            className={showUserRecipes ? "" : "active"}
-            onClick={() => setShowUserRecipes(false)}
-          >
-            Edamam Recipes
-          </button>
-          <button
-            className={showUserRecipes ? "active" : ""}
-            onClick={() => setShowUserRecipes(true)}
-          >
-            My Recipes
-          </button>
-        </div>
+          <div className="all-search">
+            {/* Search input for recipes */}
+            <input
+              className="search-input"
+              type="text"
+              placeholder="Search recipes..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') { //if we click enter we can also get the recipes instead of clicking search button
+                  getRecipes();
+                }
+              }}
+            />
 
-        <div className="all-search">
-          {/* Search input for recipes */}
-          <input
-            className="search-input"
-            type="text"
-            placeholder="Search recipes..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
+            {/* Dropdown to select meal type choices */}
+            <select onChange={(e) => setMealType(e.target.value)} value={mealType}>
+              <option value="">Select Meal Type</option>
+              <option value="Breakfast">Breakfast</option>
+              <option value="Lunch">Lunch</option>
+              <option value="Dinner">Dinner</option>
+              <option value="Snack">Snack</option>
+              <option value="Teatime">Teatime</option>
+            </select>
 
-          {/* Dropdown to select meal type choices */}
-          <select onChange={(e) => setMealType(e.target.value)} value={mealType}>
-            <option value="">Select Meal Type</option>
-            <option value="Breakfast">Breakfast</option>
-            <option value="Lunch">Lunch</option>
-            <option value="Dinner">Dinner</option>
-            <option value="Snack">Snack</option>
-            <option value="Teatime">Teatime</option>
-          </select>
+            {/* Dropdown to select diet choices */}
+            <select onChange={(e) => setDiet(e.target.value)} value={diet}>
+              <option value="">Select Diet</option>
+              <option value="balanced">Balanced</option>
+              <option value="high-protein">High-Protein</option>
+              <option value="low-carb">Low-Carb</option>
+              <option value="low-fat">Low-Fat</option>
+            </select>
 
-          {/* Dropdown to select diet choices */}
-          <select onChange={(e) => setDiet(e.target.value)} value={diet}>
-            <option value="">Select Diet</option>
-            <option value="balanced">Balanced</option>
-            <option value="high-protein">High-Protein</option>
-            <option value="low-carb">Low-Carb</option>
-            <option value="low-fat">Low-Fat</option>
-          </select>
-
-          <button className="search" onClick={getRecipes}>Search</button>
+            <button className="search" onClick={getRecipes}>Search</button>
+          </div>
         </div>
 
         {/* Show skeleton loader when loading Edamame recipes*/}
