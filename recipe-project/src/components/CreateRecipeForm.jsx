@@ -11,7 +11,6 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-
 const HEALTH_LABELS = [
   { name: 'Dairy-Free', color: '#C4FFF9' },
   { name: 'Gluten-Free', color: '#9CEAEF' },
@@ -68,36 +67,30 @@ const CreateRecipe = () => {
   const [imageFile, setImageFile] = useState(null);
   const [instructions, setInstructions] = useState('');
 
+  // Tracks whether user has tried to submit, for showing inline errors
+  const [touchedSubmit, setTouchedSubmit] = useState(false);
 
-  const toggleHealthLabels = (allergen) => {
+  const toggleHealthLabels = (label) => {
     setSelectedHealthLabels((prev) =>
-      prev.includes(allergen)
-        ? prev.filter((a) => a !== allergen)
-        : [...prev, allergen]
+      prev.includes(label) ? prev.filter((a) => a !== label) : [...prev, label]
     );
   };
 
-  const toggleMealtype = (Mealtype) => {
+  const toggleMealtype = (meal) => {
     setSelectedMealtypes((prev) =>
-      prev.includes(Mealtype)
-        ? prev.filter((a) => a !== Mealtype)
-        : [...prev, Mealtype]
+      prev.includes(meal) ? prev.filter((a) => a !== meal) : [...prev, meal]
     );
   };
 
-  const toggleDietLabels = (dietLabel) => {
+  const toggleDietLabels = (diet) => {
     setSelectedDietLabels((prev) =>
-      prev.includes(dietLabel)
-        ? prev.filter((a) => a !== dietLabel)
-        : [...prev, dietLabel]
+      prev.includes(diet) ? prev.filter((a) => a !== diet) : [...prev, diet]
     );
   };
 
-  const toggleCuisineType = (cuisineType) => {
+  const toggleCuisineType = (cuisine) => {
     setSelectedCuisineType((prev) =>
-      prev.includes(cuisineType)
-        ? prev.filter((a) => a !== cuisineType)
-        : [...prev, cuisineType]
+      prev.includes(cuisine) ? prev.filter((a) => a !== cuisine) : [...prev, cuisine]
     );
   };
 
@@ -109,26 +102,45 @@ const CreateRecipe = () => {
   };
 
   const handleSubmit = async () => {
+    setTouchedSubmit(true);
+
+    // Prevent submission if any required field is empty
+    if (!recipeName.trim() || !ingredients.trim() || !instructions.trim()) {
+      return;
+    }
+
+    // Split ingredients/instructions into arrays, trimming out empty items
+    const ingredientsArray = ingredients
+      .split(',')
+      .map((item) => item.trim())
+      .filter((item) => item.length > 0);
+
+    const instructionsArray = instructions
+      .split(',')
+      .map((item) => item.trim())
+      .filter((item) => item.length > 0);
+
     try {
       const docRef = await addDoc(collection(db, 'recipes'), {
-        name: recipeName,
-        description,
-        ingredients,
+        name: recipeName.trim(),
+        description: description.trim(),
+        ingredients: ingredientsArray,
         healthLabels: selectedHealthLabels,
         mealType: selectedMealtypes,
         dietLabels: selectedDietLabels,
         cuisineType: selectedCuisineType,
-        instructions,
+        instructions: instructionsArray,
         isApproved: false,
         isEdemam: false,
-        imgUrl: '', // Placeholder, update this if uploading image
+        imgUrl: '', // Placeholder; update once you handle uploads
         comments: [],
         createdAt: Timestamp.now(),
-        type: ''
+        type: '',
       });
 
       console.log('Recipe saved with ID:', docRef.id);
 
+      // Clear all fields and reset touchedSubmit
       setRecipeName('');
       setIngredients('');
       setDescription('');
@@ -138,310 +150,344 @@ const CreateRecipe = () => {
       setSelectedDietLabels([]);
       setSelectedCuisineType([]);
       setImageFile(null);
+      setTouchedSubmit(false);
     } catch (error) {
       console.error('Error adding recipe:', error);
     }
   };
 
+  // Disable submit if any required field is blank
+  const isSubmitDisabled =
+    !recipeName.trim() || !ingredients.trim() || !instructions.trim();
 
   return (
-    <>
-      <Box
+    <Box
+      sx={{
+        backgroundColor: '#ffffff',
+        padding: 4,
+        width: '100%',
+        maxWidth: '1600px',
+        margin: 'auto',
+        color: 'black',
+      }}
+    >
+      <Typography
+        variant="h3"
         sx={{
-          backgroundColor: '#ffffff',
-          padding: 4,
-          width: '100%',
-          maxWidth: '1600px',
-          margin: 'auto',
-          color: 'black',
+          fontWeight: 'bold',
+          paddingY: 3,
+          mt: 10,
+          fontFamily: 'cursive',
+          paddingX: 25,
+          fontSize: '4.5rem',
+          color: '#154517',
         }}
       >
-        <Typography variant="h3" sx={{
-          fontWeight: 'bold', paddingY: 3, mt: 10, fontFamily: 'cursive', paddingX: 25, fontSize: '4.5rem', color: '#154517'
-        }}>
-          Create Your Recipe
-        </Typography>
-        <Stack spacing={4}>
-          {/* Recipe Name */}
-          <Stack direction="row" spacing={2} alignItems="center">
-            <Typography sx={{ minWidth: 150, fontWeight: 'bold' }}>
-              Recipe Name
-            </Typography>
-            <TextField
-              fullWidth
-              placeholder="Enter recipe name"
-              value={recipeName}
-              onChange={(e) => setRecipeName(e.target.value)}
-              variant="outlined"
-              InputProps={{
-                style: { backgroundColor: '#ffffff', color: 'black' },
-              }}
-              InputLabelProps={{
-                style: { color: 'lightgray' },
-              }}
-            />
-          </Stack>
+        Create Your Recipe
+      </Typography>
 
-          {/* Meal Type */}
-          <Stack direction="row" spacing={2}>
-            <Typography sx={{ minWidth: 150, fontWeight: 'bold' }}>
-              Meal Type
-            </Typography>
-            <Box>
-              <Stack direction="row" spacing={1} flexWrap="wrap">
-                {MEAL_TYPE.map(({ name, color }) => (
-                  <Chip
-                    key={name}
-                    label={name}
-                    onClick={() => toggleMealtype(name)}
-                    sx={{
-                      backgroundColor: color,
-                      fontSize: '16px',
-                      border:
-                        selectedMealtypes.includes(name) && '2px solid black',
-                      cursor: 'pointer',
-                    }}
-                  />
-                ))}
-              </Stack>
-
-              <Stack direction="row" spacing={1} mt={2}>
-                {selectedMealtypes.map((a) => (
-                  <Chip
-                    key={a}
-                    label={`${a} ✕`}
-                    onClick={() => toggleMealtype(a)}
-                    sx={{ backgroundColor: '#eee', color: 'black' }}
-                  />
-                ))}
-              </Stack>
-            </Box>
-          </Stack>
-
-          {/* Diet Labels */}
-          <Stack direction="row" spacing={2}>
-            <Typography sx={{ minWidth: 150, fontWeight: 'bold' }}>
-              Diet Labels
-            </Typography>
-            <Box>
-              <Stack direction="row" spacing={1} flexWrap="wrap">
-                {DIET_LABELS.map(({ name, color }) => (
-                  <Chip
-                    key={name}
-                    label={name}
-                    onClick={() => toggleDietLabels(name)}
-                    sx={{
-                      backgroundColor: color,
-                      fontSize: '16px',
-                      border:
-                        selectedDietLabels.includes(name) && '2px solid black',
-                      cursor: 'pointer',
-                    }}
-                  />
-                ))}
-              </Stack>
-
-              <Stack direction="row" spacing={1} mt={2}>
-                {selectedDietLabels.map((a) => (
-                  <Chip
-                    key={a}
-                    label={`${a} ✕`}
-                    onClick={() => toggleDietLabels(a)}
-                    sx={{ backgroundColor: '#eee', color: 'black' }}
-                  />
-                ))}
-              </Stack>
-            </Box>
-          </Stack>
-
-          {/* Health Labels */}
-          <Stack direction="row" spacing={2}>
-            <Typography sx={{ minWidth: 150, fontWeight: 'bold' }}>
-              Health Labels
-            </Typography>
-            <Box>
-              <Stack direction="row" spacing={1} flexWrap="wrap">
-                {HEALTH_LABELS.map(({ name, color }) => (
-                  <Chip
-                    key={name}
-                    label={name}
-                    onClick={() => toggleHealthLabels(name)}
-                    sx={{
-                      backgroundColor: color,
-                      fontSize: '16px',
-                      border:
-                        selectedHealthLabels.includes(name) && '2px solid black',
-                      cursor: 'pointer',
-                    }}
-                  />
-                ))}
-              </Stack>
-
-              <Stack direction="row" spacing={1} mt={2}>
-                {selectedHealthLabels.map((a) => (
-                  <Chip
-                    key={a}
-                    label={`${a} ✕`}
-                    onClick={() => toggleHealthLabels(a)}
-                    sx={{ backgroundColor: '#eee', color: 'black' }}
-                  />
-                ))}
-              </Stack>
-            </Box>
-          </Stack>
-
-          {/* Cuisine Type */}
-          <Stack direction="row" spacing={2}>
-            <Typography sx={{ minWidth: 150, fontWeight: 'bold' }}>
-              Cuisine Type
-            </Typography>
-            <Box>
-              <Stack direction="row" spacing={1} flexWrap="wrap">
-                {CUISINE_TYPE.map(({ name, color }) => (
-                  <Chip
-                    key={name}
-                    label={name}
-                    onClick={() => toggleCuisineType(name)}
-                    sx={{
-                      backgroundColor: color,
-                      fontSize: '16px',
-                      border:
-                        selectedCuisineType.includes(name) && '2px solid black',
-                      cursor: 'pointer',
-                    }}
-                  />
-                ))}
-              </Stack>
-
-              <Stack direction="row" spacing={1} mt={2}>
-                {selectedCuisineType.map((a) => (
-                  <Chip
-                    key={a}
-                    label={`${a} ✕`}
-                    onClick={() => toggleCuisineType(a)}
-                    sx={{ backgroundColor: '#eee', color: 'black'}}
-                  />
-                ))}
-              </Stack>
-            </Box>
-          </Stack>
-
-          {/* Recipe Description */}
-          <Stack direction="row" spacing={2} alignItems="flex-start">
-            <Typography sx={{ minWidth: 150, fontWeight: 'bold' }}>
-              Description
-            </Typography>
-            <TextField
-              fullWidth
-              multiline
-              rows={3}
-              placeholder="Write a short description..."
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              InputProps={{
-                style: { backgroundColor: '#ffffff', color: 'black' },
-              }}
-              InputLabelProps={{
-                style: { color: 'lightgray' },
-              }}
-            />
-          </Stack>
-
-          {/* Ingredients */}
-          <Stack direction="row" spacing={2} alignItems="flex-start">
-            <Typography sx={{ minWidth: 150, fontWeight: 'bold' }}>
-              Ingredients
-            </Typography>
-            <TextField
-              fullWidth
-              multiline
-              rows={4}
-              placeholder="List ingredients..."
-              value={ingredients}
-              onChange={(e) => setIngredients(e.target.value)}
-              InputProps={{
-                style: { backgroundColor: '#ffffff', color: 'black' },
-              }}
-              InputLabelProps={{
-                style: { color: 'lightgray' },
-              }}
-            />
-          </Stack>
-
-          {/* Recipe Instructions */}
-          <Stack direction="row" spacing={2} alignItems="flex-start">
-            <Typography sx={{ minWidth: 150, fontWeight: 'bold' }}>
-              Instructions
-            </Typography>
-            <TextField
-              fullWidth
-              multiline
-              rows={3}
-              placeholder="Write step-by-step instructions..."
-              value={instructions}
-              onChange={(e) => setInstructions(e.target.value)}
-              InputProps={{
-                style: { backgroundColor: '#ffffff', color: 'black' },
-              }}
-              InputLabelProps={{
-                style: { color: 'lightgray' },
-              }}
-            />
-          </Stack>
-
-          {/* Image Upload */}
-          <Stack direction="row" spacing={2} alignItems="flex-start">
-            <Typography sx={{ minWidth: 150, fontWeight: 'bold' }}>
-              Dish Picture
-            </Typography>
-            <Box sx={{ width: '100%' }}>
-              <DragDropBox>
-                <Typography>Drag and drop to insert image</Typography>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  style={{ display: 'none' }}
-                  id="recipe-image"
-                />
-                <label htmlFor="recipe-image" style={{ cursor: 'pointer' }}>
-                  <Typography
-                    variant="body2"
-                    sx={{ mt: 1, color: '#9ecc1a', fontWeight: 500 }}
-                  >
-                    Click to upload
-                  </Typography>
-                </label>
-                {imageFile && (
-                  <Typography sx={{ mt: 1 }}>📸 {imageFile.name}</Typography>
-                )}
-              </DragDropBox>
-            </Box>
-          </Stack>
-
-
-          {/* Submit Button */}
-          <Button
-            variant="contained"
-            onClick={handleSubmit}
-            sx={{
-              backgroundColor: '#9ecc1a',
-              color: '#ffffff',
-              alignSelf: 'flex-end',
-              paddingX: 4,
-              paddingY: 1.5,
-              fontWeight: 'bold',
-              fontSize: '1rem',
-              '&:hover': {
-                backgroundColor: '#88b818',
-              },
+      <Stack spacing={4}>
+        {/* Recipe Name (required) */}
+        <Stack direction="row" spacing={2} alignItems="center">
+          <Typography sx={{ minWidth: 150, fontWeight: 'bold' }}>
+            Recipe Name *
+          </Typography>
+          <TextField
+            fullWidth
+            required
+            placeholder="Enter recipe name"
+            value={recipeName}
+            onChange={(e) => setRecipeName(e.target.value)}
+            error={touchedSubmit && !recipeName.trim()}
+            helperText={
+              touchedSubmit && !recipeName.trim()
+                ? 'Recipe name is required'
+                : ''
+            }
+            variant="outlined"
+            InputProps={{
+              style: { backgroundColor: '#ffffff', color: 'black' },
             }}
-          >
-            Create Recipe
-          </Button>
+            InputLabelProps={{
+              style: { color: 'lightgray' },
+            }}
+          />
         </Stack>
-      </Box >
-    </>
+
+        {/* Meal Type */}
+        <Stack direction="row" spacing={2}>
+          <Typography sx={{ minWidth: 150, fontWeight: 'bold' }}>
+            Meal Type
+          </Typography>
+          <Box>
+            <Stack direction="row" spacing={1} flexWrap="wrap">
+              {MEAL_TYPE.map(({ name, color }) => (
+                <Chip
+                  key={name}
+                  label={name}
+                  onClick={() => toggleMealtype(name)}
+                  sx={{
+                    backgroundColor: color,
+                    fontSize: '16px',
+                    border:
+                      selectedMealtypes.includes(name) && '2px solid black',
+                    cursor: 'pointer',
+                  }}
+                />
+              ))}
+            </Stack>
+
+            <Stack direction="row" spacing={1} mt={2}>
+              {selectedMealtypes.map((meal) => (
+                <Chip
+                  key={meal}
+                  label={`${meal} ✕`}
+                  onClick={() => toggleMealtype(meal)}
+                  sx={{ backgroundColor: '#eee', color: 'black' }}
+                />
+              ))}
+            </Stack>
+          </Box>
+        </Stack>
+
+        {/* Diet Labels */}
+        <Stack direction="row" spacing={2}>
+          <Typography sx={{ minWidth: 150, fontWeight: 'bold' }}>
+            Diet Labels
+          </Typography>
+          <Box>
+            <Stack direction="row" spacing={1} flexWrap="wrap">
+              {DIET_LABELS.map(({ name, color }) => (
+                <Chip
+                  key={name}
+                  label={name}
+                  onClick={() => toggleDietLabels(name)}
+                  sx={{
+                    backgroundColor: color,
+                    fontSize: '16px',
+                    border:
+                      selectedDietLabels.includes(name) && '2px solid black',
+                    cursor: 'pointer',
+                  }}
+                />
+              ))}
+            </Stack>
+
+            <Stack direction="row" spacing={1} mt={2}>
+              {selectedDietLabels.map((diet) => (
+                <Chip
+                  key={diet}
+                  label={`${diet} ✕`}
+                  onClick={() => toggleDietLabels(diet)}
+                  sx={{ backgroundColor: '#eee', color: 'black' }}
+                />
+              ))}
+            </Stack>
+          </Box>
+        </Stack>
+
+        {/* Health Labels */}
+        <Stack direction="row" spacing={2}>
+          <Typography sx={{ minWidth: 150, fontWeight: 'bold' }}>
+            Health Labels
+          </Typography>
+          <Box>
+            <Stack direction="row" spacing={1} flexWrap="wrap">
+              {HEALTH_LABELS.map(({ name, color }) => (
+                <Chip
+                  key={name}
+                  label={name}
+                  onClick={() => toggleHealthLabels(name)}
+                  sx={{
+                    backgroundColor: color,
+                    fontSize: '16px',
+                    border:
+                      selectedHealthLabels.includes(name) && '2px solid black',
+                    cursor: 'pointer',
+                  }}
+                />
+              ))}
+            </Stack>
+
+            <Stack direction="row" spacing={1} mt={2}>
+              {selectedHealthLabels.map((label) => (
+                <Chip
+                  key={label}
+                  label={`${label} ✕`}
+                  onClick={() => toggleHealthLabels(label)}
+                  sx={{ backgroundColor: '#eee', color: 'black' }}
+                />
+              ))}
+            </Stack>
+          </Box>
+        </Stack>
+
+        {/* Cuisine Type */}
+        <Stack direction="row" spacing={2}>
+          <Typography sx={{ minWidth: 150, fontWeight: 'bold' }}>
+            Cuisine Type
+          </Typography>
+          <Box>
+            <Stack direction="row" spacing={1} flexWrap="wrap">
+              {CUISINE_TYPE.map(({ name, color }) => (
+                <Chip
+                  key={name}
+                  label={name}
+                  onClick={() => toggleCuisineType(name)}
+                  sx={{
+                    backgroundColor: color,
+                    fontSize: '16px',
+                    border:
+                      selectedCuisineType.includes(name) &&
+                      '2px solid black',
+                    cursor: 'pointer',
+                  }}
+                />
+              ))}
+            </Stack>
+
+            <Stack direction="row" spacing={1} mt={2}>
+              {selectedCuisineType.map((cuisine) => (
+                <Chip
+                  key={cuisine}
+                  label={`${cuisine} ✕`}
+                  onClick={() => toggleCuisineType(cuisine)}
+                  sx={{ backgroundColor: '#eee', color: 'black' }}
+                />
+              ))}
+            </Stack>
+          </Box>
+        </Stack>
+
+        {/* Recipe Description */}
+        <Stack direction="row" spacing={2} alignItems="flex-start">
+          <Typography sx={{ minWidth: 150, fontWeight: 'bold' }}>
+            Description
+          </Typography>
+          <TextField
+            fullWidth
+            multiline
+            rows={3}
+            placeholder="Write a short description..."
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            InputProps={{
+              style: { backgroundColor: '#ffffff', color: 'black' },
+            }}
+            InputLabelProps={{
+              style: { color: 'lightgray' },
+            }}
+          />
+        </Stack>
+
+        {/* Ingredients (required, comma-delimited) */}
+        <Stack direction="row" spacing={2} alignItems="flex-start">
+          <Typography sx={{ minWidth: 150, fontWeight: 'bold' }}>
+            Ingredients *  
+          </Typography>
+          <TextField
+            fullWidth
+            required
+            multiline
+            rows={4}
+            placeholder="List ingredients (comma-delimited)..."
+            value={ingredients}
+            onChange={(e) => setIngredients(e.target.value)}
+            error={touchedSubmit && !ingredients.trim()}
+            helperText={
+              touchedSubmit && !ingredients.trim()
+                ? 'Ingredients cannot be empty'
+                : ''
+            }
+            InputProps={{
+              style: { backgroundColor: '#ffffff', color: 'black' },
+            }}
+            InputLabelProps={{
+              style: { color: 'lightgray' },
+            }}
+          />
+        </Stack>
+
+        {/* Recipe Instructions (required, comma-delimited) */}
+        <Stack direction="row" spacing={2} alignItems="flex-start">
+          <Typography sx={{ minWidth: 150, fontWeight: 'bold' }}>
+            Instructions *
+          </Typography>
+          <TextField
+            fullWidth
+            required
+            multiline
+            rows={4}
+            placeholder="Write step-by-step instructions (comma-delimited)..."
+            value={instructions}
+            onChange={(e) => setInstructions(e.target.value)}
+            error={touchedSubmit && !instructions.trim()}
+            helperText={
+              touchedSubmit && !instructions.trim()
+                ? 'Instructions cannot be empty'
+                : ''
+            }
+            InputProps={{
+              style: { backgroundColor: '#ffffff', color: 'black' },
+            }}
+            InputLabelProps={{
+              style: { color: 'lightgray' },
+            }}
+          />
+        </Stack>
+
+        {/* Image Upload */}
+        <Stack direction="row" spacing={2} alignItems="flex-start">
+          <Typography sx={{ minWidth: 150, fontWeight: 'bold' }}>
+            Dish Picture
+          </Typography>
+          <Box sx={{ width: '100%' }}>
+            <DragDropBox>
+              <Typography>Drag and drop to insert image</Typography>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                style={{ display: 'none' }}
+                id="recipe-image"
+              />
+              <label htmlFor="recipe-image" style={{ cursor: 'pointer' }}>
+                <Typography
+                  variant="body2"
+                  sx={{ mt: 1, color: '#9ecc1a', fontWeight: 500 }}
+                >
+                  Click to upload
+                </Typography>
+              </label>
+              {imageFile && (
+                <Typography sx={{ mt: 1 }}>📸 {imageFile.name}</Typography>
+              )}
+            </DragDropBox>
+          </Box>
+        </Stack>
+
+        {/* Submit Button */}
+        <Button
+          variant="contained"
+          onClick={handleSubmit}
+          disabled={isSubmitDisabled}
+          sx={{
+            backgroundColor: isSubmitDisabled ? '#ccc' : '#9ecc1a',
+            color: '#ffffff',
+            alignSelf: 'flex-end',
+            paddingX: 4,
+            paddingY: 1.5,
+            fontWeight: 'bold',
+            fontSize: '1rem',
+            '&:hover': {
+              backgroundColor: isSubmitDisabled ? '#ccc' : '#88b818',
+            },
+          }}
+        >
+          Create Recipe
+        </Button>
+      </Stack>
+    </Box>
   );
 };
 
