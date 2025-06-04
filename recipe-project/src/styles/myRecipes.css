@@ -21,6 +21,7 @@
     font-weight: bold;
     color: black;
     text-align: left;
+    margin-bottom: 3px;
   }
 
   .subsubtitle {
@@ -40,11 +41,14 @@
     border-radius: 5px;
     cursor: pointer;
     margin-bottom: 1.5rem;
+    font-weight: bold;
   }
   
   .toggle-buttons {
-    margin-bottom: 7%;
-  }
+  margin-bottom: 7%;
+  display: flex;
+  justify-content: center; /* Center horizontally */
+}
   
   .toggle-buttons button {
     margin-right: 0.5rem;
@@ -56,7 +60,7 @@
   }
   
   .toggle-buttons .active-toggle {
-    background-color: gold;
+    background-color: #E8DE10;
     color: black;
     font-weight: bold;
   }
