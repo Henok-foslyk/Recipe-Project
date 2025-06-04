@@ -171,6 +171,19 @@
     color: white;
 }
 
+.saveB {
+    display: inline-block;
+    margin-top: 0.5rem;
+    color: #4caf50;
+    font-weight: bold;
+}
+
+.saveB:hover {
+    text-decoration: underline;
+    color: rgb(177, 129, 17);
+    border-style: none;
+}
+
 /*shimmer for skeleton loaders */
 
 @keyframes shimmer {
