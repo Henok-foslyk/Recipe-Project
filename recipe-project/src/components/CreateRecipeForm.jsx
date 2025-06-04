@@ -91,12 +91,13 @@ const CreateRecipe = () => {
         sx={{
           backgroundColor: '#ffffff',
           padding: 4,
-          maxWidth: '800px',
+          width: '100%',
+          maxWidth: '1600px',
           margin: 'auto',
           color: 'black',
         }}
       >
-        <Typography variant="h3" sx={{ fontWeight: 'bold', color: "black", paddingY: 3 }}>
+        <Typography variant="h3" sx={{ fontWeight: 'bold', color: "black", paddingY: 3, paddingX: 25 }}>
           Create Your Recipe
         </Typography>
         <Stack spacing={4}>
