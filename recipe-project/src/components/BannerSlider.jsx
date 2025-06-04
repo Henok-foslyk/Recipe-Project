@@ -10,12 +10,12 @@ const images = [banner1, banner2, banner3];
 
 const BannerSlider = () => {
 
-const sliderRef = useRef();
-useEffect(() => {
+  const sliderRef = useRef();
+  useEffect(() => {
     if (sliderRef.current) {
-    sliderRef.current.slickGoTo(0); // Force Slick to recalculate layout
+      sliderRef.current.slickGoTo(0); // Force Slick to recalculate layout
     }
-}, []);
+  }, []);
 
   const settings = {
     dots: true,

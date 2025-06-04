@@ -1,10 +1,17 @@
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
 .recipe-container {
-    max-width: 2000px;
+    max-width: 2500px;
     width: 100%;
     font-family: Arial, Helvetica, sans-serif;
+    overflow: hidden;
 }
 
 .recipe-container h2 {
+    margin-top: 120px;
     font-size: 4.5rem;
     font-weight: bold;
     font-family: cursive;
@@ -37,7 +44,7 @@
 }
 
 .search-input {
-    width: 35%;
+    width: 36%;
 }
 
 .search {
@@ -74,7 +81,7 @@
     min-width: 300px;
     width: 350px;
     /*we can add it or not */
-    padding: 0.75rem;
+    padding: 0.9rem;
     box-shadow: 0 2px 8px rgba(0.1, 0.1, 0, 0.1);
 
 }
@@ -122,8 +129,8 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     /* grid-template-columns: repeat(5, 1fr); */
-    gap: 2rem;
-    max-width: 1800px;
+    gap: 3rem;
+    max-width: 1200px;
     width: 100%;
 }
 
