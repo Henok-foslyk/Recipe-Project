@@ -21,6 +21,14 @@ const ALLERGENS = [
   { name: 'Soy', color: '#A78BFA' },
 ];
 
+const MEAL_TYPE = [
+  { name: 'Breakfast', color: '#FDE68A' },
+  { name: 'Lunch', color: '#FACC15' },
+  { name: 'Dinner', color: '#6EE7B7' },
+  { name: 'Snack', color: '#F87171' },
+  { name: 'Teatime', color: '#A78BFA' },
+];
+
 const DragDropBox = styled(Box)(({ theme }) => ({
   border: '2px dashed #9ecc1a',
   borderRadius: '10px',
@@ -36,6 +44,7 @@ const CreateRecipe = () => {
   const [ingredients, setIngredients] = useState('');
   const [description, setDescription] = useState('');
   const [selectedAllergens, setSelectedAllergens] = useState([]);
+  const [selectedMealtypes, setSelectedMealtypes] = useState([]);
   const [imageFile, setImageFile] = useState(null);
   const [instructions, setInstructions] = useState('');
 
@@ -45,6 +54,14 @@ const CreateRecipe = () => {
       prev.includes(allergen)
         ? prev.filter((a) => a !== allergen)
         : [...prev, allergen]
+    );
+  };
+
+  const toggleMealtype = (Mealtype) => {
+    setSelectedMealtypes((prev) =>
+      prev.includes(Mealtype)
+        ? prev.filter((a) => a !== Mealtype)
+        : [...prev, Mealtype]
     );
   };
 
@@ -62,6 +79,7 @@ const CreateRecipe = () => {
         description,
         ingredients,
         allergens: selectedAllergens,
+        mealType: selectedMealtypes,
         instructions,
         isApproved: false,
         isEdemam: false,
@@ -78,6 +96,7 @@ const CreateRecipe = () => {
       setDescription('');
       setInstructions('');
       setSelectedAllergens([]);
+      setSelectedMealtypes([]);
       setImageFile(null);
     } catch (error) {
       console.error('Error adding recipe:', error);
@@ -121,6 +140,41 @@ const CreateRecipe = () => {
                 style: { color: 'lightgray' },
               }}
             />
+          </Stack>
+
+          {/* Meal Type */}
+          <Stack direction="row" spacing={2}>
+            <Typography sx={{ minWidth: 150, fontWeight: 'bold' }}>
+              Meal Type
+            </Typography>
+            <Box>
+              <Stack direction="row" spacing={1} flexWrap="wrap">
+                {MEAL_TYPE.map(({ name, color }) => (
+                  <Chip
+                    key={name}
+                    label={name}
+                    onClick={() => toggleMealtype(name)}
+                    sx={{
+                      backgroundColor: color,
+                      border:
+                        selectedMealtypes.includes(name) && '2px solid black',
+                      cursor: 'pointer',
+                    }}
+                  />
+                ))}
+              </Stack>
+
+              <Stack direction="row" spacing={1} mt={2}>
+                {selectedMealtypes.map((a) => (
+                  <Chip
+                    key={a}
+                    label={`${a} ✕`}
+                    onClick={() => toggleMealtype(a)}
+                    sx={{ backgroundColor: '#eee', color: 'black' }}
+                  />
+                ))}
+              </Stack>
+            </Box>
           </Stack>
 
           {/* Recipe Description */}
