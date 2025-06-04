@@ -13,19 +13,28 @@ import { styled } from '@mui/material/styles';
 
 
 const ALLERGENS = [
-  { name: 'Dairy', color: '#FDE68A' },
-  { name: 'Eggs', color: '#FACC15' },
-  { name: 'Gluten', color: '#6EE7B7' },
-  { name: 'Peanuts', color: '#F87171' },
-  { name: 'Soy', color: '#A78BFA' },
+  { name: 'Dairy', color: '#C4FFF9' },
+  { name: 'Eggs', color: '#9CEAEF' },
+  { name: 'Gluten', color: '#68D8D6' },
+  { name: 'Peanuts', color: '#3DCCC7' },
+  { name: 'Soy', color: '#07BEB8' },
 ];
 
 const MEAL_TYPE = [
-  { name: 'Breakfast', color: '#FDE68A' },
-  { name: 'Lunch', color: '#FACC15' },
-  { name: 'Dinner', color: '#6EE7B7' },
-  { name: 'Snack', color: '#F87171' },
-  { name: 'Teatime', color: '#A78BFA' },
+  { name: 'Breakfast', color: '#F4E04D' },
+  { name: 'Lunch', color: '#F2ED6F' },
+  { name: 'Dinner', color: '#CEE397' },
+  { name: 'Snack', color: '#8DB1AB' },
+  { name: 'Teatime', color: '#8CA5BA' },
+];
+
+const DIET_LABELS = [
+  { name: 'Balanced', color: '#FBC2B5' },
+  { name: 'High-Fiber', color: '#FFA8A9' },
+  { name: 'High-Protein', color: '#F786AA' },
+  { name: 'Low-Carb', color: '#B8658F' },
+  { name: 'Low-Fat', color: '#CDB2AB' },
+  { name: 'Low-Sodium', color: '#C2A199' },
 ];
 
 const DragDropBox = styled(Box)(() => ({
@@ -44,6 +53,7 @@ const CreateRecipe = () => {
   const [description, setDescription] = useState('');
   const [selectedAllergens, setSelectedAllergens] = useState([]);
   const [selectedMealtypes, setSelectedMealtypes] = useState([]);
+  const [selectedDietLabels, setSelectedDietLabels] = useState([]);
   const [imageFile, setImageFile] = useState(null);
   const [instructions, setInstructions] = useState('');
 
@@ -64,6 +74,14 @@ const CreateRecipe = () => {
     );
   };
 
+  const toggleDietLabels = (dietLabel) => {
+    setSelectedDietLabels((prev) =>
+      prev.includes(dietLabel)
+        ? prev.filter((a) => a !== dietLabel)
+        : [...prev, dietLabel]
+    );
+  };
+
   const handleImageUpload = (e) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -79,6 +97,7 @@ const CreateRecipe = () => {
         ingredients,
         allergens: selectedAllergens,
         mealType: selectedMealtypes,
+        dietLabels: selectedDietLabels,
         instructions,
         isApproved: false,
         isEdemam: false,
@@ -96,6 +115,7 @@ const CreateRecipe = () => {
       setInstructions('');
       setSelectedAllergens([]);
       setSelectedMealtypes([]);
+      setSelectedDietLabels([]);
       setImageFile(null);
     } catch (error) {
       console.error('Error adding recipe:', error);
@@ -169,6 +189,41 @@ const CreateRecipe = () => {
                     key={a}
                     label={`${a} ✕`}
                     onClick={() => toggleMealtype(a)}
+                    sx={{ backgroundColor: '#eee', color: 'black' }}
+                  />
+                ))}
+              </Stack>
+            </Box>
+          </Stack>
+
+          {/* Diet Labels */}
+          <Stack direction="row" spacing={2}>
+            <Typography sx={{ minWidth: 150, fontWeight: 'bold' }}>
+              Diet Labels
+            </Typography>
+            <Box>
+              <Stack direction="row" spacing={1} flexWrap="wrap">
+                {DIET_LABELS.map(({ name, color }) => (
+                  <Chip
+                    key={name}
+                    label={name}
+                    onClick={() => toggleDietLabels(name)}
+                    sx={{
+                      backgroundColor: color,
+                      border:
+                        selectedDietLabels.includes(name) && '2px solid black',
+                      cursor: 'pointer',
+                    }}
+                  />
+                ))}
+              </Stack>
+
+              <Stack direction="row" spacing={1} mt={2}>
+                {selectedDietLabels.map((a) => (
+                  <Chip
+                    key={a}
+                    label={`${a} ✕`}
+                    onClick={() => toggleDietLabels(a)}
                     sx={{ backgroundColor: '#eee', color: 'black' }}
                   />
                 ))}
