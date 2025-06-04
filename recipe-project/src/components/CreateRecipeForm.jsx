@@ -98,7 +98,7 @@ const CreateRecipe = () => {
         }}
       >
         <Typography variant="h3" sx={{
-          fontWeight: 'bold', color: "black", paddingY: 3, mt: 10, fontFamily: 'cursive', paddingX: 25, fontSize: '4.5rem', color: '#154517'
+          fontWeight: 'bold', paddingY: 3, mt: 10, fontFamily: 'cursive', paddingX: 25, fontSize: '4.5rem', color: '#154517'
         }}>
           Create Your Recipe
         </Typography>

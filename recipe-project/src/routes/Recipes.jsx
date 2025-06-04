@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
+import SaveButton from "../components/SaveButton";
+
 
 export default function Recipes() {
   const [recipes, setRecipes] = useState([]);
@@ -112,18 +114,18 @@ export default function Recipes() {
               }}
             />
 
-          {/* Dropdown to select meal type choices */}
-          <select
-            onChange={(e) => setMealType(e.target.value)}
-            value={mealType}
-          >
-            <option value="">Select Meal Type</option>
-            <option value="Breakfast">Breakfast</option>
-            <option value="Lunch">Lunch</option>
-            <option value="Dinner">Dinner</option>
-            <option value="Snack">Snack</option>
-            <option value="Teatime">Teatime</option>
-          </select>
+            {/* Dropdown to select meal type choices and others fields */}
+            <select
+              onChange={(e) => setMealType(e.target.value)}
+              value={mealType}
+            >
+              <option value="">Select Meal Type</option>
+              <option value="Breakfast">Breakfast</option>
+              <option value="Lunch">Lunch</option>
+              <option value="Dinner">Dinner</option>
+              <option value="Snack">Snack</option>
+              <option value="Teatime">Teatime</option>
+            </select>
 
             <select onChange={(e) => setDiet(e.target.value)} value={diet}>
               <option value="">Select Diet</option>
@@ -131,6 +133,8 @@ export default function Recipes() {
               <option value="high-protein">High-Protein</option>
               <option value="low-carb">Low-Carb</option>
               <option value="low-fat">Low-Fat</option>
+              <option value="low-sodium">Low-Sodium</option>
+              <option value="high-fiber">High-Fiber</option>
             </select>
 
 
@@ -179,7 +183,7 @@ export default function Recipes() {
         {!showUserRecipes &&
           (loading ? (
             <div className="recipe-grid">
-              {[...Array(15)].map((_, i) => (
+              {[...Array(20)].map((_, i) => (
                 <div key={i} className="skeleton-card">
                   <Skeleton height={150} />
                 </div>
@@ -195,9 +199,11 @@ export default function Recipes() {
                   <h3>{recipe.label}</h3>
                   <p>Meal Type: {recipe.mealType?.join(", ")}</p>
                   <p>Diet Labels: {recipe.dietLabels?.join(", ")}</p>
+                  <p>Cuisine Type: {recipe.cuisineType?.join(", ")}</p>
                   <a href={recipe.url} target="_blank" rel="noreferrer">
                     View Recipe
                   </a>
+                  <SaveButton recipe={recipe} />
                 </div>
               ))}
             </div>
