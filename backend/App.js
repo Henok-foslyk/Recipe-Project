@@ -22,11 +22,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
 const recipesRouter = require("./routes/recipe.js");  //my recipe router
+const chatRouter = require("./routes/chatbot.js"); //my chatbot router
 const usersRouter = require("./routes/user.js");
 
 app.use("/recipes", recipesRouter);
 app.use("/users", usersRouter);
-
+app.use("/chatbot", chatRouter);
 app.use(
   express.json({
     limit: "20mb",
