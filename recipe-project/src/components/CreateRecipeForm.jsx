@@ -8,7 +8,6 @@ import {
   Stack,
   TextField,
   Typography,
-  useTheme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -29,7 +28,7 @@ const MEAL_TYPE = [
   { name: 'Teatime', color: '#A78BFA' },
 ];
 
-const DragDropBox = styled(Box)(({ theme }) => ({
+const DragDropBox = styled(Box)(() => ({
   border: '2px dashed #9ecc1a',
   borderRadius: '10px',
   padding: '2rem',
@@ -117,7 +116,7 @@ const CreateRecipe = () => {
         }}
       >
         <Typography variant="h3" sx={{
-          fontWeight: 'bold', color: "black", paddingY: 3, mt: 10, fontFamily: 'cursive', paddingX: 25, fontSize: '4.5rem', color: '#154517'
+          fontWeight: 'bold', paddingY: 3, mt: 10, fontFamily: 'cursive', paddingX: 25, fontSize: '4.5rem', color: '#154517'
         }}>
           Create Your Recipe
         </Typography>
@@ -177,6 +176,41 @@ const CreateRecipe = () => {
             </Box>
           </Stack>
 
+          {/* Allergens */}
+          <Stack direction="row" spacing={2}>
+            <Typography sx={{ minWidth: 150, fontWeight: 'bold' }}>
+              Food Allergens
+            </Typography>
+            <Box>
+              <Stack direction="row" spacing={1} flexWrap="wrap">
+                {ALLERGENS.map(({ name, color }) => (
+                  <Chip
+                    key={name}
+                    label={name}
+                    onClick={() => toggleAllergen(name)}
+                    sx={{
+                      backgroundColor: color,
+                      border:
+                        selectedAllergens.includes(name) && '2px solid black',
+                      cursor: 'pointer',
+                    }}
+                  />
+                ))}
+              </Stack>
+
+              <Stack direction="row" spacing={1} mt={2}>
+                {selectedAllergens.map((a) => (
+                  <Chip
+                    key={a}
+                    label={`${a} ✕`}
+                    onClick={() => toggleAllergen(a)}
+                    sx={{ backgroundColor: '#eee', color: 'black' }}
+                  />
+                ))}
+              </Stack>
+            </Box>
+          </Stack>
+
           {/* Recipe Description */}
           <Stack direction="row" spacing={2} alignItems="flex-start">
             <Typography sx={{ minWidth: 150, fontWeight: 'bold' }}>
@@ -217,41 +251,6 @@ const CreateRecipe = () => {
                 style: { color: 'lightgray' },
               }}
             />
-          </Stack>
-
-          {/* Allergens */}
-          <Stack direction="row" spacing={2}>
-            <Typography sx={{ minWidth: 150, fontWeight: 'bold' }}>
-              Food Allergens
-            </Typography>
-            <Box>
-              <Stack direction="row" spacing={1} flexWrap="wrap">
-                {ALLERGENS.map(({ name, color }) => (
-                  <Chip
-                    key={name}
-                    label={name}
-                    onClick={() => toggleAllergen(name)}
-                    sx={{
-                      backgroundColor: color,
-                      border:
-                        selectedAllergens.includes(name) && '2px solid black',
-                      cursor: 'pointer',
-                    }}
-                  />
-                ))}
-              </Stack>
-
-              <Stack direction="row" spacing={1} mt={2}>
-                {selectedAllergens.map((a) => (
-                  <Chip
-                    key={a}
-                    label={`${a} ✕`}
-                    onClick={() => toggleAllergen(a)}
-                    sx={{ backgroundColor: '#eee', color: 'black' }}
-                  />
-                ))}
-              </Stack>
-            </Box>
           </Stack>
 
           {/* Recipe Instructions */}
