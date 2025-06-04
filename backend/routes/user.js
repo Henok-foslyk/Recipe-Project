@@ -65,6 +65,7 @@ router.patch('/recipes/approveRequest/:rid', async (req, res) => {
       isApproved: true
     });
     res.status(200).json({success: 'Successfully approved recipe'})
+    
   } catch (err) {
     console.error('Error approving chosen recipe:', err);
     res.status(500).json({ error: 'Failed to approve recipe' });
