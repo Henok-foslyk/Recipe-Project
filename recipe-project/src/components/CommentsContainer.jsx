@@ -1,7 +1,7 @@
 // src/components/CommentsContainer.jsx
 import React, { useEffect, useState } from "react";
 import Comment from "./Comment";
-import "./CommentsContainer.css";
+import "../styles/CommentsContainer.css";
 import axios from "axios";
 
 export default function CommentsContainer({ recipeId, initialComments = [] }) {

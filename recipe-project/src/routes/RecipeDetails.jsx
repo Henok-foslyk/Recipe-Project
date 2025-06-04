@@ -1,7 +1,7 @@
 // src/pages/RecipeDetails.jsx
 import { useState } from "react";
 import DisplayRecipe from "../components/DisplayRecipe";
-import "../components/RecipeDetails.css"; // ← import the wrapper’s CSS
+import "../styles/RecipeDetails.css"; // ← import the wrapper’s CSS
 import CommentsContainer from "../components/CommentsContainer";
 import ChatContainer from "../components/ChatContainer";
 import FormGroup from "@mui/material/FormGroup";
@@ -9,7 +9,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { Typography, Box } from "@mui/material";
 
-export default function RecipeDetails({id}) {
+export default function RecipeDetails({ id }) {
   const [review, setReview] = useState(true);
   const mockRecipe = {
     name: "Fat Sandwich",

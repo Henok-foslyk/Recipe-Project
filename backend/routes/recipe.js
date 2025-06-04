@@ -24,14 +24,16 @@ router.get('/', async (req, res) => {
     const q = req.query.q || '';
     const mealType = req.query.mealType;
     const diet = req.query.diet;
+    const health = req.query.health;
+    const cuisineType = req.query.cuisineType;
 
     //we need one else we can't bring anything up
-    if (!q && !mealType && !diet) {
-        return res.status(400).json({ error: 'At least one search parameter ("q", "mealType", or "diet") is required.' });
+    if (!q && !mealType && !diet && !health && !cuisineType) {
+        return res.status(400).json({ error: 'At least one search parameter ("q", "mealType","cuisine" ,"health" or "diet") is required.' });
     }
 
 
-    //getting 50 recipes
+    //getting 30 recipes but returns 20 random ones
 
     try {
         const params = {
@@ -40,12 +42,15 @@ router.get('/', async (req, res) => {
             app_id: APP_ID,
             app_key: APP_KEY,
             from: 0,
-            to: 60,
+            to: 30,
         };
 
-        //if mealType or diet, shows those params
+        //if mealType, health, cuisine or diet, shows those params
         if (mealType) params.mealType = mealType;
         if (diet) params.diet = diet;
+        if (health) params.health = health;
+        if (cuisineType) params.cuisineType = cuisineType;
+
 
         //url from site
         const url = 'https://api.edamam.com/api/recipes/v2';
@@ -54,7 +59,7 @@ router.get('/', async (req, res) => {
         const response = await axios.get(url, {
             params,
             headers: {
-                'Edamam-Account-User': process.env.RECIPE_USER_ID,  
+                'Edamam-Account-User': process.env.RECIPE_USER_ID,
             }
         });
 

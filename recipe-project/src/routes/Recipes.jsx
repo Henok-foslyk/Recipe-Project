@@ -14,6 +14,9 @@ export default function Recipes() {
   const [mealType, setMealType] = useState("");
   const [diet, setDiet] = useState("");
   const [query, setQuery] = useState("");
+  const [health, setHealth] = useState("");
+  const [cuisineType, setCuisineType] = useState("");
+
 
   //help for toggle betweeen user and edamam recipes
   const [showUserRecipes, setShowUserRecipes] = useState(false);
@@ -45,7 +48,7 @@ export default function Recipes() {
       const params = new URLSearchParams();
 
       // Randomized default food list for initial display so its not just 1 food
-      const loadFood = ["chicken", "pasta", "rice", "salad", "tofu", "beef", "soup"];
+      const loadFood = ["chicken", "pasta", "rice", "salad", "tofu", "beef", "soup", "fruits", "yam", "kenkey", "porridge"];
 
       // Use query if the user provides it, else we randomize default food
       const loadQuery = query || loadFood[Math.floor(Math.random() * loadFood.length)];
@@ -54,10 +57,12 @@ export default function Recipes() {
       // Append meal type and diet filters if set by user
       if (mealType) params.append("mealType", mealType);
       if (diet) params.append("diet", diet);
+      if (health) params.append("health", health);
+      if (cuisineType) params.append("cuisineType", cuisineType);
 
       const response = await fetch(`http://localhost:5050/recipes?${params.toString()}`);
 
-      // Check for successful response or throw an error if failed
+
       if (!response.ok) {
         throw new Error("Failed to fetch recipes");
       }
@@ -66,7 +71,7 @@ export default function Recipes() {
       setRecipes(data.hits || []);
 
     } catch (error) {
-      console.log("Can't fetch recipes", error); // Log any errors
+      console.log("Can't fetch recipes", error);
       setRecipes([]);
     }
     setLoading(false);
@@ -83,58 +88,88 @@ export default function Recipes() {
 
 
 
+  /* returns the API calls, the different options and components */
   return (
     <>
       <Navbar />
       <div className="recipe-container">
         <h2>Search Recipes</h2>
+        <div className="allButtons" >
 
-        {/* Toggle buttons to switch between Edamame recipes and user-created recipes */}
-        <div className="toggle-buttons">
-          <button
-            className={showUserRecipes ? "" : "active"}
-            onClick={() => setShowUserRecipes(false)}
-          >
-            Edamam Recipes
-          </button>
-          <button
-            className={showUserRecipes ? "active" : ""}
-            onClick={() => setShowUserRecipes(true)}
-          >
-            My Recipes
-          </button>
-        </div>
+          <div className="all-search">
 
-        <div className="all-search">
-          {/* Search input for recipes */}
-          <input
-            className="search-input"
-            type="text"
-            placeholder="Search recipes..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
+            {/* Search input for recipes */}
+            <input
+              className="search-input"
+              type="text"
+              placeholder="Search recipes..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') { //if we click enter we can also get the recipes instead of clicking search button
+                  getRecipes();
+                }
+              }}
+            />
 
-          {/* Dropdown to select meal type choices */}
-          <select onChange={(e) => setMealType(e.target.value)} value={mealType}>
-            <option value="">Select Meal Type</option>
-            <option value="Breakfast">Breakfast</option>
-            <option value="Lunch">Lunch</option>
-            <option value="Dinner">Dinner</option>
-            <option value="Snack">Snack</option>
-            <option value="Teatime">Teatime</option>
-          </select>
+            {/* Dropdown to select meal type , diet, cuisine type and health choices */}
+            <select onChange={(e) => setMealType(e.target.value)} value={mealType}>
+              <option value="">Select Meal Type</option>
+              <option value="Breakfast">Breakfast</option>
+              <option value="Lunch">Lunch</option>
+              <option value="Dinner">Dinner</option>
+              <option value="Snack">Snack</option>
+              <option value="Teatime">Teatime</option>
+            </select>
 
-          {/* Dropdown to select diet choices */}
-          <select onChange={(e) => setDiet(e.target.value)} value={diet}>
-            <option value="">Select Diet</option>
-            <option value="balanced">Balanced</option>
-            <option value="high-protein">High-Protein</option>
-            <option value="low-carb">Low-Carb</option>
-            <option value="low-fat">Low-Fat</option>
-          </select>
+            <select onChange={(e) => setDiet(e.target.value)} value={diet}>
+              <option value="">Select Diet</option>
+              <option value="balanced">Balanced</option>
+              <option value="high-protein">High-Protein</option>
+              <option value="low-carb">Low-Carb</option>
+              <option value="low-fat">Low-Fat</option>
+            </select>
 
-          <button className="search" onClick={getRecipes}>Search</button>
+
+            <select onChange={(e) => setHealth(e.target.value)} value={health}>
+              <option value="">Select Health</option>
+              <option value="dairy-free">Dairy-Free</option>
+              <option value="gluten-free">Gluten-Free</option>
+              <option value="vegan">Vegan</option>
+              <option value="vegetarian">Vegetarian</option>
+            </select>
+
+            <select onChange={(e) => setCuisineType(e.target.value)} value={cuisineType}>
+              <option value="">Select Cuisine Type</option>
+              <option value="american">American</option>
+              <option value="asian">Asian</option>
+              <option value="caribbean">Caribbean</option>
+              <option value="mexican">Mexican</option>
+              <option value="italian"> Italian</option>
+              <option value="indian"> Indian</option>
+              <option value="kosher"> Kosher</option>
+              <option value="mediterranean"> Mediterranean</option>
+            </select>
+
+            <button className="search" onClick={getRecipes}>Search</button>
+          </div>
+
+          {/* Toggle buttons to switch between Edamame recipes and user-created recipes */}
+          <div className="toggle-buttons">
+            <button
+              className={showUserRecipes ? "" : "active"}
+              onClick={() => setShowUserRecipes(false)}
+            >
+              Edamam Recipes
+            </button>
+            <button
+              className={showUserRecipes ? "active" : ""}
+              onClick={() => setShowUserRecipes(true)}
+            >
+              Community Recipes
+            </button>
+          </div>
+
         </div>
 
         {/* Show skeleton loader when loading Edamame recipes*/}

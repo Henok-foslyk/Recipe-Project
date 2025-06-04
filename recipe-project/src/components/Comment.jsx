@@ -1,6 +1,6 @@
 // src/components/Comment.jsx
 import React from "react";
-import "./Comment.css";
+import "../styles/Comment.css";
 
 export default function Comment({ user = "User XYZ", rating = "4.5/5", text = "“This recipe was amazing...”" }) {
   return (
