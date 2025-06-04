@@ -1,6 +1,6 @@
 // src/components/DisplayRecipe.jsx
 import React from "react";
-import "./DisplayRecipe.css";   // ← This must match the CSS filename exactly
+import "../styles/DisplayRecipe.css";   // ← This must match the CSS filename exactly
 
 export default function DisplayRecipe({
   imageUrl = null,

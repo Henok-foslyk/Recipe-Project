@@ -1,5 +1,5 @@
 .recipe-container {
-    max-width: 1800px;
+    max-width: 2000px;
     width: 100%;
     font-family: Arial, Helvetica, sans-serif;
 }
@@ -13,11 +13,10 @@
 
 .allButtons {
     margin-top: 50px;
-    margin-bottom: 30px;
     display: flex;
     flex-direction: column;
     justify-items: flex-start;
-    max-width: 800px;
+    max-width: 1800px;
 
 }
 
@@ -38,7 +37,7 @@
 }
 
 .search-input {
-    width: 40%;
+    width: 35%;
 }
 
 .search {
@@ -74,11 +73,9 @@
     background-color: #fff;
     min-width: 300px;
     width: 350px;
-
     /*we can add it or not */
     padding: 0.75rem;
-    box-shadow: 0 2px 8px rgba(0.1, 0, 0, 0.1);
-    text-align: left;
+    box-shadow: 0 2px 8px rgba(0.1, 0.1, 0, 0.1);
 
 }
 
@@ -106,8 +103,6 @@
     color: #555;
     margin: 0.3rem 0;
     max-width: 100%;
-    align-items: left;
-    justify-content: left;
 }
 
 .recipe-card a {
@@ -145,8 +140,9 @@
 
 .toggle-buttons {
     display: flex;
-    margin-top: 10px;
+    margin-top: 12px;
     gap: 0.5rem;
+
 }
 
 .toggle-buttons button {

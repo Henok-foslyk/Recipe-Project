@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import "./ChatContainer.css";
+import "../styles/ChatContainer.css";
 import axios from "axios";
 // A simple message bubble component
 function Message({ sender, text }) {
