@@ -32,6 +32,7 @@ export default function AdminPage({ isAdmin }) {
       const response = await axios.get('http://localhost:5050/users/recipes/unapproved');
       setRecipes(response.data);
     } catch (err) {
+      console.error("ERROR: " + err);
     } finally {
       setLoading(false);
     }
