@@ -49,6 +49,8 @@ p {
 
 .toggle-buttons {
   margin-bottom: 7%;
+  display: flex;
+  justify-content: center;
 }
 
 .toggle-buttons button {
