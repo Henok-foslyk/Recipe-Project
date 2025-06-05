@@ -17,8 +17,11 @@ router.post("/signin", async (req, res) => {
     }
     const userDoc = snapshot.docs[0];
     let userData = userDoc.data();
-    userData = {...userData, "id": userDoc.id};
-    
+
+    userData = { ...userData, "id": userDoc.id };
+
+
+
     if (userData.password !== password) {
       return res.status(401).json({ message: "Invalid password" });
     }
@@ -37,11 +40,11 @@ router.post("/signin", async (req, res) => {
 
 
 router.post('/seed', async (req, res) => {
-  try{
+  try {
     const docRef = await db.collection("users").add(req.body);
     const savedPost = { id: docRef.id, ...req.body };
-     res.status(200).json(savedPost);
-  }catch(e){
+    res.status(200).json(savedPost);
+  } catch (e) {
     res.status(500).json({ error: 'Failed to fetch created new user' });
   }
 });
@@ -65,16 +68,37 @@ router.get('/:uid/createdRecipes', async (req, res) => {
 
 
 // GET /api/users/:uid/savedRecipes
-router.get('/:uid/savedRecipes', async (req, res) => {
-  const uid = req.params.uid;
+// router.get('/:uid/savedRecipes', async (req, res) => {
+//   const uid = req.params.uid;
+//   try {
+//     const querySnap = await getDocs(collection(db, 'users', uid, 'savedRecipes'));
+//     const recipes = querySnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+//     res.json(recipes);
+//   } catch (err) {
+//     res.status(500).json({ error: 'Failed to fetch saved recipes' });
+//   }
+// });
+
+// POST /api/users/:uid/saveRecipe
+router.post('/:uid/saveRecipe', async (req, res) => {
+  const { uid } = req.params;
+  const { recipe, source } = req.body; // source = 'edamam' or 'community'
+
   try {
-    const querySnap = await getDocs(collection(db, 'users', uid, 'savedRecipes'));
-    const recipes = querySnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    res.json(recipes);
+    const savedRef = collection(db, 'users', uid, 'savedRecipes');
+
+    await addDoc(savedRef, {
+      ...recipe,
+      source,
+      savedAt: new Date()
+    });
+
+    res.status(200).json({ message: 'Recipe saved successfully' });
   } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch saved recipes' });
+    res.status(500).json({ error: 'Failed to save recipe' });
   }
 });
+
 
 // DELETE /api/users/:uid/savedRecipes/:id
 router.delete('/:uid/savedRecipes/:id', async (req, res) => {
@@ -112,8 +136,8 @@ router.patch('/recipes/approveRequest/:rid', async (req, res) => {
     await db.collection('recipes').doc(recipeId).update({
       isApproved: true
     });
-    res.status(200).json({success: 'Successfully approved recipe'})
-    
+    res.status(200).json({ success: 'Successfully approved recipe' })
+
   } catch (err) {
     console.error('Error approving chosen recipe:', err);
     res.status(500).json({ error: 'Failed to approve recipe' });

@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 import SaveButton from "../components/SaveButton";
+import fallbackImage from '../assets/fallbackImage.jpg';
 
 
 export default function Recipes() {
@@ -207,7 +208,7 @@ export default function Recipes() {
                   <a href={recipe.url} target="_blank" rel="noreferrer">
                     View Recipe
                   </a>
-                  <SaveButton recipe={recipe} />
+                  <SaveButton recipe={recipe} user={currentUser} />
                 </div>
               ))}
             </div>
@@ -227,23 +228,28 @@ export default function Recipes() {
             //these are my recipes (from firebase) we can add more things if needed other than ingredients and insts.
             <div className="recipe-grid">
               {userRecipes.length === 0 && <p>No recipes found.</p>}
-              {userRecipes.map((recipe, i) => (
-                <Link
-                  to={`/recipes/${recipe.id}`}
-                  key={recipe.id}
-                  style={{ textDecoration: "none" }}
-                >
-                  <div key={i} className="recipe-card">
-                    <img
-                      src={recipe.imgUrl || "/fallback-image.jpg"}
-                      alt={recipe.name}
-                    />
-                    <h3>{recipe.name}</h3>
-                    <p>{recipe.description}</p>
-                    <p>Ingredients: {recipe.ingredients}</p>
-                    <p>Instructions: {recipe.instructions}</p>
-                  </div>
-                </Link>
+              {userRecipes.map((recipe) => (
+                <div key={recipe.id} className="recipe-card">
+                  {/*prevent infinite loop and faulty urls */}
+                  <img
+                    src={recipe.imgUrl || fallbackImage}
+                    alt={recipe.name}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = fallbackImage;
+                    }}
+                  />
+                  <h3>{recipe.name}</h3>
+                  <p>Meal Type: {recipe.mealType?.join(", ")}</p>
+                  <p>Diet Labels: {recipe.dietLabels?.join(", ")}</p>
+                  <p>Cuisine Type: {recipe.cuisineType?.join(", ")}</p>
+                  <Link
+                    to={`/recipes/${recipe.id}`}
+                  >
+                    View Recipe
+                  </Link>
+                  <SaveButton recipe={recipe} user={currentUser} />
+                </div>
               ))}
             </div>
           ))}
