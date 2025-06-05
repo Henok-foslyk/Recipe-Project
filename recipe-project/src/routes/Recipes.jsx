@@ -244,7 +244,7 @@ export default function Recipes() {
                   >
                     View Recipe
                   </Link>
-                  <SaveButton recipe={recipe}  />
+                  <SaveButton recipeId={recipe.id}  />
                 </div>
               ))}
             </div>

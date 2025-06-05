@@ -2,40 +2,40 @@ import React from 'react';
 import { collection, doc, setDoc, addDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import fallbackImage from '../assets/fallbackImage.jpg';
-
+import { useAuth } from "../AuthContext";
 import { toast } from "react-toastify";
-
-const SaveButton = ({ recipe}) => {
-
+import axios from "axios"
+const SaveButton = ({recipeId}) => {
+    const { currentUser } = useAuth();
     //handling when a user wants to save a recipe
     const userSaves = async () => {
         console.log("Saving...");
-        if (!user) {
+        if (!currentUser) {
             toast.error("Must be signed in to save recipes.");
             return;
         }
-
         try {
-            const saveMeal = collection(db, 'users', user.uid, "savedRecipes");
-            await addDoc(saveMeal, {
-                name: recipe.name,
-                img: recipe.image || recipe.imgUrl || fallbackImage,
-                mealType: recipe.mealType,
-                dietLabels: recipe.dietLabels,
-                cuisineType: recipe.cuisineType,
-                recipeId: recipe.uri || recipe.id || "",
-                url: recipe.url,
-                source: recipe.source || "community",
-            });
-
-            toast.success('The recipe has been saved successfully');
-        } catch (error) {
-            console.log('Error saving recipe, try again!', error);
-            toast.error("Failed to save recipe");
-        }
+            console.log("Current User: ", currentUser);
+            // Check if the recipe already exists in the user's saved recipes
+            console.log("Recipe ID: ", recipeId);
+            const response = await axios.put(
+              `http://localhost:5050/firebase-recipes/save?userId=${currentUser.id}&recipeId=${recipeId}`,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+            console.log(response.data);
+            alert("Recipe saved successfully!");
+            setIsSaved(true); // Update state to reflect that the recipe is saved
+          } catch (e) {
+            console.error("Error saving recipe:", e);
+            alert("Failed to save recipe. Please try again later.");
+          }
     };
 
-    return <button className="saveB" onClick={userSaves}>Save </button>
+    return <button className="saveB" onClick={userSaves}>Save</button>
 };
 
 export default SaveButton
