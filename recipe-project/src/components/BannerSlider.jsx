@@ -8,7 +8,6 @@ import SignUpModal from './SignupModal';
 import SignInModal from './SignInModal';
 import { useAuth } from '../AuthContext';
 import "../styles/bannerSlider.css";
-import { useAuth } from '../AuthContext';
 import "../styles/bannerSlider.css";
 const images = [banner1, banner2, banner3];
 
@@ -42,14 +41,14 @@ const BannerSlider = () => {
       <SignUpModal open={openSignUp} onClose={() => setOpenSignUp(false)} />
       <SignInModal open={openSignIn} onClose={() => setOpenSignIn(false)} />
 
-      <Box sx={{ height: '100vh', width: '100vw', position: 'relative', overflow: 'hidden', m: 0, p: 0 }}>
+      <Box sx={{ height: '70vh', width: '100vw', position: 'relative', overflow: 'hidden', m: 0, p: 0 }}>
         <Slider {...settings} ref={sliderRef}>
           {images.map((img, index) => (
             <Box
               key={index}
               sx={{
                 width: '100vw',
-                height: '100vh',
+                height: '70vh',
                 backgroundImage: `url(${img})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
@@ -62,8 +61,8 @@ const BannerSlider = () => {
           sx={{
             position: 'absolute',
             top: '50%',
-            left: '50%', // ✅ center horizontally
-            transform: 'translate(-50%, -50%)', // ✅ center both axes
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
             width: { xs: '90%', sm: '60%', md: '50%' },
             backgroundColor: 'rgba(255,255,255,0.75)',
             backdropFilter: 'blur(6px)',
