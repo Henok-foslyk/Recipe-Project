@@ -1,8 +1,29 @@
 import { Box, Typography, Card, CardContent, CardMedia, Button, Grid } from '@mui/material';
 import BannerSlider from "../components/BannerSlider";
 import recipeImg from '../assets/banner1.jpg';
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import SaveButton from '../components/SaveButton';
 
 const Home = () => {
+  const navigate = useNavigate();
+  const [featuredRecipes, setFeaturedRecipes] = useState([]);
+
+  useEffect(() => {
+    const fetchFeaturedRecipes = async () => {
+      try {
+        const response = await fetch(`http://localhost:5050/recipes?q=pasta&count=3`);
+        if (!response.ok) throw new Error('Failed to fetch featured recipes');
+        const data = await response.json();
+        setFeaturedRecipes(data.hits.slice(0, 3)); // Just 3 recipes
+      } catch (error) {
+        console.error('Error fetching featured recipes:', error);
+      }
+    };
+
+    fetchFeaturedRecipes();
+  }, []);
+  
   return (
     <>
       <BannerSlider />
@@ -18,20 +39,39 @@ const Home = () => {
         </Typography>
 
         <Grid container spacing={4} justifyContent="center">
-          {[1, 2, 3].map((_, idx) => (
+          {featuredRecipes.map(({ recipe }, idx) => (
             <Grid item xs={12} sm={6} md={4} key={idx}>
-              <Card sx={{ display: 'flex', flexDirection: 'row', height: 150 }}>
+              <Card
+                sx={{ display: 'flex', flexDirection: 'row', height: 150, cursor: 'pointer' }}
+                onClick={() => window.open(recipe.url, '_blank')}
+              >
                 <CardMedia
                   component="img"
-                  image={recipeImg}
-                  alt={`Recipe ${idx + 1}`}
+                  image={recipe.image}
+                  alt={recipe.label}
                   sx={{ width: 120, height: '100%', objectFit: 'cover' }}
                 />
-                <CardContent sx={{ flex: '1 0 auto' }}>
-                  <Typography variant="h6" sx={{ color: 'black' }}>Spaghetti alla bolognese</Typography>
-                  <Typography variant="body2" sx={{ color: 'black' }}>
-                    A short delicious summary of the recipe to get you excited...
-                  </Typography>
+                <CardContent
+                  sx={{
+                    flex: '1 0 auto',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    p: 2
+                  }}
+                >
+                  <Box>
+                    <Typography variant="h6" sx={{ color: 'black' }}>
+                      {recipe.label}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'black', whiteSpace: 'pre-line' }}>
+                      {recipe.cuisineType?.[0] && `Cuisine: ${recipe.cuisineType[0]}\n`}
+                      {recipe.dishType?.[0] && `Dish: ${recipe.dishType[0]}\n`}
+                    </Typography>
+                  </Box>
+                  <Box onClick={(e) => e.stopPropagation()}>
+                    <SaveButton recipe={recipe} />
+                  </Box>
                 </CardContent>
               </Card>
             </Grid>
@@ -52,6 +92,7 @@ const Home = () => {
         <Grid container spacing={4} justifyContent="center">
           <Grid item xs={12} sm={6} md={4}>
             <Card
+              onClick={() => navigate('/recipes')}
               sx={{
                 backgroundColor: '#7ba809',
                 color: 'white',
@@ -75,6 +116,7 @@ const Home = () => {
 
           <Grid item xs={12} sm={6} md={4}>
             <Card
+              onClick={() => navigate('/create-recipe')}
               sx={{
                 backgroundColor: '#9ecc1a',
                 color: 'white',
