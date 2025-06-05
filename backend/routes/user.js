@@ -51,19 +51,35 @@ router.post('/seed', async (req, res) => {
 router.get('/:uid/createdRecipes', async (req, res) => {
   const uid = req.params.uid;
   try {
+    // Step 1: Fetch the user document
     const userDoc = await getDoc(doc(db, 'users', uid));
     if (!userDoc.exists()) {
       return res.status(404).json({ error: 'User not found' });
     }
 
     const recipeIds = userDoc.data().createdRecipes || [];
-    res.json(recipeIds); // returns array of recipe IDs
+
+    // Step 2: Fetch all recipes in parallel using the recipe IDs
+    const recipePromises = recipeIds.map(async (id) => {
+      const recipeDoc = await getDoc(doc(db, 'recipes', id));
+      if (recipeDoc.exists()) {
+        return { id: recipeDoc.id, ...recipeDoc.data() };
+      }
+      return null; // Handle non-existing recipe
+    });
+
+    const recipes = await Promise.all(recipePromises);
+
+    // Filter out any nulls (e.g. deleted/missing recipes)
+    const validRecipes = recipes.filter(recipe => recipe !== null);
+
+    // Step 3: Send the full recipe data back to the client
+    res.json(validRecipes);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Failed to fetch created recipe IDs' });
+    console.error('Error fetching created recipes:', err);
+    res.status(500).json({ error: 'Failed to fetch created recipes.' });
   }
 });
-
 
 // GET /api/users/:uid/savedRecipes
 router.get('/:uid/savedRecipes', async (req, res) => {

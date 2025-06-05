@@ -21,13 +21,25 @@ export default function MyRecipes() {
         const fetchRecipes = async () => {
         try {
             setIsLoading(true);
-            const userId = currentUser.id; // firebase auto-gen id
-            const [createdResIDs, savedResIDs] = await Promise.all([
-            axios.get(`/api/users/${userId}/createdRecipes`),
-            axios.get(`/api/users/${userId}/savedRecipes`)
-            ]);
-            setCreatedRecipes(createdResIDs);
-            setSavedRecipes(savedResIDs);
+            //const userId = currentUser.id; // firebase auto-gen id
+            const createdResIDs = currentUser.createdRecipe || [];
+            const savedResIDs = currentUser.savedRecipe || [];
+
+            // Function to fetch one recipe by ID
+            const fetchRecipeById = async (id) => {
+                const res = await fetch(`http://localhost:5050/firebase-recipes?id=${id}`);
+                if (!res.ok) throw new Error(`Failed to fetch recipe with id ${id}`);
+                return res.json();
+            };
+
+            // Fetch all created and saved recipes in parallel
+            const [createdRecipesData, savedRecipesData] = await Promise.all([
+                Promise.all(createdResIDs.map(fetchRecipeById)),
+                Promise.all(savedResIDs.map(fetchRecipeById))
+            ]);            
+            
+            setCreatedRecipes(createdRecipesData);
+            setSavedRecipes(savedRecipesData);
             setIsLoading(false);
         } catch (err) {
             console.error('Failed to fetch recipes:', err);
@@ -35,9 +47,7 @@ export default function MyRecipes() {
         };
         fetchRecipes();
     }, [currentUser]);
-
-    //console.log(createdRecipes);
-
+    
     return (
         <>
             <Navbar />
