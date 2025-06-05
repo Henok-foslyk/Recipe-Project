@@ -1,14 +1,12 @@
-// src/components/SignUpModal.jsx
 import React, { useState } from 'react';
 import {
   Modal,
   Box,
   Typography,
   TextField,
-  Button,
-  Card,
-  CardContent
+  Button
 } from '@mui/material';
+import { useAuth } from '../AuthContext';
 
 const modalStyle = {
   position: 'absolute',
@@ -22,27 +20,31 @@ const modalStyle = {
   p: 4,
 };
 
-const SignUpModal = ({ open, onClose }) => {
+const SignInModal = ({ open, onClose }) => {
+  const { signIn } = useAuth(); // <-- Get signIn function from context
   const [form, setForm] = useState({
     username: '',
-    name: '',
     password: '',
   });
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {
-    // handle your sign-up logic here (e.g., send to Firebase/Auth server)
-    console.log('User submitted:', form);
-    onClose(); // Close modal after submission
+  const handleSubmit = async () => {
+    try {
+      await signIn(form.username, form.password); // use AuthContext's signIn
+      onClose(); // Close modal if successful
+    } catch (err) {
+      setError('Invalid username or password');
+    }
   };
 
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={modalStyle}>
-        <Typography variant="h5" gutterBottom>Sign Up</Typography>
+        <Typography variant="h5" gutterBottom>Sign In</Typography>
         <TextField
           fullWidth
           label="Username"
@@ -60,6 +62,11 @@ const SignUpModal = ({ open, onClose }) => {
           value={form.password}
           onChange={handleChange}
         />
+        {error && (
+          <Typography variant="body2" color="error" sx={{ mt: 1 }}>
+            {error}
+          </Typography>
+        )}
         <Button
           fullWidth
           variant="contained"
@@ -73,4 +80,4 @@ const SignUpModal = ({ open, onClose }) => {
   );
 };
 
-export default SignUpModal;
+export default SignInModal;

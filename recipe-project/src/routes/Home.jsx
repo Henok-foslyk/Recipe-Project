@@ -7,15 +7,18 @@ const Home = () => {
     <>
       <BannerSlider />
 
-      <Box sx={{ px: { xs: 4, sm: 8, md: 12 }, py: { xs: 6, sm: 8 }, backgroundColor: '#f9f9f9' }}>
-        <Typography variant="h4" gutterBottom sx={{ color: 'black' }}>
+
+      <Box sx={{ px: 4, py: 6, backgroundColor: '#f9f9f9', width: '100%' }}>
+        <Typography variant="h4" gutterBottom sx={{ color: 'black', textAlign: 'center' }}>
+
           Featured Recipes
         </Typography>
-        <Typography variant="body1" sx={{ color: 'black', mb: 3 }}>
+        <Typography variant="body1" sx={{ color: 'black', mb: 3, textAlign: 'center' }}>
           Handpicked dishes you’ll love—from quick bites to gourmet meals.
         </Typography>
-        <Grid container spacing={3}>
-          {[1, 2, 3, 4].map((_, idx) => (
+
+        <Grid container spacing={4} justifyContent="center">
+          {[1, 2, 3].map((_, idx) => (
             <Grid item xs={12} sm={6} md={4} key={idx}>
               <Card sx={{ display: 'flex', flexDirection: 'row', height: 150 }}>
                 <CardMedia

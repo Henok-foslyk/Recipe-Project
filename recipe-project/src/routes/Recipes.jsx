@@ -17,9 +17,6 @@ export default function Recipes() {
   const [mealType, setMealType] = useState("");
   const [diet, setDiet] = useState("");
   const [query, setQuery] = useState("");
-  const [health, setHealth] = useState("");
-  const [cuisineType, setCuisineType] = useState("");
-
 
   //help for toggle betweeen user and edamam recipes
   const [showUserRecipes, setShowUserRecipes] = useState(false);
@@ -50,7 +47,15 @@ export default function Recipes() {
       const params = new URLSearchParams();
 
       // Randomized default food list for initial display so its not just 1 food
-      const loadFood = ["chicken", "pasta", "rice", "salad", "tofu", "beef", "soup", "fruits", "yam", "kenkey", "porridge"];
+      const loadFood = [
+        "chicken",
+        "pasta",
+        "rice",
+        "salad",
+        "tofu",
+        "beef",
+        "soup",
+      ];
 
       // Use query if the user provides it, else we randomize default food
       const loadQuery =
@@ -60,14 +65,12 @@ export default function Recipes() {
       // Append meal type and diet filters if set by user
       if (mealType) params.append("mealType", mealType);
       if (diet) params.append("diet", diet);
-      if (health) params.append("health", health);
-      if (cuisineType) params.append("cuisineType", cuisineType);
 
       const response = await fetch(
         `http://localhost:5050/recipes?${params.toString()}`
       );
 
-
+      // Check for successful response or throw an error if failed
       if (!response.ok) {
         throw new Error("Failed to fetch recipes");
       }
@@ -75,7 +78,7 @@ export default function Recipes() {
       const data = await response.json();
       setRecipes(data.hits || []);
     } catch (error) {
-      console.log("Can't fetch recipes", error);
+      console.log("Can't fetch recipes", error); // Log any errors
       setRecipes([]);
     }
     setLoading(false);
@@ -90,29 +93,37 @@ export default function Recipes() {
     }
   }, [showUserRecipes]);
 
-  /* returns the API calls, the different options and components */
   return (
     <>
       <Navbar />
       <div className="recipe-container">
         <h2>Search Recipes</h2>
-        <div className="allButtons" >
 
-          <div className="all-search">
+        {/* Toggle buttons to switch between Edamame recipes and user-created recipes */}
+        <div className="toggle-buttons">
+          <button
+            className={showUserRecipes ? "" : "active"}
+            onClick={() => setShowUserRecipes(false)}
+          >
+            Edamam Recipes
+          </button>
+          <button
+            className={showUserRecipes ? "active" : ""}
+            onClick={() => setShowUserRecipes(true)}
+          >
+            My Recipes
+          </button>
+        </div>
 
-            {/* Search input for recipes */}
-            <input
-              className="search-input"
-              type="text"
-              placeholder="Search recipes..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') { //if we click enter we can also get the recipes instead of clicking search button
-                  getRecipes();
-                }
-              }}
-            />
+        <div className="all-search">
+          {/* Search input for recipes */}
+          <input
+            className="search-input"
+            type="text"
+            placeholder="Search recipes..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
 
             {/* Dropdown to select meal type choices and others fields */}
             <select
@@ -177,9 +188,16 @@ export default function Recipes() {
             </button>
           </div>
 
-        </div>
 
-        {/* Show skeleton loader when loading Edamame recipes*/}
+          <button className="search" onClick={getRecipes}>
+            Search
+          </button>
+        </div>
+        
+
+        <div class="grid-container">
+            
+          {/* Show skeleton loader when loading Edamame recipes*/}
         {!showUserRecipes &&
           (loading ? (
             <div className="recipe-grid">
@@ -243,6 +261,8 @@ export default function Recipes() {
               ))}
             </div>
           ))}
+        </div>
+        
       </div>
     </>
   );

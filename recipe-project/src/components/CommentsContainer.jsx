@@ -73,7 +73,7 @@ export default function CommentsContainer({ recipeId, initialComments}) {
           <p className="no-comments">No comments yet.</p>
         ) : (
           comments.map((c, idx) => (
-            <Comment key={idx} user={c.user} rating={c.rating} text={c.text} />
+            <Comment key={idx} index={idx} user={c.user} rating={c.rating} text={c.text} votes={c.upvotes} recipeId={recipeId}/>
           ))
         )}
       </div>

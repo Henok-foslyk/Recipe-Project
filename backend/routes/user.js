@@ -1,6 +1,6 @@
 const express = require('express');
 const { db } = require('../firebase.js');
-const { collection, getDocs, doc, deleteDoc } = require('firebase/firestore');
+const { collection, getDocs, doc, deleteDoc, addDoc } = require('firebase/firestore');
 
 const router = express.Router();
 
@@ -13,6 +13,49 @@ router.get('/:uid/createdRecipes', async (req, res) => {
     res.json(recipes);
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch created recipes' });
+  }
+});
+
+// ✅ POST /users/signin – handles login by checking Firestore for username/password
+router.post("/signin", async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const snapshot = await db.collection("users")
+      .where("username", "==", username)
+      .limit(1)
+      .get();
+
+    if (snapshot.empty) {
+      return res.status(401).json({ message: "User not found" });
+    }
+
+    const userDoc = snapshot.docs[0];
+    const userData = userDoc.data();
+
+    
+    if (userData.password !== password) {
+      return res.status(401).json({ message: "Invalid password" });
+    }
+
+    // Don't return the password
+    const { password: _, ...safeUserData } = userData;
+
+    res.status(200).json(safeUserData);
+  } catch (err) {
+    console.error("Error during signin:", err);
+    res.status(500).json({ error: "Something went wrong during signin" });
+  }
+});
+
+
+router.post('/seed', async (req, res) => {
+  try{
+    const docRef = await db.collection("users").add(req.body);
+    const savedPost = { id: docRef.id, ...req.body };
+     res.status(200).json(savedPost);
+  }catch(e){
+    res.status(500).json({ error: 'Failed to fetch created new user' });
   }
 });
 
@@ -71,6 +114,7 @@ router.patch('/recipes/approveRequest/:rid', async (req, res) => {
     res.status(500).json({ error: 'Failed to approve recipe' });
   }
 });
+
 
 
 module.exports = router;

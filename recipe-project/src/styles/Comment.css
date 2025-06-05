@@ -32,3 +32,16 @@
     line-height: 1.3;
   }
   
+  .comment-header button {
+    background: transparent; /* removes default button background */
+    border: none;            /* removes border */
+    padding: 0;              /* optional—removes any built-in padding */
+    cursor: pointer;         /* keeps pointer cursor on hover */
+    outline: none;           /* optional—removes focus outline */
+  }
+  
+  .comment-header button:hover {
+    /* if you want a subtle hover effect, you could add:
+       background: rgba(0,0,0,0.05);
+    */
+  }
