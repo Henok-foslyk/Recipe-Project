@@ -17,6 +17,8 @@ export default function Recipes() {
   const [mealType, setMealType] = useState("");
   const [diet, setDiet] = useState("");
   const [query, setQuery] = useState("");
+  const [health, setHealth] = useState("");
+  const [cuisineType, setCuisineType] = useState("");
 
   //help for toggle betweeen user and edamam recipes
   const [showUserRecipes, setShowUserRecipes] = useState(false);
