@@ -37,6 +37,7 @@
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
+    background-color: white;
 
 }
 
@@ -47,6 +48,8 @@
     border-radius: 8px;
     border: 1px solid #99ae9a;
     justify-content: flex-start;
+    background-color: white;
+    color: black;
 }
 
 .search-input {
@@ -175,6 +178,21 @@
 .toggle-buttons button:hover {
     background-color: rgb(177, 129, 17);
     color: white;
+}
+
+.saveB {
+    all: unset;
+    color: #4caf50;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    display: inline-block;
+    padding: 15px;
+}
+
+.saveB:hover {
+    text-decoration: underline;
+    color: rgb(177, 129, 17);
 }
 
 /*shimmer for skeleton loaders */
