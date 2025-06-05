@@ -15,13 +15,8 @@
 }
 
 .back-button {
-  /* Make it a block so it always appears on its own line */
   display: block;
-  /* If you want it left-aligned, use margin-bottom for spacing: */
   margin: 1rem 0;
-  /* If you’d rather center it, use auto left/right: */
-  /* margin: 1rem auto; */
-
   padding: 0.5rem 1rem;
   font-size: 0.9rem;
   background: #eee;
