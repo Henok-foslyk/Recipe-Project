@@ -63,7 +63,7 @@ export default function AdminPage({ isAdmin }) {
   return (
     <>
       <Navbar/>
-      <Box p={6}>
+      <Box p={6} margin={'20'}>
       <Heading mb={4}>Pending Recipes for Review</Heading>
 
       { loading ? (
