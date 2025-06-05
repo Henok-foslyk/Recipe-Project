@@ -10,7 +10,6 @@ router.get("/", async (req, res) => {
   if (!recipeId) {
     return res.status(400).json({ error: "Recipe ID is required in ?id=" });
   }
-
   try {
     // 1) Use Admin SDK style: db.collection("recipes").doc(recipeId)
     const docRef = db.collection("recipes").doc(recipeId);
@@ -86,6 +85,33 @@ router.delete("/delete", async (req, res) => {
   } catch (error) {
     console.error("Error removing recipe for user:", error);
     return res.status(500).json({ error: "Failed to remove saved recipe." });
+  }
+});
+
+router.get("/check-saved", async (req, res) => {
+  const { userId, recipeId } = req.query;
+
+  if (!userId || !recipeId) {
+    return res.status(400).json({ error: "userId and recipeId are required in the query parameters." });
+  }
+
+  try {
+    const savedRecipeRef = db
+      .collection("users")
+      .doc(userId)
+      .collection("savedRecipes")
+      .doc(recipeId);
+
+    const docSnap = await savedRecipeRef.get();
+
+    if (docSnap.exists) {
+      return res.json({ isSaved: true });
+    } else {
+      return res.json({ isSaved: false });
+    }
+  } catch (error) {
+    console.error("Error checking saved recipe:", error);
+    return res.status(500).json({ error: "Failed to check saved recipe." });
   }
 });
 
