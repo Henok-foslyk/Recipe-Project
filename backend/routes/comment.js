@@ -9,15 +9,6 @@ const { db } = require("../firebase");
 // Helper alias for FieldValue.arrayUnion
 const arrayUnion = admin.firestore.FieldValue.arrayUnion;
 
-/**
- * POST /comments?id=<recipeId>
- * 
- * Body JSON should contain:
- *   { user, rating, text, date }
- *
- * This route will take those fields and append them as a new object
- * in the `comments` array of the recipe document.
- */
 router.post("/", async (req, res) => {
   const recipeId = req.query.id;
   if (!recipeId) {
@@ -26,7 +17,7 @@ router.post("/", async (req, res) => {
       .json({ error: "Recipe ID is required as ?id=<recipeId>" });
   }
 
-  const { user, rating, text, date } = req.body;
+  const { user, rating, text, date, upvotes } = req.body;
   if (!user || !text) {
     return res
       .status(400)
@@ -42,7 +33,7 @@ router.post("/", async (req, res) => {
     }
 
     // 2) Build the comment object exactly as your front-end expects
-    const newComment = { user, rating, text, date, upvotes: 0 };
+    const newComment = { user, rating, text, date, upvotes};
     // 3) Use arrayUnion to append to the existing `comments` array
     await recipeRef.update({
       comments: arrayUnion(newComment),
