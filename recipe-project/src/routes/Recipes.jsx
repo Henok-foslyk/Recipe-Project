@@ -208,7 +208,7 @@ export default function Recipes() {
                   <a href={recipe.url} target="_blank" rel="noreferrer">
                     View Recipe
                   </a>
-                  <SaveButton recipe={recipe} />
+                  <SaveButton recipe={recipe}/>
                 </div>
               ))}
             </div>

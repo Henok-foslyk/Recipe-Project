@@ -5,7 +5,7 @@ import fallbackImage from '../assets/fallbackImage.jpg';
 
 import { toast } from "react-toastify";
 
-const SaveButton = ({ recipe, user }) => {
+const SaveButton = ({ recipe}) => {
 
     //handling when a user wants to save a recipe
     const userSaves = async () => {
