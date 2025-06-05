@@ -17,11 +17,12 @@ const SaveButton = ({ recipe }) => {
         // }
 
         try {
-            const saveMeal = collection(db, "savedRecipes");
+            const saveMeal = collection(db, "recipes");
             await addDoc(saveMeal, {
                 img: recipe.image,
                 mealType: recipe.mealType,
                 dietLabels: recipe.dietLabels,
+                cuisineType: recipe.cuisineType,
                 recipeId: recipe.uri,
                 // userId: user.uid,
                 url: recipe.url,
