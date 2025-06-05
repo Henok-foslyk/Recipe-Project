@@ -8,12 +8,14 @@ import SignUpModal from './SignupModal';
 import SignInModal from './SignInModal';
 import { useAuth } from '../AuthContext';
 import "../styles/bannerSlider.css";
+import { useAuth } from '../AuthContext';
+import "../styles/bannerSlider.css";
 const images = [banner1, banner2, banner3];
 
 const BannerSlider = () => {
   const [openSignUp, setOpenSignUp] = useState(false);
   const [openSignIn, setOpenSignIn] = useState(false);
-  const { currentUser } = useAuth(); 
+  const { currentUser } = useAuth();
 
   const sliderRef = useRef();
 
