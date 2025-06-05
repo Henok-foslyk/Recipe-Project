@@ -47,73 +47,34 @@ router.post('/seed', async (req, res) => {
   }
 });
 
-// GET /api/users/:uid/createdRecipes
-router.get('/:uid/createdRecipes', async (req, res) => {
+// GET /api/user/:uid
+router.get('/:uid', async (req, res) => {
   const uid = req.params.uid;
+
   try {
-    // Step 1: Fetch the user document
-    const userDoc = await getDoc(doc(db, 'users', uid));
-    if (!userDoc.exists()) {
-      return res.status(404).json({ error: 'User not found' });
+    // 1) Get reference to the user document
+    const docRef = db.collection('users').doc(uid);
+
+    // 2) Fetch the document snapshot
+    const docSnap = await docRef.get();
+
+    // 3) If it doesn’t exist, return 404
+    if (!docSnap.exists) {
+      return res.status(404).json({ error: 'User not found.' });
     }
 
-    const recipeIds = userDoc.data().createdRecipes || [];
+    // 4) Get the data and respond
+    const data = docSnap.data();
+    const createdRecipes = data.createdRecipe || [];
+    const savedRecipes = data.savedRecipe || [];
 
-    // Step 2: Fetch all recipes in parallel using the recipe IDs
-    const recipePromises = recipeIds.map(async (id) => {
-      const recipeDoc = await getDoc(doc(db, 'recipes', id));
-      if (recipeDoc.exists()) {
-        return { id: recipeDoc.id, ...recipeDoc.data() };
-      }
-      return null; // Handle non-existing recipe
-    });
+    return res.json({ createdRecipes, savedRecipes });
 
-    const recipes = await Promise.all(recipePromises);
-
-    // Filter out any nulls (e.g. deleted/missing recipes)
-    const validRecipes = recipes.filter(recipe => recipe !== null);
-
-    // Step 3: Send the full recipe data back to the client
-    res.json(validRecipes);
-  } catch (err) {
-    console.error('Error fetching created recipes:', err);
-    res.status(500).json({ error: 'Failed to fetch created recipes.' });
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    return res.status(500).json({ error: 'Failed to fetch user data.' });
   }
 });
-
-// GET /api/users/:uid/savedRecipes
-router.get('/:uid/savedRecipes', async (req, res) => {
-  const uid = req.params.uid;
-  try {
-    const querySnap = await getDocs(collection(db, 'users', uid, 'savedRecipes'));
-    const recipes = querySnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    res.json(recipes);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to save recipe' });
-  }
-});
-
-// POST /api/users/:uid/saveRecipe
-router.post('/:uid/saveRecipe', async (req, res) => {
-  const { uid } = req.params;
-  const { recipe, source } = req.body; // source = 'edamam' or 'community'
-
-  try {
-    const savedRef = collection(db, 'users', uid, 'savedRecipes');
-
-    await addDoc(savedRef, {
-      ...recipe,
-      source,
-      savedAt: new Date()
-    });
-
-    res.status(200).json({ message: 'Recipe saved successfully' });
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to save recipe' });
-  }
-});
-
-
 
 // DELETE /api/users/:uid/savedRecipes/:id
 router.delete('/:uid/savedRecipes/:id', async (req, res) => {
