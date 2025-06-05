@@ -1,5 +1,5 @@
 // src/context/AuthContext.jsx
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 const AuthContext = createContext();
 
@@ -22,7 +22,6 @@ export const AuthProvider = ({ children }) => {
 
       const user = await response.json();
       setCurrentUser(user);
-      console.log("USER LOG: " + user);
       localStorage.setItem("user", JSON.stringify(user));
     } catch (err) {
       console.error("Login failed:", err);
