@@ -7,7 +7,7 @@ const Home = () => {
     <>
       <BannerSlider />
 
-      <Box sx={{ px: 4, py: 6, backgroundColor: '#f9f9f9' }}>
+      <Box sx={{ px: { xs: 4, sm: 8, md: 12 }, py: { xs: 6, sm: 8 }, backgroundColor: '#f9f9f9' }}>
         <Typography variant="h4" gutterBottom sx={{ color: 'black' }}>
           Featured Recipes
         </Typography>
@@ -25,7 +25,7 @@ const Home = () => {
                   sx={{ width: 120, height: '100%', objectFit: 'cover' }}
                 />
                 <CardContent sx={{ flex: '1 0 auto' }}>
-                  <Typography variant="h6" sx={{ color: 'black' }}>Recipe Name</Typography>
+                  <Typography variant="h6" sx={{ color: 'black' }}>Spaghetti alla bolognese</Typography>
                   <Typography variant="body2" sx={{ color: 'black' }}>
                     A short delicious summary of the recipe to get you excited...
                   </Typography>
@@ -36,6 +36,8 @@ const Home = () => {
         </Grid>
       </Box>
 
+
+
       <Box sx={{ px: 4, py: 6 }}>
         <Typography variant="h4" gutterBottom sx={{ color: 'black' }}>
           How it Works
@@ -43,7 +45,7 @@ const Home = () => {
         <Typography variant="body1" sx={{ color: 'black', mb: 3 }}>
           Discover how to engage with the ReciMe community in two simple steps.
         </Typography>
-        
+
         <Grid container spacing={4} justifyContent="center">
           <Grid item xs={12} sm={6} md={4}>
             <Card
