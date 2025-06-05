@@ -91,6 +91,7 @@
     background-color: #fff;
     min-width: 300px;
     width: 350px;
+    height: 100%;
     /*we can add it or not */
     padding: 1rem;
     box-shadow: 0 2px 8px rgba(0.1, 0.1, 0, 0.1);
@@ -104,10 +105,11 @@
 }
 
 .recipe-card img {
-    padding: 2px;
-    width: 350px;
+    width: 100%;
+    height: 220px;
     object-fit: cover;
     border-radius: 12px;
+    display: block;
 }
 
 .recipe-card h3 {
@@ -140,7 +142,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
     /* grid-template-columns: repeat(5, 1fr); */
-    gap: 3rem;
+    gap: 2rem;
     max-width: 1200px;
     width: 100%;
 }

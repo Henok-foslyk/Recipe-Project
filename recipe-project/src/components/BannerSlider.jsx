@@ -8,7 +8,6 @@ import SignUpModal from './SignupModal';
 import SignInModal from './SignInModal';
 import { useAuth } from '../AuthContext';
 import "../styles/bannerSlider.css";
-import { useAuth } from '../AuthContext';
 import "../styles/bannerSlider.css";
 const images = [banner1, banner2, banner3];
 
