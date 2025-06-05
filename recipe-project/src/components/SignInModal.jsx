@@ -1,4 +1,4 @@
-// src/components/SignUpModal.jsx
+    
 import React, { useState } from 'react';
 import {
   Modal,
