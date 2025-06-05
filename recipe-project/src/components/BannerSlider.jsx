@@ -58,10 +58,10 @@ const BannerSlider = () => {
       <Card
         sx={{
           position: 'absolute',
-          top: '50%',
-          left: '10%',
+          top: '70%',
+          left: '8%',
           transform: 'translateY(-50%)',
-          width: { xs: '90%', sm: '60%', md: '50%' },
+          width: { xs: '90%', sm: '60%', md: '44%' },
           height: '25vh',
           backgroundColor: 'rgba(255,255,255,0.75)',
           backdropFilter: 'blur(6px)',
