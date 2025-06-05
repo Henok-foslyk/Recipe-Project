@@ -7,34 +7,27 @@ const router = express.Router();
 // ✅ POST /users/signin – handles login by checking Firestore for username/password
 router.post("/signin", async (req, res) => {
   const { username, password } = req.body;
-
   try {
     const snapshot = await db.collection("users")
       .where("username", "==", username)
       .limit(1)
       .get();
-
     if (snapshot.empty) {
       return res.status(401).json({ message: "User not found" });
     }
-
     const userDoc = snapshot.docs[0];
-    const userData = userDoc.data();
+    let userData = userDoc.data();
     userData = {...userData, "id": userDoc.id};
-
     
     if (userData.password !== password) {
       return res.status(401).json({ message: "Invalid password" });
     }
-
     // Don't return the password
     const safeUserData = {
       id: userDoc.id,       // or use `uid: userDoc.id` if you prefer
       ...userData,
     };
     delete safeUserData.password;
-    //const { password: _, ...safeUserData } = userData;
-
     res.status(200).json(safeUserData);
   } catch (err) {
     console.error("Error during signin:", err);
