@@ -1,6 +1,6 @@
 const express = require('express');
 const { db } = require('../firebase.js');
-const { collection, getDocs, doc, deleteDoc } = require('firebase/firestore');
+const { collection, getDocs, doc, deleteDoc, addDoc } = require('firebase/firestore');
 
 const router = express.Router();
 
@@ -13,6 +13,17 @@ router.get('/:uid/createdRecipes', async (req, res) => {
     res.json(recipes);
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch created recipes' });
+  }
+});
+
+
+router.post('/seed', async (req, res) => {
+  try{
+    const docRef = await db.collection("users").add(req.body);
+    const savedPost = { id: docRef.id, ...req.body };
+     res.status(200).json(savedPost);
+  }catch(e){
+    res.status(500).json({ error: 'Failed to fetch created new user' });
   }
 });
 
@@ -71,6 +82,7 @@ router.patch('/recipes/approveRequest/:rid', async (req, res) => {
     res.status(500).json({ error: 'Failed to approve recipe' });
   }
 });
+
 
 
 module.exports = router;

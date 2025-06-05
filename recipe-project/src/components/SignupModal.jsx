@@ -1,5 +1,7 @@
 // src/components/SignUpModal.jsx
 import React, { useState } from 'react';
+import axios from 'axios';
+
 import {
   Modal,
   Box,
@@ -27,16 +29,22 @@ const SignUpModal = ({ open, onClose }) => {
     username: '',
     name: '',
     password: '',
+    createdRecipe: [],
+    savedRecipe: [],
   });
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {
-    // handle your sign-up logic here (e.g., send to Firebase/Auth server)
+  const handleSubmit = async () => {
     console.log('User submitted:', form);
-    onClose(); // Close modal after submission
+    try{
+        axios.post('http://localhost:5050/users/seed', form);
+    }catch(e){
+        console.log("An error occured", e);
+    }
+    onClose(); 
   };
 
   return (
