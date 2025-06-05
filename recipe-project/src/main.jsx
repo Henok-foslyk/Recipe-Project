@@ -13,7 +13,6 @@ createRoot(document.getElementById('root')).render(
       <ChakraProvider value={defaultSystem}>
         <RouterProvider router={router} />
       </ChakraProvider>
-    </AuthProvider>
-    
+    </AuthProvider> 
   </StrictMode>,
 )
