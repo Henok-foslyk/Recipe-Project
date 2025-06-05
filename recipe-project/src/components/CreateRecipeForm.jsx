@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { db } from '../firebase';
 import { doc, setDoc, arrayUnion, collection, addDoc, Timestamp } from 'firebase/firestore';
 import { useAuth } from '../AuthContext';
@@ -60,9 +60,6 @@ const DragDropBox = styled(Box)(() => ({
   cursor: 'pointer',
 }));
 
-
-
-
 const CreateRecipe = () => {
   const [recipeName, setRecipeName] = useState('');
   const [ingredients, setIngredients] = useState('');
@@ -74,7 +71,7 @@ const CreateRecipe = () => {
   const [imageFile, setImageFile] = useState(null);
   const [instructions, setInstructions] = useState('');
   const { currentUser } = useAuth();
-  
+
   // Tracks whether user has tried to submit, for showing inline errors
   const [touchedSubmit, setTouchedSubmit] = useState(false);
 
@@ -112,12 +109,11 @@ const CreateRecipe = () => {
   const handleSubmit = async () => {
     setTouchedSubmit(true);
 
-    // Prevent submission if any required field is empty
     if (!recipeName.trim() || !ingredients.trim() || !instructions.trim()) {
+      toast.error('Please fill in all required fields.');
       return;
     }
 
-    // Split ingredients/instructions into arrays, trimming out empty items
     const ingredientsArray = ingredients
       .split(',')
       .map((item) => item.trim())
@@ -140,24 +136,24 @@ const CreateRecipe = () => {
         instructions: instructionsArray,
         isApproved: false,
         isEdemam: false,
-        imgUrl: '', // Placeholder; update once you handle uploads
+        imgUrl: '', // Placeholder; update when image upload implemented
         comments: [],
         createdAt: Timestamp.now(),
         type: '',
       });
 
-      try {
-        if (currentUser && currentUser.id) {
+      if (currentUser && currentUser.id) {
+        try {
           const userRef = doc(db, 'users', currentUser.id);
           await setDoc(userRef, {
-            savedRecipe: arrayUnion(docRef.id),
+            createdRecipe: arrayUnion(docRef.id),
           }, { merge: true });
+        } catch (userUpdateError) {
+          console.error("Error updating user's createdRecipe:", userUpdateError);
         }
-      } catch (userUpdateError) {
-        console.error("Error updating user's savedRecipe:", userUpdateError);
       }
 
-      // Clear all fields and reset touchedSubmit
+      // Clear form and reset touchedSubmit
       setRecipeName('');
       setIngredients('');
       setDescription('');
@@ -168,12 +164,14 @@ const CreateRecipe = () => {
       setSelectedCuisineType([]);
       setImageFile(null);
       setTouchedSubmit(false);
+
+      toast.success('Recipe created successfully!');
     } catch (error) {
       console.error('Error adding recipe:', error);
+      toast.error('Failed to create recipe. Please try again.');
     }
   };
 
-  // Disable submit if any required field is blank
   const isSubmitDisabled =
     !recipeName.trim() || !ingredients.trim() || !instructions.trim();
 
@@ -188,6 +186,8 @@ const CreateRecipe = () => {
         color: 'black',
       }}
     >
+      <ToastContainer position="top-right" autoClose={3000} />
+
       <Typography
         variant="h3"
         sx={{
@@ -397,10 +397,10 @@ const CreateRecipe = () => {
           />
         </Stack>
 
-        {/* Ingredients (required, comma-delimited) */}
+        {/* Ingredients (required) */}
         <Stack direction="row" spacing={2} alignItems="flex-start">
           <Typography sx={{ minWidth: 150, fontWeight: 'bold' }}>
-            Ingredients *  
+            Ingredients *
           </Typography>
           <TextField
             fullWidth
@@ -425,7 +425,7 @@ const CreateRecipe = () => {
           />
         </Stack>
 
-        {/* Recipe Instructions (required, comma-delimited) */}
+        {/* Instructions (required) */}
         <Stack direction="row" spacing={2} alignItems="flex-start">
           <Typography sx={{ minWidth: 150, fontWeight: 'bold' }}>
             Instructions *
@@ -509,3 +509,4 @@ const CreateRecipe = () => {
 };
 
 export default CreateRecipe;
+       
