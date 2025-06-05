@@ -40,7 +40,11 @@ router.post("/signin", async (req, res) => {
     }
 
     // Don't return the password
-    const { password: _, ...safeUserData } = userData;
+    const safeUserData = {
+      id: userDoc.id,       // or use `uid: userDoc.id` if you prefer
+      ...userData,
+    };
+    delete safeUserData.password;
 
     res.status(200).json(safeUserData);
   } catch (err) {

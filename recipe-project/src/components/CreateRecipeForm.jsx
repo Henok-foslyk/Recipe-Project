@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { db } from '../firebase';
-import { collection, addDoc, Timestamp } from 'firebase/firestore';
+import { doc, setDoc, arrayUnion, collection, addDoc, Timestamp } from 'firebase/firestore';
+import { useAuth } from '../AuthContext';
 import {
   Box,
   Button,
@@ -10,6 +11,9 @@ import {
   Typography,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const HEALTH_LABELS = [
   { name: 'Dairy-Free', color: '#C4FFF9' },
@@ -56,6 +60,9 @@ const DragDropBox = styled(Box)(() => ({
   cursor: 'pointer',
 }));
 
+
+
+
 const CreateRecipe = () => {
   const [recipeName, setRecipeName] = useState('');
   const [ingredients, setIngredients] = useState('');
@@ -66,7 +73,8 @@ const CreateRecipe = () => {
   const [selectedCuisineType, setSelectedCuisineType] = useState([]);
   const [imageFile, setImageFile] = useState(null);
   const [instructions, setInstructions] = useState('');
-
+  const { currentUser } = useAuth();
+  
   // Tracks whether user has tried to submit, for showing inline errors
   const [touchedSubmit, setTouchedSubmit] = useState(false);
 
@@ -138,7 +146,16 @@ const CreateRecipe = () => {
         type: '',
       });
 
-      console.log('Recipe saved with ID:', docRef.id);
+      try {
+        if (currentUser && currentUser.id) {
+          const userRef = doc(db, 'users', currentUser.id);
+          await setDoc(userRef, {
+            savedRecipe: arrayUnion(docRef.id),
+          }, { merge: true });
+        }
+      } catch (userUpdateError) {
+        console.error("Error updating user's savedRecipe:", userUpdateError);
+      }
 
       // Clear all fields and reset touchedSubmit
       setRecipeName('');
