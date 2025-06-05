@@ -47,6 +47,21 @@ router.post('/seed', async (req, res) => {
   }
 });
 
+// GET /users/:id – get a single user by ID or uid whichever one u want.
+router.get('/:id', async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const doc = await db.collection('users').doc(userId).get();
+    if (!doc.exists) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.status(200).json({ id: doc.id, ...doc.data() });
+  } catch (err) {
+    console.error('Error fetching user by ID:', err);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+});
+
 // GET /api/user/:uid
 router.get('/:uid', async (req, res) => {
   const uid = req.params.uid;
@@ -104,6 +119,24 @@ router.get('/recipes/unapproved', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch unapproved recipes' });
   }
 });
+
+//function to receive all approved recipes 
+router.get('/recipes/approved', async (req, res) => {
+  try {
+    const querySnap = await db.collection('recipes').where('isApproved', '==', true).get();
+
+    const approvedRecipes = querySnap.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    res.json(approvedRecipes);
+  } catch (err) {
+    console.error('Error fetching approved recipes:', err);
+    res.status(500).json({ error: 'Failed to fetch approved recipes' });
+  }
+});
+
 
 router.patch('/recipes/approveRequest/:rid', async (req, res) => {
   try {

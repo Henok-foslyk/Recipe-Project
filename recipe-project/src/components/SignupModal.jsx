@@ -31,6 +31,7 @@ const SignUpModal = ({ open, onClose }) => {
     password: '',
     createdRecipe: [],
     savedRecipe: [],
+    admin: false,
   });
 
   const handleChange = (e) => {

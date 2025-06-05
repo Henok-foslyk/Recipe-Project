@@ -8,6 +8,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 import SaveButton from "../components/SaveButton";
 import fallbackImage from '../assets/fallbackImage.jpg';
+import axios from 'axios';
 
 
 export default function Recipes() {
@@ -27,21 +28,16 @@ export default function Recipes() {
 
   //get user recipes from firebase
   const fetchRecipes = async () => {
-    setLoading(true);
-    try {
-      const myRecipes = collection(db, "recipes");
-      const querySnapShot = await getDocs(myRecipes);
-      const recipeList = querySnapShot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setUserRecipes(recipeList);
-    } catch (error) {
-      console.log("Error getting recipes: ", error);
-      setUserRecipes([]);
-    }
-    setLoading(false);
-  };
+  setLoading(true);
+  try {
+    const response = await axios.get('http://localhost:5050/users/recipes/approved');
+    setUserRecipes(response.data); // response.data should be an array of approved recipes
+  } catch (error) {
+    console.log("Error getting approved recipes: ", error);
+    setUserRecipes([]);
+  }
+  setLoading(false);
+};
 
   // Fetch recipes based on query, meal type, and diet filters
   const getRecipes = async () => {
@@ -248,7 +244,7 @@ export default function Recipes() {
                   >
                     View Recipe
                   </Link>
-                  <SaveButton recipe={recipe}  />
+                  <SaveButton recipeId={recipe.id}  />
                 </div>
               ))}
             </div>

@@ -111,7 +111,6 @@ export default function RecipeDetails() {
             <h1 style={{ color: "black", margin: 0 }}>Recipe Details</h1>
             <button
               onClick={isSaved ? deleteRecipe : saveRecipe}
-
             >
               {isSaved ? (
                 <IoBookmark size={24} />
