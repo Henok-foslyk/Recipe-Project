@@ -76,6 +76,27 @@ router.get('/:uid/savedRecipes', async (req, res) => {
   }
 });
 
+// POST /api/users/:uid/saveRecipe
+router.post('/:uid/saveRecipe', async (req, res) => {
+  const { uid } = req.params;
+  const { recipe, source } = req.body; // source = 'edamam' or 'community'
+
+  try {
+    const savedRef = collection(db, 'users', uid, 'savedRecipes');
+
+    await addDoc(savedRef, {
+      ...recipe,
+      source,
+      savedAt: new Date()
+    });
+
+    res.status(200).json({ message: 'Recipe saved successfully' });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to save recipe' });
+  }
+});
+
+
 
 // DELETE /api/users/:uid/savedRecipes/:id
 router.delete('/:uid/savedRecipes/:id', async (req, res) => {
