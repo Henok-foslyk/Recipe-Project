@@ -34,6 +34,7 @@ export default function CommentsContainer({ recipeId, initialComments}) {
       rating: `${newRating}/5`,
       text: newText.trim(),
       date: new Date().toISOString().slice(0, 10),
+      upvotes: 0, // Start with 0 upvotes
     };
 
     // Optimistically update local state so the user sees it immediately
