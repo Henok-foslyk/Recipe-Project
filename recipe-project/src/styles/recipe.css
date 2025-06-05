@@ -3,6 +3,11 @@
     background: transparent;
 }
 
+.grid-container {
+    display: flex;
+    justify-content: center;
+}
+
 .recipe-container {
     max-width: 2500px;
     width: 100%;
@@ -28,6 +33,7 @@
 }
 
 .all-search {
+    justify-content: center;
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
