@@ -5,7 +5,7 @@ export default function RecipeCard({ recipe, type, onDelete, onRemove, onEdit, o
   return (
     <div className="recipe-card" onClick={() => onView(recipe.id)}>
       <img src={recipe.image || '/default.png'} alt={recipe.title} className="recipe-img" />
-      <h3>{recipe.title}</h3>
+      <h3>{recipe.name}</h3>
       <p>{recipe.description || 'Quick and healthy'}</p>
       <div className="recipe-actions">
         {type === 'created' ? ( // For MyRecipes
@@ -18,7 +18,7 @@ export default function RecipeCard({ recipe, type, onDelete, onRemove, onEdit, o
             Remove from Saved
           </button>
         ) : ( // For all other recipes (not user-created or saved)
-          ""
+          <p>type: ""</p>
         )}
       </div>
     </div>

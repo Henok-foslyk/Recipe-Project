@@ -4,18 +4,6 @@ const { collection, getDocs, doc, deleteDoc, addDoc } = require('firebase/firest
 
 const router = express.Router();
 
-// GET /api/users/:uid/createdRecipes
-router.get('/:uid/createdRecipes', async (req, res) => {
-  const uid = req.params.uid;
-  try {
-    const querySnap = await getDocs(collection(db, 'users', uid, 'createdRecipes'));
-    const recipes = querySnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    res.json(recipes);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch created recipes' });
-  }
-});
-
 // ✅ POST /users/signin – handles login by checking Firestore for username/password
 router.post("/signin", async (req, res) => {
   const { username, password } = req.body;
@@ -31,7 +19,7 @@ router.post("/signin", async (req, res) => {
     }
 
     const userDoc = snapshot.docs[0];
-    let userData = userDoc.data();
+    const userData = userDoc.data();
     userData = {...userData, "id": userDoc.id};
 
     
@@ -40,11 +28,7 @@ router.post("/signin", async (req, res) => {
     }
 
     // Don't return the password
-    const safeUserData = {
-      id: userDoc.id,       // or use `uid: userDoc.id` if you prefer
-      ...userData,
-    };
-    delete safeUserData.password;
+    const { password: _, ...safeUserData } = userData;
 
     res.status(200).json(safeUserData);
   } catch (err) {
@@ -63,6 +47,24 @@ router.post('/seed', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch created new user' });
   }
 });
+
+// GET /api/users/:uid/createdRecipes
+router.get('/:uid/createdRecipes', async (req, res) => {
+  const uid = req.params.uid;
+  try {
+    const userDoc = await getDoc(doc(db, 'users', uid));
+    if (!userDoc.exists()) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const recipeIds = userDoc.data().createdRecipes || [];
+    res.json(recipeIds); // returns array of recipe IDs
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch created recipe IDs' });
+  }
+});
+
 
 // GET /api/users/:uid/savedRecipes
 router.get('/:uid/savedRecipes', async (req, res) => {

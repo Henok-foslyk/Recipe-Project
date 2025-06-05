@@ -22,12 +22,12 @@ export default function MyRecipes() {
         try {
             setIsLoading(true);
             const userId = currentUser.id; // firebase auto-gen id
-            const [createdRes, savedRes] = await Promise.all([
+            const [createdResIDs, savedResIDs] = await Promise.all([
             axios.get(`/api/users/${userId}/createdRecipes`),
             axios.get(`/api/users/${userId}/savedRecipes`)
             ]);
-            setCreatedRecipes(createdRes.data);
-            setSavedRecipes(savedRes.data);
+            setCreatedRecipes(createdResIDs);
+            setSavedRecipes(savedResIDs);
             setIsLoading(false);
         } catch (err) {
             console.error('Failed to fetch recipes:', err);
@@ -36,7 +36,8 @@ export default function MyRecipes() {
         fetchRecipes();
     }, [currentUser]);
 
-    console.log("MY CREATED RECIPE " + createdRecipes[0]);
+    //console.log(createdRecipes);
+
     return (
         <>
             <Navbar />

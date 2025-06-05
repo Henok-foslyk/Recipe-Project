@@ -5,8 +5,6 @@ import RecipeCard from './RecipeCard';
 import '../styles/RecipeList.css';
 
 export default function RecipeList({ recipes, type, onDelete, onRemove, onEdit, onView, loading }) {
-    //console.log("RECIPES " + recipes);
-    //console.log(recipes.length + " RECIPES");
     
     if (loading) {
         return (
