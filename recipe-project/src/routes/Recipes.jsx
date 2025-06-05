@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
+import SaveButton from "../components/SaveButton";
+
 
 export default function Recipes() {
   const [recipes, setRecipes] = useState([]);
@@ -123,27 +125,69 @@ export default function Recipes() {
             onChange={(e) => setQuery(e.target.value)}
           />
 
-          {/* Dropdown to select meal type choices */}
-          <select
-            onChange={(e) => setMealType(e.target.value)}
-            value={mealType}
-          >
-            <option value="">Select Meal Type</option>
-            <option value="Breakfast">Breakfast</option>
-            <option value="Lunch">Lunch</option>
-            <option value="Dinner">Dinner</option>
-            <option value="Snack">Snack</option>
-            <option value="Teatime">Teatime</option>
-          </select>
+            {/* Dropdown to select meal type choices and others fields */}
+            <select
+              onChange={(e) => setMealType(e.target.value)}
+              value={mealType}
+            >
+              <option value="">Select Meal Type</option>
+              <option value="Breakfast">Breakfast</option>
+              <option value="Lunch">Lunch</option>
+              <option value="Dinner">Dinner</option>
+              <option value="Snack">Snack</option>
+              <option value="Teatime">Teatime</option>
+            </select>
 
-          {/* Dropdown to select diet choices */}
-          <select onChange={(e) => setDiet(e.target.value)} value={diet}>
-            <option value="">Select Diet</option>
-            <option value="balanced">Balanced</option>
-            <option value="high-protein">High-Protein</option>
-            <option value="low-carb">Low-Carb</option>
-            <option value="low-fat">Low-Fat</option>
-          </select>
+            <select onChange={(e) => setDiet(e.target.value)} value={diet}>
+              <option value="">Select Diet</option>
+              <option value="balanced">Balanced</option>
+              <option value="high-protein">High-Protein</option>
+              <option value="low-carb">Low-Carb</option>
+              <option value="low-fat">Low-Fat</option>
+              <option value="low-sodium">Low-Sodium</option>
+              <option value="high-fiber">High-Fiber</option>
+            </select>
+
+
+            <select onChange={(e) => setHealth(e.target.value)} value={health}>
+              <option value="">Select Health</option>
+              <option value="dairy-free">Dairy-Free</option>
+              <option value="gluten-free">Gluten-Free</option>
+              <option value="vegan">Vegan</option>
+              <option value="vegetarian">Vegetarian</option>
+            </select>
+
+            <select onChange={(e) => setCuisineType(e.target.value)} value={cuisineType}>
+              <option value="">Select Cuisine Type</option>
+              <option value="american">American</option>
+              <option value="asian">Asian</option>
+              <option value="caribbean">Caribbean</option>
+              <option value="mexican">Mexican</option>
+              <option value="italian"> Italian</option>
+              <option value="indian"> Indian</option>
+              <option value="kosher"> Kosher</option>
+              <option value="mediterranean"> Mediterranean</option>
+            </select>
+
+            <button className="search" onClick={getRecipes}>Search</button>
+          </div>
+
+          {/* Toggle buttons to switch between Edamame recipes and user-created recipes */}
+          <div className="toggle-buttons">
+            <button
+              className={showUserRecipes ? "" : "active"}
+              onClick={() => setShowUserRecipes(false)}
+            >
+              Edamam Recipes
+            </button>
+            <button
+              className={showUserRecipes ? "active" : ""}
+              onClick={() => setShowUserRecipes(true)}
+            >
+              Community Recipes
+            </button>
+          </div>
+
 
           <button className="search" onClick={getRecipes}>
             Search
@@ -157,7 +201,7 @@ export default function Recipes() {
         {!showUserRecipes &&
           (loading ? (
             <div className="recipe-grid">
-              {[...Array(15)].map((_, i) => (
+              {[...Array(20)].map((_, i) => (
                 <div key={i} className="skeleton-card">
                   <Skeleton height={150} />
                 </div>
@@ -173,9 +217,11 @@ export default function Recipes() {
                   <h3>{recipe.label}</h3>
                   <p>Meal Type: {recipe.mealType?.join(", ")}</p>
                   <p>Diet Labels: {recipe.dietLabels?.join(", ")}</p>
+                  <p>Cuisine Type: {recipe.cuisineType?.join(", ")}</p>
                   <a href={recipe.url} target="_blank" rel="noreferrer">
                     View Recipe
                   </a>
+                  <SaveButton recipe={recipe} />
                 </div>
               ))}
             </div>

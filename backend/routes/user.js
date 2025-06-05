@@ -31,7 +31,8 @@ router.post("/signin", async (req, res) => {
     }
 
     const userDoc = snapshot.docs[0];
-    const userData = userDoc.data();
+    let userData = userDoc.data();
+    userData = {...userData, "id": userDoc.id};
 
     
     if (userData.password !== password) {

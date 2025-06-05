@@ -4,6 +4,7 @@ import RecipeList from '../components/RecipeList';
 import Navbar from '../components/Navbar'
 import { useNavigate } from 'react-router-dom';
 import '../styles/myRecipes.css'; 
+import { useAuth } from '../AuthContext';
 
 export default function MyRecipes() {
     
@@ -13,11 +14,14 @@ export default function MyRecipes() {
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
 
+    const { currentUser } = useAuth();
+
     useEffect(() => {
+        if (!currentUser) return;
         const fetchRecipes = async () => {
         try {
             setIsLoading(true);
-            const userId = '123'; // replace with actual user ID logic
+            const userId = currentUser.id; // firebase auto-gen id
             const [createdRes, savedRes] = await Promise.all([
             axios.get(`/api/users/${userId}/createdRecipes`),
             axios.get(`/api/users/${userId}/savedRecipes`)
@@ -30,8 +34,9 @@ export default function MyRecipes() {
         }
         };
         fetchRecipes();
-    }, []);
+    }, [currentUser]);
 
+    console.log("MY CREATED RECIPE " + createdRecipes[0]);
     return (
         <>
             <Navbar />
@@ -72,7 +77,7 @@ export default function MyRecipes() {
                 setCreatedRecipes(prev => prev.filter(r => r.id !== id));
                 }}
                 onRemove={async (id) => {
-                const userId = '123';
+                const userId = currentUser.id;
                 await axios.delete(`/api/users/${userId}/savedRecipes/${id}`);
                 setSavedRecipes(prev => prev.filter(r => r.id !== id));
                 }}
