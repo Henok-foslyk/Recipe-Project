@@ -3,18 +3,25 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import RecipeCard from './RecipeCard';
 import '../styles/RecipeList.css';
+import '../styles/recipe.css';
 
 export default function RecipeList({ recipes, loading }) {
     
     if (loading) {
         return (
-            <div className="recipe-list">
-                {[...Array(6)].map((_, index) => (
-                    <div key={index} className="recipe-skeleton">
-                        <Skeleton height={200} width={200} borderRadius={10} />
-                        <Skeleton count={2} width={200} style={{ marginTop: '0.5rem' }} />
-                    </div>
-                ))}
+            <div className="grid-container">
+                {
+                    (loading ? (
+                        <div className="recipe-grid">
+                            {[...Array(20)].map((_, i) => (
+                            <div key={i} className="skeleton-card">
+                                <Skeleton height={150} />
+                            </div>
+                            ))}
+                        </div>
+                        ) : ("")
+                    )
+                }
             </div>
         );
     }
@@ -24,13 +31,15 @@ export default function RecipeList({ recipes, loading }) {
     }
 
     return (
-        <div className="recipe-list">
-            {recipes.map((recipe) => (
-                <RecipeCard
-                    key={recipe.id}
-                    recipe={recipe}
-                />
-            ))}
+        <div className="recipe-container">
+            <div className="recipe-grid">
+                {recipes.map((recipe) => (
+                    <RecipeCard
+                        key={recipe.id}
+                        recipe={recipe}
+                    />
+                ))}
+            </div>
         </div>
     );
 }
