@@ -52,6 +52,18 @@ export default function AdminPage({ isAdmin }) {
     }
   };
 
+  const handleReject = async (id) => {
+    const confirmed = window.confirm("Are you sure you want to reject and delete this recipe?");
+    if (!confirmed) return;
+
+    try {
+      await axios.delete(`http://localhost:5050/users/recipes/${id}`);
+      setRecipes(prev => prev.filter(recipe => recipe.id !== id));
+    } catch (err) {
+      console.error("There was an error deleting the recipe:", err);
+    }
+  };
+
 //   if (!isAdmin) {
 //     return (
 //       <Box p={6}>
@@ -101,6 +113,14 @@ export default function AdminPage({ isAdmin }) {
                     onClick={() => handleVerify(recipe.id)}
                   >
                     Verify & Publish
+                  </Button>
+
+                   <Button
+                    colorScheme="red"
+                    variant="outline"
+                    onClick={() => handleReject(recipe.id)}
+                  >
+                    Reject Recipe
                   </Button>
                 </div>
               </div>
