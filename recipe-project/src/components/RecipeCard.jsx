@@ -4,6 +4,7 @@ import fallbackImage from "../assets/fallbackImage.jpg"
 import { Link } from "react-router-dom";
 
 export default function RecipeCard({ recipe }) {
+
   return (
     <div key={recipe.id} className="recipe-card">
       <img
@@ -19,9 +20,19 @@ export default function RecipeCard({ recipe }) {
       <p>Diet Labels: {recipe.dietLabels?.join(", ")}</p>
       <p>Cuisine Type: {recipe.cuisineType?.join(", ")}</p>
 
-      <Link to={`/recipes/${recipe.id}`}>
+      
+      <Link
+        to={
+          (recipe.source === 'community' || recipe.isEde === false)
+            ? `/recipes/${recipe.id}`
+            : recipe.url // link to external recipe
+        }
+        target={(recipe.source === 'edemam' || recipe.isEde === true) ? '_blank' : '_self'} // open in new tab for edemam
+        rel="noopener noreferrer"
+      >
         View Recipe
       </Link>
+
 
     </div>
   );

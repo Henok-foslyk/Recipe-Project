@@ -19,7 +19,7 @@ export default function RecipeList({ recipes, loading }) {
         );
     }
 
-    if (!Array.isArray(recipes) || recipes.length === 0) {
+    if (!Array.isArray(recipes) || recipes?.length === 0) {
         return <div>No recipes found.</div>;
     }
 
