@@ -224,32 +224,36 @@ export default function Recipes() {
           ) : (
             //these are my recipes (from firebase) we can add more things if needed other than ingredients and insts.
             <div className="recipe-grid">
-              {userRecipes.length === 0 && <p>No recipes found.</p>}
-              {userRecipes.map((recipe) => (
-                <div key={recipe.id} className="recipe-card">
-                  {/*prevent infinite loop and faulty urls */}
-                  <img
-                    src={recipe.imgUrl || fallbackImage}
-                    alt={recipe.name}
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = fallbackImage;
-                    }}
-                  />
-                  <h3>{recipe.name}</h3>
-                  <p>Meal Type: {recipe.mealType?.join(", ")}</p>
-                  <p>Diet Labels: {recipe.dietLabels?.join(", ")}</p>
-                  <p>Cuisine Type: {recipe.cuisineType?.join(", ")}</p>
-                  <Link
-                    to={`/recipes/${recipe.id}`}
-                  >
-                    View Recipe
-                  </Link>
+              {userRecipes.filter(recipe => recipe.source === "community" || recipe.isEdemam) === false
+                .length === 0 && (
+                  <p>No community recipes found.</p>
+                )}
 
-                  <SaveButton key={recipe.id} recipe={recipe} recipeId={recipe.id} />
+              {userRecipes
+                .filter(recipe => recipe.source === "community" || recipe.isEdemam === false
+                )
+                .map((recipe) => (
+                  <div key={recipe.id} className="recipe-card">
+                    <img
+                      src={recipe.imgUrl || fallbackImage}
+                      alt={recipe.name}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = fallbackImage;
+                      }}
+                    />
+                    <h3>{recipe.name}</h3>
+                    <p>Meal Type: {recipe.mealType?.join(", ")}</p>
+                    <p>Diet Labels: {recipe.dietLabels?.join(", ")}</p>
+                    <p>Cuisine Type: {recipe.cuisineType?.join(", ")}</p>
 
-                </div>
-              ))}
+                    <Link to={`/recipes/${recipe.id}`}>
+                      View Recipe
+                    </Link>
+
+                    <SaveButton key={recipe.id} recipe={recipe} recipeId={recipe.id} />
+                  </div>
+                ))}
             </div>
           ))}
       </div>

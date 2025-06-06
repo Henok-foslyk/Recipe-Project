@@ -39,6 +39,7 @@ export default function RecipeDetails() {
   const saveRecipe = async () => {
     try {
       console.log("Current User: ", currentUser);
+      console.log("Current User: ", currentUser);
       const response = await axios.put(
         `http://localhost:5050/firebase-recipes/save?userId=${currentUser.id}&recipeId=${id}`,
         {
@@ -123,6 +124,7 @@ export default function RecipeDetails() {
             instructions={recipeData.instructions || []}
             mealType={recipeData.mealType?.join(", ")}
             cuisineType={recipeData.cuisineType?.join(", ")}
+            description={recipeData.description || []}
           />
         </div>
         <div>

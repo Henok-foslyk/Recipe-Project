@@ -5,15 +5,19 @@
    It never grows larger, and any overflow is clipped.
 ────────────────────────────────────────────────────────────────────────── */
 .display-recipe-card {
-  width: 600px;               /* ← Adjust as needed so two fit side by side */
-  height: 900px;              /* ← Adjust as needed for your design */
+  width: 600px;
+  /* ← Adjust as needed so two fit side by side */
+  height: 900px;
+  /* ← Adjust as needed for your design */
   background-color: #fff;
   border: 4px solid transparent;
   /* border-image: linear-gradient(to bottom, #fbd000, #e52d27) 1; */
   border-radius: 16px;
-  overflow: hidden;           /* clip the inner content to the rounded box */
+  overflow: hidden;
+  /* clip the inner content to the rounded box */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  flex-shrink: 0;             /* Prevent the card from shrinking in a flex row */
+  flex-shrink: 0;
+  /* Prevent the card from shrinking in a flex row */
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
@@ -71,6 +75,7 @@
   font-size: 0.95rem;
   margin: 0.5rem 0 1rem 0;
 }
+
 .recipe-caution span {
   font-weight: bold;
   font-style: italic;
@@ -92,6 +97,16 @@
 /* Section wrapper to add spacing above each list */
 .recipe-section {
   margin-top: 0.75rem;
+}
+
+.recipe-description {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.recipe-description span {
+  font-weight: bold;
 }
 
 /* Section headings (Ingredients / Instructions) */
@@ -125,6 +140,7 @@
 .display-recipe-inner::-webkit-scrollbar {
   width: 6px;
 }
+
 .display-recipe-inner::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 3px;
