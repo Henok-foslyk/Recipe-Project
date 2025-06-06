@@ -15,7 +15,7 @@ export default function RecipeCard({ recipe }) {
           e.target.src = fallbackImage;
         }}
       />
-      <h3>{recipe.title}</h3>
+      <h3>{(recipe.title) ? `${recipe.title}` : `${recipe.name}`}</h3>
       <p>Meal Type: {recipe.mealType?.join(", ")}</p>
       <p>Diet Labels: {recipe.dietLabels?.join(", ")}</p>
       <p>Cuisine Type: {recipe.cuisineType?.join(", ")}</p>
