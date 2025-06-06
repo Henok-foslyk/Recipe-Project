@@ -131,7 +131,7 @@
   border-radius: 6px;
   resize: vertical;
   box-sizing: border-box;
-  color: rgb(0, 0, 0);
+  color: white;
 }
 
 .modal-form textarea {
