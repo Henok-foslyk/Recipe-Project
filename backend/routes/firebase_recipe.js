@@ -3,8 +3,8 @@ const express = require("express");
 const router = express.Router();
 
 // Since you initialized `db = admin.firestore()` in firebase.js:
-const { db } = require("../firebase"); 
-const admin = require("firebase-admin"); 
+const { db } = require("../firebase");
+const admin = require("firebase-admin");
 router.get("/", async (req, res) => {
   const recipeId = req.query.id;
   if (!recipeId) {
@@ -115,4 +115,6 @@ router.get("/check-saved", async (req, res) => {
   }
 });
 
+
 module.exports = router;
+

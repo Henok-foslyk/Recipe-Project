@@ -10,7 +10,6 @@ import SaveButton from "../components/SaveButton";
 import fallbackImage from '../assets/fallbackImage.jpg';
 import axios from 'axios';
 
-
 export default function Recipes() {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -97,6 +96,8 @@ export default function Recipes() {
   return (
     <>
       <Navbar />
+      {/* <ToastContainer position="top-right" autoClose={3000} /> */}
+
       <div className="recipe-container">
         <h2>Search Recipes</h2>
 
@@ -172,9 +173,6 @@ export default function Recipes() {
             Community Recipes
           </button>
         </div>
-
-
-
       </div>
 
 
@@ -204,7 +202,10 @@ export default function Recipes() {
                   <a href={recipe.url} target="_blank" rel="noreferrer">
                     View Recipe
                   </a>
-                  <SaveButton recipe={recipe}/>
+
+                  <SaveButton key={i} recipe={recipe} recipeId={recipe.recipeId || recipe.uri} />
+
+
                 </div>
               ))}
             </div>
@@ -244,7 +245,9 @@ export default function Recipes() {
                   >
                     View Recipe
                   </Link>
-                  <SaveButton recipeId={recipe.id}  />
+
+                  <SaveButton key={recipe.id} recipe={recipe} recipeId={recipe.id} />
+
                 </div>
               ))}
             </div>
