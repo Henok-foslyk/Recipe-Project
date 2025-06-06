@@ -133,11 +133,9 @@
   box-sizing: border-box;
   color: white;
 }
-
 .modal-form textarea {
   min-height: 80px;
 }
-
 /* ─── BUTTONS AT BOTTOM OF MODAL ───────────────────────────────────────── */
 .modal-buttons {
   display: flex;
