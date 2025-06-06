@@ -67,29 +67,32 @@ router.get('/:uid', async (req, res) => {
   const uid = req.params.uid;
 
   try {
-    // 1) Get reference to the user document
-    const docRef = db.collection('users').doc(uid);
+    const userSnap = await db.collection('users').doc(uid).get();
 
-    // 2) Fetch the document snapshot
-    const docSnap = await docRef.get();
-
-    // 3) If it doesn’t exist, return 404
-    if (!docSnap.exists) {
+    if (!userSnap.exists) {
       return res.status(404).json({ error: 'User not found.' });
     }
 
-    // 4) Get the data and respond
-    const data = docSnap.data();
-    const createdRecipes = data.createdRecipe || [];
-    const savedRecipes = data.savedRecipe || [];
+    const createdRecipes = userSnap.data().createdRecipe || [];
 
-    return res.json({ createdRecipes, savedRecipes });
+    const savedRecipesSnap = await db
+      .collection('users')
+      .doc(uid)
+      .collection('savedRecipes')
+      .get();
 
+    const savedRecipes = savedRecipesSnap.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    res.json({ createdRecipes, savedRecipes });
   } catch (error) {
     console.error('Error fetching user data:', error);
-    return res.status(500).json({ error: 'Failed to fetch user data.' });
+    res.status(500).json({ error: 'Failed to fetch user data' });
   }
 });
+
 
 // DELETE /api/users/:uid/savedRecipes/:id
 router.delete('/:uid/savedRecipes/:id', async (req, res) => {
