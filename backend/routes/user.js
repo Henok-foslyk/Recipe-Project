@@ -156,6 +156,16 @@ router.patch('/recipes/approveRequest/:rid', async (req, res) => {
   }
 });
 
+router.delete('/recipes/:id', async (req, res) => {
+  try {
+    await db.collection('recipes').doc(req.params.id).delete();
+    res.json({ message: 'Recipe deleted successfully' });
+  } catch (err) {
+    console.error('Error deleting recipe:', err);
+    res.status(500).json({ error: 'Failed to delete recipe' });
+  }
+});
+
 
 
 module.exports = router;
