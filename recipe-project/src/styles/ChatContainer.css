@@ -38,7 +38,7 @@ html,
 .bubble {
     display: inline-block;       /* shrink to fit content */
     padding: 10px 20px;          /* vertical/horizontal padding */
-    border-radius: 9999px;       /* full pill/oval shape */
+    border-radius: 30px;       /* full pill/oval shape */
     line-height: 1.4;
     word-wrap: break-word;
     max-width: 80%;              /* don’t force 100%—let it size to content */

@@ -107,7 +107,7 @@
 
 .recipe-card img {
     width: 100%;
-    height: 220px;
+    height: 280px;
     object-fit: cover;
     border-radius: 12px;
     display: block;
@@ -142,6 +142,7 @@
 .recipe-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    margin-top: 0;
     /* grid-template-columns: repeat(5, 1fr); */
     gap: 2rem;
     max-width: 1200px;
@@ -162,8 +163,8 @@
 .toggle-buttons {
     display: flex;
     margin-top: 12px;
-    gap: 0.5rem;
 
+    gap: 0.5rem;
 }
 
 .toggle-buttons button {

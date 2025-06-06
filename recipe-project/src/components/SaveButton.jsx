@@ -9,7 +9,6 @@ import {
     getDocs,
     setDoc,
     doc,
-    addDoc,
     getDoc,
 } from "firebase/firestore";
 import fallbackImage from '../assets/fallbackImage.jpg';
@@ -64,17 +63,17 @@ const SaveButton = ({ recipeId, recipe }) => {
             const recipeData = isEdamam
                 ? {
                     recipeId: rawId,
-                    title: recipe.title || recipe.name || "",
+                    title: recipe.title || recipe.name || recipe.label || "",
                     cuisineType: recipe.cuisineType || [],
                     dietLabels: recipe.dietLabels || [],
                     img: recipe.image || recipe.img || fallbackImage,
                     mealType: recipe.mealType || [],
-                    url: recipe.url || "",
+                    url: recipe.uri || "",
                     source: "edamam",
                 }
                 : {
                     recipeId: rawId,
-                    title: recipe.title || recipe.name || "",
+                    title: recipe.title || recipe.name || recipe.label || "",
                     img: recipe.img || fallbackImage,
                     cuisineType: recipe.cuisineType || [],
                     source: "community",
