@@ -32,7 +32,7 @@ app.use("/recipes", recipesRouter);
 app.use("/users", usersRouter);
 app.use("/chatbot", chatRouter);
 app.use("/firebase-recipes", firebaseRecipeRouter); 
-app.use('/users', require('./routes/user'));
+
 
 app.use(
   express.json({

@@ -47,8 +47,8 @@ router.post('/seed', async (req, res) => {
   }
 });
 
-// GET /users/:id – get a single user by ID or uid whichever one u want.
-router.get('/:id', async (req, res) => {
+// GET /user/:id – get a single user by ID or uid whichever one u want.
+router.get('/redundant/:id', async (req, res) => {
   const userId = req.params.id;
   try {
     const doc = await db.collection('users').doc(userId).get();
