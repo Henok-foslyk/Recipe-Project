@@ -23,11 +23,11 @@ export default function RecipeCard({ recipe }) {
       
       <Link
         to={
-          (recipe.source === 'community' || recipe.isEde === false)
+          (!recipe.isEdemam)
             ? `/recipes/${recipe.id}`
             : recipe.url // link to external recipe
         }
-        target={(recipe.source === 'edemam' || recipe.isEde === true) ? '_blank' : '_self'} // open in new tab for edemam
+        target={(recipe.isEdemam) ? '_blank' : '_self'} // open in new tab for edemam
         rel="noopener noreferrer"
       >
         View Recipe
