@@ -27,11 +27,9 @@ const SaveButton = ({recipeId}) => {
               }
             );
             console.log(response.data);
-            alert("Recipe saved successfully!");
             setIsSaved(true); // Update state to reflect that the recipe is saved
           } catch (e) {
             console.error("Error saving recipe:", e);
-            alert("Failed to save recipe. Please try again later.");
           }
     };
 

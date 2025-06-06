@@ -1,6 +1,6 @@
 // src/components/DisplayRecipe.jsx
 import React from "react";
-import "../styles/DisplayRecipe.css";   // ← This must match the CSS filename exactly
+import "../styles/DisplayRecipe.css"; // ← This must match the CSS filename exactly
 /*
           imageUrl={recipeData.imgUrl || "/fallback-image.jpg"}
           title={recipeData.name}
@@ -24,10 +24,10 @@ export default function DisplayRecipe({
   return (
     <div className="display-recipe-card">
       <div className="display-recipe-inner">
-        {imageUrl && (
+        {imageUrl !== undefined && imageUrl !== null && (
           <img
             className="recipe-image"
-            src={imageUrl}
+            src={imageUrl !== "" ? imageUrl : "/fallbackImage.jpg"}
             alt={title}
           />
         )}
@@ -42,23 +42,18 @@ export default function DisplayRecipe({
               <span>Caution:</span> {caution}
             </p>
           )}
-          {
-            mealType && (
-              <p className="recipe-meal-type">
-                <span>Meal Type:</span> {mealType}
-              </p>
-            )
-          }
-          {
-            cuisineType && (
-              <p className="recipe-cuisine-type">
-                <span>Cuisine Type:</span> {cuisineType}
-              </p>
-            )
-          }
+          {mealType && (
+            <p className="recipe-meal-type">
+              <span>Meal Type:</span> {mealType}
+            </p>
+          )}
+          {cuisineType && (
+            <p className="recipe-cuisine-type">
+              <span>Cuisine Type:</span> {cuisineType}
+            </p>
+          )}
 
           {/* Cuisine type */}
-
 
           {/* Ingredients section */}
           <div className="recipe-section">

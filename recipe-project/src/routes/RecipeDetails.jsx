@@ -34,7 +34,6 @@ export default function RecipeDetails() {
       setIsSaved(response.data.isSaved); // Update state based on response
     } catch (e) {
       console.error("Error checking if recipe is saved:", e);
-      alert("Failed to check if recipe is saved. Please try again later.");
     }
   };
   const saveRecipe = async () => {
@@ -49,11 +48,9 @@ export default function RecipeDetails() {
         }
       );
       console.log(response.data);
-      alert("Recipe saved successfully!");
       setIsSaved(true); // Update state to reflect that the recipe is saved
     } catch (e) {
       console.error("Error saving recipe:", e);
-      alert("Failed to save recipe. Please try again later.");
     }
   };
   const deleteRecipe = async () => {
@@ -67,11 +64,9 @@ export default function RecipeDetails() {
         }
       );
       console.log(response.data);
-      alert("Recipe removed from saved list.");
       setIsSaved(false); // Update state to reflect that the recipe is no longer saved
     } catch (e) {
       console.error("Error deleting recipe:", e);
-      alert("Failed to remove recipe. Please try again later.");
     }
   };
   useEffect(() => {
@@ -121,7 +116,7 @@ export default function RecipeDetails() {
           </div>
 
           <DisplayRecipe
-            imageUrl={recipeData.imgUrl || "/fallback-image.jpg"}
+            imageUrl={recipeData.imgUrl}
             title={recipeData.name}
             caution={recipeData.healthLabels?.join(", ")}
             ingredients={recipeData.ingredients || []}
