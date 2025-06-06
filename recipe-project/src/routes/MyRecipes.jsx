@@ -17,41 +17,37 @@ export default function MyRecipes() {
     const { currentUser } = useAuth();
 
     useEffect(() => {
-    if (!currentUser) return;
+        if (!currentUser) return;
 
-    const fetchRecipes = async () => {
-        try {
-            setIsLoading(true);
+        const fetchRecipes = async () => {
+            try {
+                setIsLoading(true);
 
-            // Fetch fresh user document from Firestore to get updated created/saved Recipes
-            const userRes = await fetch(`http://localhost:5050/users/${currentUser.id}`);
-            const userData = await userRes.json();
+                // Fetch fresh user document from Firestore to get updated created/saved Recipes
+                const userRes = await fetch(`http://localhost:5050/users/${currentUser.id}`);
+                const userData = await userRes.json();
 
-            const createdResIDs = userData.createdRecipes || [];
-            const savedResIDs = userData.savedRecipes || [];
+                const createdResIDs = userData.createdRecipes || [];
+                const savedRecipesData = userData.savedRecipes || [];
 
-            const fetchRecipeById = async (id) => {
-                const res = await fetch(`http://localhost:5050/firebase-recipes?id=${id}`);
-                if (!res.ok) throw new Error(`Failed to fetch recipe with id ${id}`);
-                return res.json();
-            };
+                const fetchRecipeById = async (id) => {
+                    const res = await fetch(`http://localhost:5050/firebase-recipes?id=${id}`);
+                    if (!res.ok) throw new Error(`Failed to fetch recipe with id ${id}`);
+                    return res.json();
+                };
 
-            const [createdRecipesData, savedRecipesData] = await Promise.all([
-                Promise.all(createdResIDs.map(fetchRecipeById)),
-                Promise.all(savedResIDs.map(fetchRecipeById))
-            ]);
+                const createdRecipesData = await Promise.all(createdResIDs.map(fetchRecipeById));
 
-            setCreatedRecipes(createdRecipesData);
-            setSavedRecipes(savedRecipesData);
-            setIsLoading(false);
-        } catch (err) {
-            console.error('Failed to fetch recipes:', err);
-        }
-    };
+                setCreatedRecipes(createdRecipesData);
+                setSavedRecipes(savedRecipesData);
+                setIsLoading(false);
+            } catch (err) {
+                console.error('Failed to fetch recipes:', err);
+            }
+        };
 
-    fetchRecipes();
-}, [currentUser]);
-
+        fetchRecipes();
+    }, [currentUser]);
     
     return (
         <>
@@ -98,7 +94,7 @@ export default function MyRecipes() {
                 setSavedRecipes(prev => prev.filter(r => r.id !== id));
                 }}
                 onEdit={(id) => navigate(`/edit/${id}`)}
-                onView={(id) => navigate(`/recipe/${id}`)}
+                onView={(id) => navigate(`/recipes/${id}`)}
                 loading={isLoading}
             />
             </div>
