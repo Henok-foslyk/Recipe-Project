@@ -25,16 +25,16 @@ export default function Recipes() {
 
   //get user recipes from firebase
   const fetchRecipes = async () => {
-  setLoading(true);
-  try {
-    const response = await axios.get('http://localhost:5050/users/recipes/approved');
-    setUserRecipes(response.data); // response.data should be an array of approved recipes
-  } catch (error) {
-    console.log("Error getting approved recipes: ", error);
-    setUserRecipes([]);
-  }
-  setLoading(false);
-};
+    setLoading(true);
+    try {
+      const response = await axios.get('http://localhost:5050/users/recipes/approved');
+      setUserRecipes(response.data); // response.data should be an array of approved recipes
+    } catch (error) {
+      console.log("Error getting approved recipes: ", error);
+      setUserRecipes([]);
+    }
+    setLoading(false);
+  };
 
   // Fetch recipes based on query, meal type, and diet filters
   const getRecipes = async () => {
@@ -94,7 +94,7 @@ export default function Recipes() {
   return (
     <>
       <Navbar />
-      {/* <ToastContainer position="top-right" autoClose={3000} /> */}
+
 
       <div className="recipe-container">
         <h2>Search Recipes</h2>
@@ -248,6 +248,7 @@ export default function Recipes() {
                     <Link to={`/recipes/${recipe.id}`}>
                       View Recipe
                     </Link>
+
 
                     <SaveButton key={recipe.id} recipe={recipe} recipeId={recipe.id} />
                   </div>
