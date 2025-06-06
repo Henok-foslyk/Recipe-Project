@@ -4,8 +4,6 @@ import Navbar from "../components/Navbar";
 import Skeleton from "react-loading-skeleton";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../firebase";
 import SaveButton from "../components/SaveButton";
 import fallbackImage from '../assets/fallbackImage.jpg';
 import axios from 'axios';
