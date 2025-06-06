@@ -66,7 +66,7 @@ export default function AdminPage({ isAdmin }) {
     <>
       <Navbar/>
       <Box p={6} margin={'20'}>
-      <Heading mb={4}>Pending Recipes for Review</Heading>
+      <Heading className = "pending" mb={4}>Pending Recipes for Review</Heading>
 
       { loading ? (
         <Spinner color="black"/>
