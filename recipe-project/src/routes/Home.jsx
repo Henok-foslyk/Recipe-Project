@@ -4,6 +4,7 @@ import recipeImg from '../assets/banner1.jpg';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import SaveButton from '../components/SaveButton';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ const Home = () => {
 
     fetchFeaturedRecipes();
   }, []);
-  
+
   return (
     <>
       <BannerSlider />
@@ -133,8 +134,12 @@ const Home = () => {
                 },
               }}
             >
-              <Typography variant="h5">Add Your Own</Typography>
-              <Typography variant="body2">Share your favorite dishes with the world.</Typography>
+              <Link to="/signup" >
+                <div style={{ cursor: 'pointer' }}>
+                  <Typography variant="h5">Add Your Own</Typography>
+                  <Typography variant="body2">Share your favorite dishes with the world.</Typography>
+                </div>
+              </Link>
             </Card>
           </Grid>
         </Grid>
