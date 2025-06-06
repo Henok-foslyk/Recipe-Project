@@ -9,10 +9,12 @@ import {
 } from '@chakra-ui/react';
 import Navbar from '../components/Navbar';
 import axios from 'axios';
+import fallbackImage from '../assets/fallbackImage.jpg';
+import { Link } from "react-router-dom";
+import '../styles/adminPage.css'
 
 export default function AdminPage({ isAdmin }) {
-  const [recipes, setRecipes] = useState([{ id: 1, name: "Grandma's Apple Pie", description: "Delicious classic apple pie." },
-  { id: 2, name: "Spicy Tofu Stir-fry", description: "Quick and easy vegan recipe." }]);
+  const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [verifyingId, setVerifyingId] = useState(null);
 
@@ -71,33 +73,39 @@ export default function AdminPage({ isAdmin }) {
       ) : recipes.length === 0 ? (
         <Text>No recipes to review.</Text>
       ) : (
-        <Stack spacing={4}>
-          {recipes.map((recipe) => (
-            <Box
-              key={recipe.id}
-              borderWidth="1px"
-              borderRadius="lg"
-              p={4}
-              boxShadow="md"
-            >
-              <Heading size="md" color="black">{recipe.name}</Heading>
-              <Text mt={2}>{recipe.description}</Text>
-              <Button
-                mt={4}
-                colorPalette="green"
-                bg="green"
-                color="white"
-                _hover={
-                  {bg: '#eee', color: 'green', fontWeight: 'bold'}
-                }
-                isLoading={verifyingId === recipe.id}
-                onClick={() => handleVerify(recipe.id)}
-              >
-                Verify & Publish
-              </Button>
-            </Box>
-          ))}
-        </Stack>
+         <div className="recipe-grid">
+            {recipes.length === 0 && <p>No recipes found.</p>}
+            {recipes.map((recipe) => (
+              <div key={recipe.id} className="recipe-card">
+                {/* Prevent infinite loop and faulty urls */}
+                <img
+                  src={recipe.imgUrl || fallbackImage}
+                  alt={recipe.name}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = fallbackImage;
+                  }}
+                />
+                <h3>{recipe.name}</h3>
+                <p>Meal Type: {recipe.mealType?.join(", ")}</p>
+                <p>Diet Labels: {recipe.dietLabels?.join(", ")}</p>
+                <p>Cuisine Type: {recipe.cuisineType?.join(", ")}</p>
+                
+                <div className="recipe-card-actions">
+                  <Link to={`/recipes/${recipe.id}`}>
+                    View Recipe
+                  </Link>
+                  <Button
+                    colorPalette="green"
+                    isLoading={verifyingId === recipe.id}
+                    onClick={() => handleVerify(recipe.id)}
+                  >
+                    Verify & Publish
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
       )}
     </Box>
     </>
