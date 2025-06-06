@@ -19,7 +19,7 @@ export default function RecipeDetails() {
   const { currentUser } = useAuth();
   const saveRecipe = async () => {
     try {
-      console.log("Current User: ",currentUser);
+      console.log("Current User: ", currentUser);
       const response = await axios.put(
         `http://localhost:5050/firebase-recipes/save?userId=${currentUser.id}&recipeId=${id}`,
         {
@@ -88,7 +88,7 @@ export default function RecipeDetails() {
       <div className="cards-wrapper">
         <div>
           <h1 style={{ color: "black", textAlign: "left" }}>Recipe Details</h1>
-          <button onClick={isSaved?deleteRecipe:saveRecipe}>Save Recipe</button>
+          <button onClick={isSaved ? deleteRecipe : saveRecipe}>Save Recipe</button>
           <DisplayRecipe
             imageUrl={recipeData.imgUrl || "/fallback-image.jpg"}
             title={recipeData.name}
@@ -97,6 +97,7 @@ export default function RecipeDetails() {
             instructions={recipeData.instructions || []}
             mealType={recipeData.mealType?.join(", ")}
             cuisineType={recipeData.cuisineType?.join(", ")}
+            description={recipeData.description || []}
           />
         </div>
         <div>

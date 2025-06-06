@@ -20,6 +20,7 @@ export default function DisplayRecipe({
   instructions = [],
   mealType = "",
   cuisineType = "",
+  description = "",
 }) {
   return (
     <div className="display-recipe-card">
@@ -36,6 +37,11 @@ export default function DisplayRecipe({
           {/* Recipe title */}
           <h2 className="recipe-title">{title}</h2>
 
+          {description && (
+            <p className="recipe-description">
+              <span>Description:</span> {description}
+            </p>
+          )}
           {/* Optional “caution” text */}
           {caution && (
             <p className="recipe-caution">

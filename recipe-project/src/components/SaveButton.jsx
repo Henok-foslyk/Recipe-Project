@@ -62,6 +62,7 @@ const SaveButton = ({ recipeId, recipe }) => {
             const recipeData = isEdamam
                 ? {
                     recipeId: rawId,
+                    title: recipe.title || recipe.name || "",
                     cuisineType: recipe.cuisineType || [],
                     dietLabels: recipe.dietLabels || [],
                     img: recipe.image || recipe.img || fallbackImage,
