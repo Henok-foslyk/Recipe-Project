@@ -32,22 +32,28 @@
 
 /* ──────────────────────────────────────────────────────────────────────────
    IMAGE (optional): If you pass imageUrl, it sits at the top.
-   It will shrink or expand to 100% of card’s width, but never force the card
-   to grow beyond its fixed dimensions.
+   It will shrink or expand to 80% of card’s width, but never force the card
+   to grow beyond its fixed dimensions. It’s centered and has rounded corners.
 ────────────────────────────────────────────────────────────────────────── */
 .recipe-image {
   display: block;
-  width: 100%;
+  width: 80%;
+  max-width: 400px;
   height: auto;
   object-fit: cover;
+  margin: 1rem auto 0;    /* 1rem top margin, auto left/right, 0 bottom */
+  border-radius: 12px;    /* rounded corners */
   border-bottom: 1px solid #eee;
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
-   BODY: holds title, caution, lists, etc.  
+   BODY: holds title, caution, lists, and additional info.  
+   Centered at 80% width so text lines up under the image.
 ────────────────────────────────────────────────────────────────────────── */
 .recipe-body {
-  padding: 1rem 1.25rem;
+  width: 80%;
+  margin: 0 auto;         /* center this block under the image */
+  padding: 1rem 0;         /* vertical padding only */
   font-family: Arial, sans-serif;
   color: #333;
   display: flex;
@@ -75,6 +81,24 @@
   font-style: italic;
 }
 
+/* Meal Type and Cuisine Type: slightly smaller, centered under title */
+.recipe-meal-type,
+.recipe-cuisine-type {
+  text-align: center;
+  font-size: 0.9rem;
+  margin: 0.25rem 0;
+}
+.recipe-meal-type span,
+.recipe-cuisine-type span {
+  font-weight: bold;
+  font-style: italic;
+}
+
+/* Section wrapper to add spacing above each list */
+.recipe-section {
+  margin-top: 0.75rem;
+}
+
 .recipe-description {
   font-size: 1rem;
   margin-bottom: 1rem;
@@ -87,16 +111,29 @@
 
 /* Section headings (Ingredients / Instructions) */
 .section-heading {
+  text-align: left;
   font-weight: bold;
   margin-bottom: 0.4rem;
   font-size: 1rem;
 }
 
-/* Lists are indented and have a comfortable line height */
-.section-list {
+/* Lists are indented, show bullets/numbers, and have a comfortable line height */
+.recipe-body ul.section-list {
+  text-align: left;
   margin: 0;
   padding-left: 1.2rem;
   line-height: 1.5;
+  list-style-type: disc;      /* show bullet points */
+  list-style-position: inside;
+}
+
+.recipe-body ol.section-list {
+  text-align: left;
+  margin: 0;
+  padding-left: 1.2rem;
+  line-height: 1.5;
+  list-style-type: decimal;   /* show numbered steps */
+  list-style-position: inside;
 }
 
 /* Hide the scrollbar track in WebKit but still allow scroll */

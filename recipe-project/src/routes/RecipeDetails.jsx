@@ -10,6 +10,8 @@ import Switch from "@mui/material/Switch";
 import { Typography, Box } from "@mui/material";
 import { useAuth } from "../AuthContext";
 import axios from "axios";
+import { IoBookmarkOutline } from "react-icons/io5";
+import { IoBookmark } from "react-icons/io5";
 export default function RecipeDetails() {
   const { id } = useParams();
   const [review, setReview] = useState(true);
@@ -17,8 +19,26 @@ export default function RecipeDetails() {
   const [loading, setLoading] = useState(true);
   const [isSaved, setIsSaved] = useState(false); // Track if the recipe is saved
   const { currentUser } = useAuth();
+  const checkIfSaved = async () => {
+    if (!currentUser) return; // If no user is logged in, exit early
+    try {
+      const response = await axios.get(
+        `http://localhost:5050/firebase-recipes/check-saved?userId=${currentUser.id}&recipeId=${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("Check saved response:", response.data);
+      setIsSaved(response.data.isSaved); // Update state based on response
+    } catch (e) {
+      console.error("Error checking if recipe is saved:", e);
+    }
+  };
   const saveRecipe = async () => {
     try {
+      console.log("Current User: ", currentUser);
       console.log("Current User: ", currentUser);
       const response = await axios.put(
         `http://localhost:5050/firebase-recipes/save?userId=${currentUser.id}&recipeId=${id}`,
@@ -29,11 +49,9 @@ export default function RecipeDetails() {
         }
       );
       console.log(response.data);
-      alert("Recipe saved successfully!");
       setIsSaved(true); // Update state to reflect that the recipe is saved
     } catch (e) {
       console.error("Error saving recipe:", e);
-      alert("Failed to save recipe. Please try again later.");
     }
   };
   const deleteRecipe = async () => {
@@ -46,13 +64,10 @@ export default function RecipeDetails() {
           },
         }
       );
-
       console.log(response.data);
-      alert("Recipe removed from saved list.");
       setIsSaved(false); // Update state to reflect that the recipe is no longer saved
     } catch (e) {
       console.error("Error deleting recipe:", e);
-      alert("Failed to remove recipe. Please try again later.");
     }
   };
   useEffect(() => {
@@ -77,6 +92,7 @@ export default function RecipeDetails() {
 
     if (id) {
       fetchOne();
+      checkIfSaved();
     }
   }, [id]);
 
@@ -87,10 +103,21 @@ export default function RecipeDetails() {
       <Navbar />
       <div className="cards-wrapper">
         <div>
-          <h1 style={{ color: "black", textAlign: "left" }}>Recipe Details</h1>
-          <button onClick={isSaved ? deleteRecipe : saveRecipe}>Save Recipe</button>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <h1 style={{ color: "black", margin: 0 }}>Recipe Details</h1>
+            <button
+              onClick={isSaved ? deleteRecipe : saveRecipe}
+            >
+              {isSaved ? (
+                <IoBookmark size={24} />
+              ) : (
+                <IoBookmarkOutline size={24} />
+              )}
+            </button>
+          </div>
+
           <DisplayRecipe
-            imageUrl={recipeData.imgUrl || "/fallback-image.jpg"}
+            imageUrl={recipeData.imgUrl}
             title={recipeData.name}
             caution={recipeData.healthLabels?.join(", ")}
             ingredients={recipeData.ingredients || []}

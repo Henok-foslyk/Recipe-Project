@@ -13,6 +13,7 @@ import {
     getDoc,
 } from "firebase/firestore";
 import fallbackImage from '../assets/fallbackImage.jpg';
+
 import { useAuth } from '../AuthContext';
 
 // clean recipe ID to use as firestore;s docid which doesnt include again special symbols
@@ -32,10 +33,11 @@ const SaveButton = ({ recipeId, recipe }) => {
     const userSaves = async () => {
         if (!currentUser?.username) {
             toast.error("You must be signed in to save recipes.");
+
             return;
         }
-
         try {
+
             // we then get user from the users collection by username
             const usersRef = collection(db, "users");
             const q = query(usersRef, where("username", "==", currentUser.username));
@@ -109,6 +111,7 @@ const SaveButton = ({ recipeId, recipe }) => {
             <button className="saveB" onClick={userSaves}>Save</button>
         </>
     );
+
 };
 
 export default SaveButton;
