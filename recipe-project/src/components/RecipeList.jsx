@@ -4,7 +4,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import RecipeCard from './RecipeCard';
 import '../styles/RecipeList.css';
 
-export default function RecipeList({ recipes, type, onDelete, onRemove, onEdit, onView, loading }) {
+export default function RecipeList({ recipes, loading }) {
     
     if (loading) {
         return (
@@ -29,11 +29,6 @@ export default function RecipeList({ recipes, type, onDelete, onRemove, onEdit, 
                 <RecipeCard
                     key={recipe.id}
                     recipe={recipe}
-                    type={type}
-                    onDelete={onDelete}
-                    onRemove={onRemove}
-                    onEdit={onEdit}
-                    onView={onView}
                 />
             ))}
         </div>

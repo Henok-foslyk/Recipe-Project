@@ -83,18 +83,6 @@ export default function MyRecipes() {
 
             <RecipeList
                 recipes={isCreatedView ? createdRecipes : savedRecipes}
-                type={isCreatedView ? 'created' : 'saved'}
-                onDelete={async (id) => {
-                await axios.delete(`/api/recipes/${id}`);
-                setCreatedRecipes(prev => prev.filter(r => r.id !== id));
-                }}
-                onRemove={async (id) => {
-                const userId = currentUser.id;
-                await axios.delete(`/api/users/${userId}/savedRecipes/${id}`);
-                setSavedRecipes(prev => prev.filter(r => r.id !== id));
-                }}
-                onEdit={(id) => navigate(`/edit/${id}`)}
-                onView={(id) => navigate(`/recipes/${id}`)}
                 loading={isLoading}
             />
             </div>
