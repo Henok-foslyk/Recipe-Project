@@ -6,7 +6,7 @@ import '../styles/RecipeList.css';
 import '../styles/recipe.css';
 
 export default function RecipeList({ recipes, loading }) {
-    
+
     if (loading) {
         return (
             <div className="grid-container">
@@ -14,12 +14,12 @@ export default function RecipeList({ recipes, loading }) {
                     (loading ? (
                         <div className="recipe-grid">
                             {[...Array(20)].map((_, i) => (
-                            <div key={i} className="skeleton-card">
-                                <Skeleton height={150} />
-                            </div>
+                                <div key={i} className="skeleton-card">
+                                    <Skeleton height={150} />
+                                </div>
                             ))}
                         </div>
-                        ) : ("")
+                    ) : ("")
                     )
                 }
             </div>
