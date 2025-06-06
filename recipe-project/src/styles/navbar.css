@@ -11,23 +11,40 @@
     background-color: #9dce38;
     font-size: 18px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    min-height: 70px;
+}
 
+.welcome-text {
+  margin-left: 1rem;
+  font-weight: 600;
+  color: #333;
 }
 
 .logout-button {
-  background: none;
-  border: none;
-  color: #0077cc;
-  cursor: pointer;
-  font-size: 1rem;
-  padding: 0;
-  margin-left: 1rem;
+    background-color: #ffffff;
+    color: #2c5530;
+    padding: 8px 16px;
+    border: 2px solid #2c5530;
+    border-radius: 8px;
+    margin-left: 1rem;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .logout-button:hover {
-  text-decoration: underline;
+    background-color: #2c5530;
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+.logout-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
 .header-container a {
     font-family: Arial, Helvetica, sans-serif;
@@ -40,7 +57,6 @@
 .header-container a:hover {
     color: #0077cc;
     text-decoration: underline;
-
 }
 
 .header-container a.active {
@@ -57,7 +73,7 @@
 .nav-links {
     display: flex;
     gap: 2rem;
-
+    align-items: center;
 }
 
 .nav-links a {
@@ -66,6 +82,7 @@
     font-weight: bold;
     transition: color 0.3s ease;
     font-size: 18px;
+    line-height: 1.2;
 }
 
 .nav-links a:hover {
@@ -77,8 +94,7 @@
     color: #0077cc;
 }
 
-
-/* responsive layput for mobile */
+/* responsive layout for mobile */
 @media (max-width: 600px) {
     .header-container {
         flex-direction: column;
@@ -96,5 +112,10 @@
         font-size: 16px;
         width: 100%;
         display: block;
+    }
+    
+    .logout-button {
+        margin-left: 0;
+        margin-top: 0.5rem;
     }
 }

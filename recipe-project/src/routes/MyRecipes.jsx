@@ -17,27 +17,42 @@ export default function MyRecipes() {
     const { currentUser } = useAuth();
 
     useEffect(() => {
-        if (!currentUser) return;
-        const fetchRecipes = async () => {
+    if (!currentUser) return;
+
+    const fetchRecipes = async () => {
         try {
             setIsLoading(true);
-            const userId = currentUser.id; // firebase auto-gen id
-            const [createdResIDs, savedResIDs] = await Promise.all([
-            axios.get(`/api/users/${userId}/createdRecipes`),
-            axios.get(`/api/users/${userId}/savedRecipes`)
+
+            // Fetch fresh user document from Firestore to get updated created/saved Recipes
+            const userRes = await fetch(`http://localhost:5050/users/${currentUser.id}`);
+            const userData = await userRes.json();
+
+            const createdResIDs = userData.createdRecipes || [];
+            const savedResIDs = userData.savedRecipes || [];
+
+            const fetchRecipeById = async (id) => {
+                const res = await fetch(`http://localhost:5050/firebase-recipes?id=${id}`);
+                if (!res.ok) throw new Error(`Failed to fetch recipe with id ${id}`);
+                return res.json();
+            };
+
+            const [createdRecipesData, savedRecipesData] = await Promise.all([
+                Promise.all(createdResIDs.map(fetchRecipeById)),
+                Promise.all(savedResIDs.map(fetchRecipeById))
             ]);
-            setCreatedRecipes(createdResIDs);
-            setSavedRecipes(savedResIDs);
+
+            setCreatedRecipes(createdRecipesData);
+            setSavedRecipes(savedRecipesData);
             setIsLoading(false);
         } catch (err) {
             console.error('Failed to fetch recipes:', err);
         }
-        };
-        fetchRecipes();
-    }, [currentUser]);
+    };
 
-    //console.log(createdRecipes);
+    fetchRecipes();
+}, [currentUser]);
 
+    
     return (
         <>
             <Navbar />
