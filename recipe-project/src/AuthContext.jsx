@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
       if (!currentUser?.id || hasFetchedRef.current) return;
 
       try {
-        const res = await axios.get(`http://localhost:5050/users/${currentUser.id}`);
+        const res = await axios.get(`http://localhost:5050/users/redundant/${currentUser.id}`);
         setCurrentUser(res.data);
         hasFetchedRef.current = true; // block future fetches
       } catch (err) {
