@@ -17,11 +17,20 @@ const Home = () => {
 
   const { currentUser } = useAuth();
 
-  const handleClick = () => {
+  const handleClickAdd = () => {
     if (!currentUser) {
       setSignInModalOpen(true);
     } else {
       navigate('/create-recipe');
+    }
+  };
+
+
+  const handleClickBrowse = () => {
+    if (!currentUser) {
+      setSignInModalOpen(true);
+    } else {
+      navigate('/recipes');
     }
   };
 
@@ -108,7 +117,7 @@ const Home = () => {
         <Grid container spacing={4} justifyContent="center">
           <Grid item xs={12} sm={6} md={4}>
             <Card
-              onClick={handleClick}
+              onClick={handleClickBrowse}
               sx={{
                 backgroundColor: '#7ba809',
                 color: 'white',
@@ -133,7 +142,7 @@ const Home = () => {
 
           <Grid item xs={12} sm={6} md={4}>
             <Card
-              onClick={handleClick}
+              onClick={handleClickAdd}
               sx={{
                 backgroundColor: '#9ecc1a',
                 color: 'white',
