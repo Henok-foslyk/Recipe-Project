@@ -5,7 +5,7 @@ import RecipeCard from './RecipeCard';
 import '../styles/recipeList.css';
 
 export default function RecipeList({ recipes, loading }) {
-    
+
     if (loading) {
         return (
             <div className="recipe-list">

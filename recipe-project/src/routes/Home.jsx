@@ -5,10 +5,34 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import SaveButton from '../components/SaveButton';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../AuthContext';
+import SignInModal from '../components/SignInModal';
+
 
 const Home = () => {
   const navigate = useNavigate();
   const [featuredRecipes, setFeaturedRecipes] = useState([]);
+  const [signInModalOpen, setSignInModalOpen] = useState(false);
+
+
+  const { currentUser } = useAuth();
+
+  const handleClickAdd = () => {
+    if (!currentUser) {
+      setSignInModalOpen(true);
+    } else {
+      navigate('/create-recipe');
+    }
+  };
+
+
+  const handleClickBrowse = () => {
+    if (!currentUser) {
+      setSignInModalOpen(true);
+    } else {
+      navigate('/recipes');
+    }
+  };
 
   useEffect(() => {
     const fetchFeaturedRecipes = async () => {
@@ -93,7 +117,7 @@ const Home = () => {
         <Grid container spacing={4} justifyContent="center">
           <Grid item xs={12} sm={6} md={4}>
             <Card
-              onClick={() => navigate('/recipes')}
+              onClick={handleClickBrowse}
               sx={{
                 backgroundColor: '#7ba809',
                 color: 'white',
@@ -113,11 +137,12 @@ const Home = () => {
               <Typography variant="h5">Browse Recipes</Typography>
               <Typography variant="body2">Explore community favorites and new ideas.</Typography>
             </Card>
+            <SignInModal open={signInModalOpen} onClose={() => setSignInModalOpen(false)} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={4}>
             <Card
-              onClick={() => navigate('/create-recipe')}
+              onClick={handleClickAdd}
               sx={{
                 backgroundColor: '#9ecc1a',
                 color: 'white',
@@ -134,18 +159,16 @@ const Home = () => {
                 },
               }}
             >
-              <Link to="/signup" >
-                <div style={{ cursor: 'pointer' }}>
-                  <Typography variant="h5">Add Your Own</Typography>
-                  <Typography variant="body2">Share your favorite dishes with the world.</Typography>
-                </div>
-              </Link>
+              <Typography variant="h5">Add Your Own</Typography>
+              <Typography variant="body2">Share your favorite dishes with the world.</Typography>
             </Card>
           </Grid>
         </Grid>
       </Box>
+      <SignInModal open={signInModalOpen} onClose={() => setSignInModalOpen(false)} />
 
     </>
+
   );
 };
 

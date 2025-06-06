@@ -7,27 +7,32 @@ html,
 }
 
 .chat-container {
-    position: relative;     /* ← make this the positioned parent */
-    display: flex;
-    flex-direction: column;
-    height: 900px;
-    width: 600px;
-    background-color: #f0f0f0;  
-    border-radius: 16px;
-    border: 4px solid transparent;
-    overflow: hidden;       /* clip the inner scroll */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
-  }
-  
-  /* Scrollable messages area */
-  .messages {
-    flex: 1;
-    padding: 16px;
-    padding-bottom: 80px;   /* leave room for the input bar */
-    overflow-y: auto;
-    background: #f2f2f2;
-  }
+  position: relative;
+  /* ← make this the positioned parent */
+  display: flex;
+  flex-direction: column;
+  height: 900px;
+  width: 600px;
+  background-color: #f0f0f0;
+  border-radius: 16px;
+  border: 4px solid transparent;
+  overflow: hidden;
+  /* clip the inner scroll */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  color: black;
+}
+
+/* Scrollable messages area */
+.messages {
+  flex: 1;
+  padding: 16px;
+  padding-bottom: 80px;
+  /* leave room for the input bar */
+  overflow-y: auto;
+  background: #f2f2f2;
+  color: black;
+}
 
 /* Common for both sent and received bubbles */
 .message {
@@ -36,49 +41,58 @@ html,
 }
 
 .bubble {
-    display: inline-block;       /* shrink to fit content */
-    padding: 10px 20px;          /* vertical/horizontal padding */
-    border-radius: 30px;       /* full pill/oval shape */
-    line-height: 1.4;
-    word-wrap: break-word;
-    max-width: 80%;              /* don’t force 100%—let it size to content */
-    text-align: left;            /* ensure text is left‐aligned */
-    box-sizing: border-box;
-  }
-  
-  /* User’s messages (sent) on the right */
-  .sent {
-    justify-content: flex-end;
-  }
-  .sent .bubble {
-    background: #9DCE38;
-    color: white;
-    margin-left: 20px;
-  }
-  
-  /* GPT’s messages (received) on the left */
-  .received {
-    justify-content: flex-start;
-  }
-  .received .bubble {
-    background: #e5e5ea;
-    color: black;
-    margin-right: 20px;
-  }
+  display: inline-block;
+  /* shrink to fit content */
+  padding: 10px 20px;
+  /* vertical/horizontal padding */
+  border-radius: 30px;
+  /* full pill/oval shape */
+  line-height: 1.4;
+  word-wrap: break-word;
+  max-width: 80%;
+  /* don’t force 100%—let it size to content */
+  text-align: left;
+  /* ensure text is left‐aligned */
+  box-sizing: border-box;
+  color: black;
+}
+
+/* User’s messages (sent) on the right */
+.sent {
+  justify-content: flex-end;
+}
+
+.sent .bubble {
+  background: #9DCE38;
+  color: white;
+  margin-left: 20px;
+}
+
+/* GPT’s messages (received) on the left */
+.received {
+  justify-content: flex-start;
+}
+
+.received .bubble {
+  background: #e5e5ea;
+  color: black;
+  margin-right: 20px;
+}
 
 /* Input area fixed at bottom */
 .input-area {
-    position: absolute;       /* now relative to .chat-container */
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    display: flex;
-    padding: 8px;
-    border-top: 1px solid #ddd;
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(5px);
-    box-sizing: border-box;
-  }
+  position: absolute;
+  /* now relative to .chat-container */
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  padding: 8px;
+  border-top: 1px solid #ddd;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(5px);
+  box-sizing: border-box;
+}
 
 .chat-input {
   flex: 1;
